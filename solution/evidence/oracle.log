@@ -1,0 +1,33 @@
+case: oracle
+workspace: /var/folders/jz/2ksjlg25597g30hd7ltt3nd00000gn/T/impact-oracle-z6qly_gq/workspace
+command: /Users/zhangchengcheng/Documents/Codex/2026-08-24/xh/work/bin/python3 -m pytest /Users/zhangchengcheng/harbor/parcel-impact-audit/tests/test_outputs.py -q --junitxml=/var/folders/jz/2ksjlg25597g30hd7ltt3nd00000gn/T/impact-oracle-z6qly_gq/junit.xml
+process_returncode: 0
+test_status:
+  test_c1_centered_spherical_impulse: PASS
+  test_c1_inertia_cross_terms_change_normal_impulse: PASS
+  test_c1_oblique_contact_updates_full_spin: PASS
+  test_c1_offset_matches_scalar_limit: PASS
+  test_c2_friction_changes_all_spatial_angular_components: PASS
+  test_c2_normal_aligned_arm_has_no_tangent_impulse: PASS
+  test_c2_slide_obeys_vector_friction_cone: PASS
+  test_c2_stick_cancels_contact_tangent_velocity: PASS
+  test_c2_tangent_matrix_retains_cross_coupling: PASS
+  test_c3_energy_uses_full_inertia_tensor: PASS
+  test_c3_summary_aggregates_modes_and_energy: PASS
+  test_c4_missing_columns_and_nonfinite_values_rejected: PASS
+  test_c4_nonpositive_inertia_rejected: PASS
+  test_c4_nonunit_normal_rejected_without_output: PASS
+  test_c4_separating_contact_preserves_existing_output: PASS
+  test_c5_both_contact_normals_are_coupled: PASS
+  test_c5_one_sided_contact_sets_other_impulse_to_zero: PASS
+  test_c5_pair_energy_and_angular_state_match_reference: PASS
+  test_c5_pair_rejects_no_approach_and_coincident_points: PASS
+  test_c5_two_point_stick_uses_joint_tangent_matrix: PASS
+  test_c5_two_slide_impulses_obey_individual_box_limits: PASS
+  test_e2e_pair_batch_report: PASS
+  test_e2e_sample_batch_report: PASS
+pytest_output:
+.......................                                                  [100%]
+23 passed in 1.43s
+
+weighted_reward: 1.000000

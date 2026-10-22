@@ -1,0 +1,289 @@
+case: partial-c3
+workspace: /var/folders/jz/2ksjlg25597g30hd7ltt3nd00000gn/T/impact-partial-c3-ft58t2ds/workspace
+command: /Users/zhangchengcheng/Documents/Codex/2026-08-24/xh/work/bin/python3 -m pytest /Users/zhangchengcheng/harbor/parcel-impact-audit/tests/test_outputs.py -q --junitxml=/var/folders/jz/2ksjlg25597g30hd7ltt3nd00000gn/T/impact-partial-c3-ft58t2ds/junit.xml
+process_returncode: 1
+test_status:
+  test_c1_centered_spherical_impulse: PASS
+  test_c1_inertia_cross_terms_change_normal_impulse: PASS
+  test_c1_oblique_contact_updates_full_spin: PASS
+  test_c1_offset_matches_scalar_limit: PASS
+  test_c2_friction_changes_all_spatial_angular_components: PASS
+  test_c2_normal_aligned_arm_has_no_tangent_impulse: PASS
+  test_c2_slide_obeys_vector_friction_cone: PASS
+  test_c2_stick_cancels_contact_tangent_velocity: PASS
+  test_c2_tangent_matrix_retains_cross_coupling: PASS
+  test_c3_energy_uses_full_inertia_tensor: PASS
+  test_c3_summary_aggregates_modes_and_energy: PASS
+  test_c4_missing_columns_and_nonfinite_values_rejected: PASS
+  test_c4_nonpositive_inertia_rejected: FAIL
+  test_c4_nonunit_normal_rejected_without_output: FAIL
+  test_c4_separating_contact_preserves_existing_output: FAIL
+  test_c5_both_contact_normals_are_coupled: FAIL
+  test_c5_one_sided_contact_sets_other_impulse_to_zero: FAIL
+  test_c5_pair_energy_and_angular_state_match_reference: FAIL
+  test_c5_pair_rejects_no_approach_and_coincident_points: PASS
+  test_c5_two_point_stick_uses_joint_tangent_matrix: FAIL
+  test_c5_two_slide_impulses_obey_individual_box_limits: FAIL
+  test_e2e_pair_batch_report: FAIL
+  test_e2e_sample_batch_report: PASS
+pytest_output:
+...........FFF.FFFFF.F.                                                  [100%]
+=================================== FAILURES ===================================
+________________ test_c4_nonunit_normal_rejected_without_output ________________
+
+    def test_c4_nonunit_normal_rejected_without_output():
+        """A non-unit contact normal rejects the complete batch."""
+        row = _row("bad-normal", nx=1.2)
+        input_path = TEST_ROOT / "parcel-impact-3d-c4-a.csv"
+        output_path = TEST_ROOT / "parcel-impact-3d-c4-a.json"
+        output_path.unlink(missing_ok=True)
+        _write_csv(input_path, [row])
+        completed = _run_cli(input_path, output_path)
+>       assert completed.returncode != 0
+E       AssertionError: assert 0 != 0
+E        +  where 0 = CompletedProcess(args=['/Users/zhangchengcheng/Documents/Codex/2026-08-24/xh/work/bin/python3', '-m', 'impact_audit', ...97g30hd7ltt3nd00000gn/T/parcel-impact-checks-5z7dvg1o/parcel-impact-3d-c4-a.json'], returncode=0, stdout='', stderr='').returncode
+
+tests/test_outputs.py:1036: AssertionError
+_____________________ test_c4_nonpositive_inertia_rejected _____________________
+
+    def test_c4_nonpositive_inertia_rejected():
+        """A non-positive-definite inertia tensor fails before output."""
+        row = _row("bad-inertia", ixx=0.5, iyy=0.5, ixy=0.8)
+        input_path = TEST_ROOT / "parcel-impact-3d-c4-b.csv"
+        output_path = TEST_ROOT / "parcel-impact-3d-c4-b.json"
+        output_path.unlink(missing_ok=True)
+        _write_csv(input_path, [row])
+        completed = _run_cli(input_path, output_path)
+>       assert completed.returncode != 0
+E       AssertionError: assert 0 != 0
+E        +  where 0 = CompletedProcess(args=['/Users/zhangchengcheng/Documents/Codex/2026-08-24/xh/work/bin/python3', '-m', 'impact_audit', ...97g30hd7ltt3nd00000gn/T/parcel-impact-checks-5z7dvg1o/parcel-impact-3d-c4-b.json'], returncode=0, stdout='', stderr='').returncode
+
+tests/test_outputs.py:1048: AssertionError
+_____________ test_c4_separating_contact_preserves_existing_output _____________
+
+    def test_c4_separating_contact_preserves_existing_output():
+        """A separating contact does not replace an existing report."""
+        row = _row("separating", vx=2.0)
+        input_path = TEST_ROOT / "parcel-impact-3d-c4-c.csv"
+        output_path = TEST_ROOT / "parcel-impact-3d-c4-c.json"
+        _write_csv(input_path, [row])
+        output_path.write_text("existing-report\n", encoding="utf-8")
+        completed = _run_cli(input_path, output_path)
+>       assert completed.returncode != 0
+E       AssertionError: assert 0 != 0
+E        +  where 0 = CompletedProcess(args=['/Users/zhangchengcheng/Documents/Codex/2026-08-24/xh/work/bin/python3', '-m', 'impact_audit', ...97g30hd7ltt3nd00000gn/T/parcel-impact-checks-5z7dvg1o/parcel-impact-3d-c4-c.json'], returncode=0, stdout='', stderr='').returncode
+
+tests/test_outputs.py:1060: AssertionError
+___________________ test_c5_both_contact_normals_are_coupled ___________________
+
+    def test_c5_both_contact_normals_are_coupled():
+        """Two approaching contacts use the full nonnegative normal mass matrix."""
+        row = _pair_row("coupled-normal", restitution=0.2, friction=0.8)
+>       report = _pair_report_for(TEST_ROOT / "parcel-pair-c5-a", [row])
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_outputs.py:1088: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+tmp_path = PosixPath('/var/folders/jz/2ksjlg25597g30hd7ltt3nd00000gn/T/parcel-impact-checks-5z7dvg1o/parcel-pair-c5-a')
+rows = [{'event_id': 'coupled-normal', 'mass_kg': 3.0, 'inertia_kg_m2': 0.45, 'vx_m_s': -0.3, ...}]
+stem = 'landings'
+
+    def _pair_report_for(
+        tmp_path: Path,
+        rows: list[dict[str, object]],
+        stem: str = "landings",
+    ) -> dict[str, Any]:
+        """Create a pair batch, invoke the entry point, and load its report."""
+        input_path = tmp_path / f"{stem}.csv"
+        output_path = tmp_path / f"{stem}.json"
+        _write_pair_csv(input_path, rows)
+        completed = _run_pair_cli(input_path, output_path)
+        if completed.returncode != 0:
+>           raise RuntimeError(completed.stderr)
+E           RuntimeError: usage: python3 -m impact_audit [-h] --input INPUT --output OUTPUT
+E           python3 -m impact_audit: error: unrecognized arguments: pair
+
+tests/test_outputs.py:207: RuntimeError
+_____________ test_c5_one_sided_contact_sets_other_impulse_to_zero _____________
+
+    def test_c5_one_sided_contact_sets_other_impulse_to_zero():
+        """A separating corner leaves the other contact to carry the impact."""
+        row = _pair_row(
+            "one-sided",
+            vx=0.0,
+            vy=-1.0,
+            omega=10.0,
+            friction=0.8,
+        )
+>       report = _pair_report_for(TEST_ROOT / "parcel-pair-c5-b", [row])
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_outputs.py:1107: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+tmp_path = PosixPath('/var/folders/jz/2ksjlg25597g30hd7ltt3nd00000gn/T/parcel-impact-checks-5z7dvg1o/parcel-pair-c5-b')
+rows = [{'event_id': 'one-sided', 'mass_kg': 3.0, 'inertia_kg_m2': 0.45, 'vx_m_s': 0.0, ...}]
+stem = 'landings'
+
+    def _pair_report_for(
+        tmp_path: Path,
+        rows: list[dict[str, object]],
+        stem: str = "landings",
+    ) -> dict[str, Any]:
+        """Create a pair batch, invoke the entry point, and load its report."""
+        input_path = tmp_path / f"{stem}.csv"
+        output_path = tmp_path / f"{stem}.json"
+        _write_pair_csv(input_path, rows)
+        completed = _run_pair_cli(input_path, output_path)
+        if completed.returncode != 0:
+>           raise RuntimeError(completed.stderr)
+E           RuntimeError: usage: python3 -m impact_audit [-h] --input INPUT --output OUTPUT
+E           python3 -m impact_audit: error: unrecognized arguments: pair
+
+tests/test_outputs.py:207: RuntimeError
+______________ test_c5_two_point_stick_uses_joint_tangent_matrix _______________
+
+    def test_c5_two_point_stick_uses_joint_tangent_matrix():
+        """Both sticking contacts are solved together rather than independently."""
+        row = _pair_row(
+            "two-stick",
+            vx=0.0,
+            vy=-1.0,
+            omega=0.02,
+            friction=0.95,
+        )
+>       report = _pair_report_for(TEST_ROOT / "parcel-pair-c5-c", [row])
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_outputs.py:1126: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+tmp_path = PosixPath('/var/folders/jz/2ksjlg25597g30hd7ltt3nd00000gn/T/parcel-impact-checks-5z7dvg1o/parcel-pair-c5-c')
+rows = [{'event_id': 'two-stick', 'mass_kg': 3.0, 'inertia_kg_m2': 0.45, 'vx_m_s': 0.0, ...}]
+stem = 'landings'
+
+    def _pair_report_for(
+        tmp_path: Path,
+        rows: list[dict[str, object]],
+        stem: str = "landings",
+    ) -> dict[str, Any]:
+        """Create a pair batch, invoke the entry point, and load its report."""
+        input_path = tmp_path / f"{stem}.csv"
+        output_path = tmp_path / f"{stem}.json"
+        _write_pair_csv(input_path, rows)
+        completed = _run_pair_cli(input_path, output_path)
+        if completed.returncode != 0:
+>           raise RuntimeError(completed.stderr)
+E           RuntimeError: usage: python3 -m impact_audit [-h] --input INPUT --output OUTPUT
+E           python3 -m impact_audit: error: unrecognized arguments: pair
+
+tests/test_outputs.py:207: RuntimeError
+____________ test_c5_two_slide_impulses_obey_individual_box_limits _____________
+
+    def test_c5_two_slide_impulses_obey_individual_box_limits():
+        """A sliding contact pair respects each normal-impulse friction cap."""
+        row = _pair_row(
+            "two-slide",
+            vx=-0.3,
+            vy=-1.0,
+            omega=0.0,
+            friction=0.05,
+        )
+>       report = _pair_report_for(TEST_ROOT / "parcel-pair-c5-d", [row])
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_outputs.py:1144: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+tmp_path = PosixPath('/var/folders/jz/2ksjlg25597g30hd7ltt3nd00000gn/T/parcel-impact-checks-5z7dvg1o/parcel-pair-c5-d')
+rows = [{'event_id': 'two-slide', 'mass_kg': 3.0, 'inertia_kg_m2': 0.45, 'vx_m_s': -0.3, ...}]
+stem = 'landings'
+
+    def _pair_report_for(
+        tmp_path: Path,
+        rows: list[dict[str, object]],
+        stem: str = "landings",
+    ) -> dict[str, Any]:
+        """Create a pair batch, invoke the entry point, and load its report."""
+        input_path = tmp_path / f"{stem}.csv"
+        output_path = tmp_path / f"{stem}.json"
+        _write_pair_csv(input_path, rows)
+        completed = _run_pair_cli(input_path, output_path)
+        if completed.returncode != 0:
+>           raise RuntimeError(completed.stderr)
+E           RuntimeError: usage: python3 -m impact_audit [-h] --input INPUT --output OUTPUT
+E           python3 -m impact_audit: error: unrecognized arguments: pair
+
+tests/test_outputs.py:207: RuntimeError
+____________ test_c5_pair_energy_and_angular_state_match_reference _____________
+
+    def test_c5_pair_energy_and_angular_state_match_reference():
+        """Two-contact angular recoil and energy use the combined impulse state."""
+        row = _pair_row(
+            "pair-energy",
+            mass=4.2,
+            inertia=0.73,
+            vx=-0.8,
+            vy=-1.7,
+            omega=0.6,
+            r1x=-0.19,
+            r1y=-0.03,
+            r2x=0.24,
+            r2y=-0.11,
+            friction=0.34,
+        )
+>       report = _pair_report_for(TEST_ROOT / "parcel-pair-c5-e", [row])
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_outputs.py:1172: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+tmp_path = PosixPath('/var/folders/jz/2ksjlg25597g30hd7ltt3nd00000gn/T/parcel-impact-checks-5z7dvg1o/parcel-pair-c5-e')
+rows = [{'event_id': 'pair-energy', 'mass_kg': 4.2, 'inertia_kg_m2': 0.73, 'vx_m_s': -0.8, ...}]
+stem = 'landings'
+
+    def _pair_report_for(
+        tmp_path: Path,
+        rows: list[dict[str, object]],
+        stem: str = "landings",
+    ) -> dict[str, Any]:
+        """Create a pair batch, invoke the entry point, and load its report."""
+        input_path = tmp_path / f"{stem}.csv"
+        output_path = tmp_path / f"{stem}.json"
+        _write_pair_csv(input_path, rows)
+        completed = _run_pair_cli(input_path, output_path)
+        if completed.returncode != 0:
+>           raise RuntimeError(completed.stderr)
+E           RuntimeError: usage: python3 -m impact_audit [-h] --input INPUT --output OUTPUT
+E           python3 -m impact_audit: error: unrecognized arguments: pair
+
+tests/test_outputs.py:207: RuntimeError
+__________________________ test_e2e_pair_batch_report __________________________
+
+    def test_e2e_pair_batch_report():
+        """The bundled two-contact batch yields ordered events and summaries."""
+        input_path = WORKSPACE / "data" / "pallet_landings.csv"
+        output_path = TEST_ROOT / "parcel-pair-e2e.json"
+        completed = _run_pair_cli(input_path, output_path)
+>       assert completed.returncode == 0, completed.stderr
+E       AssertionError: usage: python3 -m impact_audit [-h] --input INPUT --output OUTPUT
+E         python3 -m impact_audit: error: unrecognized arguments: pair
+E         
+E       assert 2 == 0
+E        +  where 2 = CompletedProcess(args=['/Users/zhangchengcheng/Documents/Codex/2026-08-24/xh/work/bin/python3', '-m', 'impact_audit', ...n3 -m impact_audit [-h] --input INPUT --output OUTPUT\npython3 -m impact_audit: error: unrecognized arguments: pair\n').returncode
+
+tests/test_outputs.py:1219: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_outputs.py::test_c4_nonunit_normal_rejected_without_output
+FAILED tests/test_outputs.py::test_c4_nonpositive_inertia_rejected - Assertio...
+FAILED tests/test_outputs.py::test_c4_separating_contact_preserves_existing_output
+FAILED tests/test_outputs.py::test_c5_both_contact_normals_are_coupled - Runt...
+FAILED tests/test_outputs.py::test_c5_one_sided_contact_sets_other_impulse_to_zero
+FAILED tests/test_outputs.py::test_c5_two_point_stick_uses_joint_tangent_matrix
+FAILED tests/test_outputs.py::test_c5_two_slide_impulses_obey_individual_box_limits
+FAILED tests/test_outputs.py::test_c5_pair_energy_and_angular_state_match_reference
+FAILED tests/test_outputs.py::test_e2e_pair_batch_report - AssertionError: us...
+9 failed, 14 passed in 1.53s
+
+weighted_reward: 0.420000

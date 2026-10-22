@@ -1,0 +1,287 @@
+{
+  "events": [
+    {
+      "event_id": "IMP-001",
+      "normal_impulse_ns": 4.3588256113346775,
+      "tangential_impulse_ns": {
+        "x": 0.0,
+        "y": -0.19924923799877972,
+        "z": 0.2999627004027612
+      },
+      "contact_mode": "stick",
+      "velocity_after_m_s": {
+        "x": 0.4188697904578147,
+        "y": 0.03180098229737134,
+        "z": -0.01460328657790598
+      },
+      "angular_velocity_after_rad_s": {
+        "x": 0.21955142659767612,
+        "y": -0.10577520543983344,
+        "z": 0.6123775424588768
+      },
+      "kinetic_energy_before_j": 2.2720429594752134,
+      "kinetic_energy_after_j": 0.4004742624175455,
+      "energy_loss_j": 1.871568697057668
+    },
+    {
+      "event_id": "IMP-002",
+      "normal_impulse_ns": 9.073343113187686,
+      "tangential_impulse_ns": {
+        "x": -0.3150224964950426,
+        "y": 0.6361095430696946,
+        "z": -0.36008582425655666
+      },
+      "contact_mode": "slide",
+      "velocity_after_m_s": {
+        "x": 0.47447384089645606,
+        "y": -1.6677760420963559,
+        "z": 0.6930812743145393
+      },
+      "angular_velocity_after_rad_s": {
+        "x": 1.6826621130128518,
+        "y": -2.076956469878192,
+        "z": -1.581341072905375
+      },
+      "kinetic_energy_before_j": 23.791286352571426,
+      "kinetic_energy_after_j": 16.22677356583436,
+      "energy_loss_j": 7.564512786737065
+    },
+    {
+      "event_id": "IMP-003",
+      "normal_impulse_ns": 10.348760417870482,
+      "tangential_impulse_ns": {
+        "x": 0.4495845477716272,
+        "y": 0.0,
+        "z": -0.042836956003396064
+      },
+      "contact_mode": "stick",
+      "velocity_after_m_s": {
+        "x": -0.022153378706766064,
+        "y": 0.6491254903251364,
+        "z": 0.07742544468188062
+      },
+      "angular_velocity_after_rad_s": {
+        "x": -1.9323278068716767,
+        "y": -0.6359541355142598,
+        "z": -1.9427184879010042
+      },
+      "kinetic_energy_before_j": 5.66625637926259,
+      "kinetic_energy_after_j": 3.033416298260095,
+      "energy_loss_j": 2.632840081002495
+    },
+    {
+      "event_id": "IMP-004",
+      "normal_impulse_ns": 11.657793494141485,
+      "tangential_impulse_ns": {
+        "x": -0.0848492056074804,
+        "y": 0.4871365548265323,
+        "z": -0.444898546376912
+      },
+      "contact_mode": "slide",
+      "velocity_after_m_s": {
+        "x": -0.30204492162473834,
+        "y": -0.740767349315734,
+        "z": 1.5269158884274867
+      },
+      "angular_velocity_after_rad_s": {
+        "x": 0.9653025929464933,
+        "y": -0.11707335259172316,
+        "z": 1.0425327403053573
+      },
+      "kinetic_energy_before_j": 15.610345737711675,
+      "kinetic_energy_after_j": 6.391240137605573,
+      "energy_loss_j": 9.219105600106102
+    },
+    {
+      "event_id": "IMP-005",
+      "normal_impulse_ns": 15.626632182825741,
+      "tangential_impulse_ns": {
+        "x": -0.9731439957136947,
+        "y": 0.41657672902499365,
+        "z": 1.2975253276182597
+      },
+      "contact_mode": "slide",
+      "velocity_after_m_s": {
+        "x": 2.0090073576332235,
+        "y": -0.6046935734698,
+        "z": -1.2195517324281833
+      },
+      "angular_velocity_after_rad_s": {
+        "x": -0.25874528172263556,
+        "y": 0.8812617854247562,
+        "z": -1.1411743192186954
+      },
+      "kinetic_energy_before_j": 29.21623979336283,
+      "kinetic_energy_after_j": 18.24982442240261,
+      "energy_loss_j": 10.96641537096022
+    },
+    {
+      "event_id": "IMP-006",
+      "normal_impulse_ns": 10.138415426503776,
+      "tangential_impulse_ns": {
+        "x": -0.17122514188010424,
+        "y": 0.28491821780583343,
+        "z": 0.24800224452954692
+      },
+      "contact_mode": "stick",
+      "velocity_after_m_s": {
+        "x": 0.1774652193706781,
+        "y": -0.08639428011725414,
+        "z": 0.16923101038082564
+      },
+      "angular_velocity_after_rad_s": {
+        "x": 1.8977043658065873,
+        "y": -0.2404415118633289,
+        "z": 0.8036770509188059
+      },
+      "kinetic_energy_before_j": 5.876415827313048,
+      "kinetic_energy_after_j": 1.4032444457048072,
+      "energy_loss_j": 4.473171381608241
+    },
+    {
+      "event_id": "IMP-007",
+      "normal_impulse_ns": 3.534314325450767,
+      "tangential_impulse_ns": {
+        "x": -0.0,
+        "y": 0.07198194396611807,
+        "z": 0.15849188635577177
+      },
+      "contact_mode": "slide",
+      "velocity_after_m_s": {
+        "x": 0.3465206276238283,
+        "y": -0.645923607979514,
+        "z": -1.6029919922009113
+      },
+      "angular_velocity_after_rad_s": {
+        "x": 1.1548046045993237,
+        "y": -0.1265993636050678,
+        "z": 0.06914878358768656
+      },
+      "kinetic_energy_before_j": 6.815966970064578,
+      "kinetic_energy_after_j": 5.351312011472875,
+      "energy_loss_j": 1.4646549585917032
+    },
+    {
+      "event_id": "IMP-008",
+      "normal_impulse_ns": 4.834679612217117,
+      "tangential_impulse_ns": {
+        "x": 0.24405532278319847,
+        "y": 0.20868535724123927,
+        "z": -0.37868401450106065
+      },
+      "contact_mode": "stick",
+      "velocity_after_m_s": {
+        "x": 0.05952044917929489,
+        "y": -0.20494756070625617,
+        "z": 0.12361425923879005
+      },
+      "angular_velocity_after_rad_s": {
+        "x": -0.6458702691331819,
+        "y": -0.21010955093299533,
+        "z": -1.5023238562386962
+      },
+      "kinetic_energy_before_j": 3.3489053933171133,
+      "kinetic_energy_after_j": 1.2573350499242157,
+      "energy_loss_j": 2.0915703433928976
+    },
+    {
+      "event_id": "IMP-009",
+      "normal_impulse_ns": 17.28486977080676,
+      "tangential_impulse_ns": {
+        "x": -1.1334243518103626,
+        "y": -0.0,
+        "z": 0.12184161135921363
+      },
+      "contact_mode": "slide",
+      "velocity_after_m_s": {
+        "x": 2.3317213729607555,
+        "y": 0.6743654254592037,
+        "z": -0.2819517950532189
+      },
+      "angular_velocity_after_rad_s": {
+        "x": -2.0514825677957536,
+        "y": 0.00499563857131094,
+        "z": -1.5150765580127512
+      },
+      "kinetic_energy_before_j": 34.57935210257961,
+      "kinetic_energy_after_j": 19.094036350594905,
+      "energy_loss_j": 15.485315751984707
+    },
+    {
+      "event_id": "IMP-010",
+      "normal_impulse_ns": 7.711802152571378,
+      "tangential_impulse_ns": {
+        "x": -0.35505505184547315,
+        "y": 0.33715661332326874,
+        "z": -0.5857315710975826
+      },
+      "contact_mode": "stick",
+      "velocity_after_m_s": {
+        "x": -0.18978402620231938,
+        "y": 0.1563905523321702,
+        "z": 0.014897495359708912
+      },
+      "angular_velocity_after_rad_s": {
+        "x": 0.5334755066171477,
+        "y": 1.7878996242548062,
+        "z": -0.24487392050365667
+      },
+      "kinetic_energy_before_j": 4.60468477137582,
+      "kinetic_energy_after_j": 1.2442119370803462,
+      "energy_loss_j": 3.3604728342954737
+    },
+    {
+      "event_id": "IMP-011",
+      "normal_impulse_ns": 15.793604586710883,
+      "tangential_impulse_ns": {
+        "x": -0.36018003917418867,
+        "y": 0.4104676640375189,
+        "z": 0.4802400522322516
+      },
+      "contact_mode": "slide",
+      "velocity_after_m_s": {
+        "x": 1.589300283089925,
+        "y": -0.715683158645858,
+        "z": -1.5448998164671655
+      },
+      "angular_velocity_after_rad_s": {
+        "x": -2.6219382237385735,
+        "y": 0.7213174825326942,
+        "z": 2.545072196580028
+      },
+      "kinetic_energy_before_j": 34.32921646324331,
+      "kinetic_energy_after_j": 19.23536410687236,
+      "energy_loss_j": 15.093852356370952
+    },
+    {
+      "event_id": "IMP-012",
+      "normal_impulse_ns": 4.71265223494216,
+      "tangential_impulse_ns": {
+        "x": 0.07582524107755698,
+        "y": 0.4377688458504943,
+        "z": 0.2285399490253959
+      },
+      "contact_mode": "stick",
+      "velocity_after_m_s": {
+        "x": 0.11623509857527975,
+        "y": 0.08193656180956069,
+        "z": -0.14344907062813328
+      },
+      "angular_velocity_after_rad_s": {
+        "x": -2.2231739738100105,
+        "y": 1.1229520407315927,
+        "z": 0.29263669567905726
+      },
+      "kinetic_energy_before_j": 3.6955120731032918,
+      "kinetic_energy_after_j": 1.5030591632867099,
+      "energy_loss_j": 2.192452909816582
+    }
+  ],
+  "summary": {
+    "event_count": 12,
+    "stick_count": 6,
+    "slide_count": 6,
+    "total_energy_loss_j": 76.4159330719241,
+    "maximum_energy_gain_j": 0.0
+  }
+}

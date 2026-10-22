@@ -1,0 +1,244 @@
+{
+  "events": [
+    {
+      "event_id": "LAND-001",
+      "contact_normal_impulses_ns": [
+        4.439727253030436,
+        7.6445206231546745
+      ],
+      "contact_tangent_impulses_ns": [
+        {
+          "x": -0.6040604105928151,
+          "y": 0.0
+        },
+        {
+          "x": -1.0400981869451789,
+          "y": 0.0
+        }
+      ],
+      "contact_modes": [
+        "slide",
+        "slide"
+      ],
+      "velocity_after_m_s": {
+        "x": 1.0956515375643472,
+        "y": 0.18500203608499932
+      },
+      "angular_velocity_after_rad_s": -0.023455270734531797,
+      "kinetic_energy_before_j": 17.42555108559771,
+      "kinetic_energy_after_j": 3.2914810865370168,
+      "energy_loss_j": 14.134069999060694
+    },
+    {
+      "event_id": "LAND-002",
+      "contact_normal_impulses_ns": [
+        10.834558864470338,
+        1.3509267183998408
+      ],
+      "contact_tangent_impulses_ns": [
+        {
+          "x": -0.3763761138783097,
+          "y": 0.28228208540873223
+        },
+        {
+          "x": 0.14649063168311036,
+          "y": -0.10986797376233277
+        }
+      ],
+      "contact_modes": [
+        "stick",
+        "stick"
+      ],
+      "velocity_after_m_s": {
+        "x": 0.34793498318760085,
+        "y": 0.46391331091680116
+      },
+      "angular_velocity_after_rad_s": -1.1102230246251565e-16,
+      "kinetic_energy_before_j": 9.634704874997889,
+      "kinetic_energy_after_j": 0.7970333403653245,
+      "energy_loss_j": 8.837671534632564
+    },
+    {
+      "event_id": "LAND-003",
+      "contact_normal_impulses_ns": [
+        5.3155534985513775,
+        4.754218952951816
+      ],
+      "contact_tangent_impulses_ns": [
+        {
+          "x": 0.0,
+          "y": -1.3867363625920894
+        },
+        {
+          "x": 0.0,
+          "y": -2.8550745284379127
+        }
+      ],
+      "contact_modes": [
+        "stick",
+        "stick"
+      ],
+      "velocity_after_m_s": {
+        "x": 0.5789258977679999,
+        "y": -4.440892098500626e-16
+      },
+      "angular_velocity_after_rad_s": 1.6653345369377348e-16,
+      "kinetic_energy_before_j": 8.468965601214858,
+      "kinetic_energy_after_j": 0.7458258829983868,
+      "energy_loss_j": 7.723139718216471
+    },
+    {
+      "event_id": "LAND-004",
+      "contact_normal_impulses_ns": [
+        6.428276996546133,
+        2.6837827341285028
+      ],
+      "contact_tangent_impulses_ns": [
+        {
+          "x": 0.16835615168989818,
+          "y": 0.22447486891986426
+        },
+        {
+          "x": -0.7734489864164585,
+          "y": -1.0312653152219446
+        }
+      ],
+      "contact_modes": [
+        "stick",
+        "stick"
+      ],
+      "velocity_after_m_s": {
+        "x": -0.41241573011808025,
+        "y": 0.30931179758856
+      },
+      "angular_velocity_after_rad_s": 7.771561172376096e-16,
+      "kinetic_energy_before_j": 3.255106779023372,
+      "kinetic_energy_after_j": 0.7804339451606848,
+      "energy_loss_j": 2.4746728338626873
+    },
+    {
+      "event_id": "LAND-005",
+      "contact_normal_impulses_ns": [
+        0.0,
+        11.403046280082076
+      ],
+      "contact_tangent_impulses_ns": [
+        {
+          "x": 0.0,
+          "y": 0.0
+        },
+        {
+          "x": 1.584806775052087,
+          "y": -0.0
+        }
+      ],
+      "contact_modes": [
+        "inactive",
+        "slide"
+      ],
+      "velocity_after_m_s": {
+        "x": -1.2519061989141163,
+        "y": 0.52434171188784
+      },
+      "angular_velocity_after_rad_s": 1.688614878182776,
+      "kinetic_energy_before_j": 14.724215781271837,
+      "kinetic_energy_after_j": 5.584787847171178,
+      "energy_loss_j": 9.13942793410066
+    },
+    {
+      "event_id": "LAND-006",
+      "contact_normal_impulses_ns": [
+        1.2038108435230364,
+        0.0
+      ],
+      "contact_tangent_impulses_ns": [
+        {
+          "x": -0.4779023113432224,
+          "y": 0.3584267335074168
+        },
+        {
+          "x": 0.0,
+          "y": 0.0
+        }
+      ],
+      "contact_modes": [
+        "slide",
+        "inactive"
+      ],
+      "velocity_after_m_s": {
+        "x": 0.11463021427490118,
+        "y": -0.04870936323519692
+      },
+      "angular_velocity_after_rad_s": -0.014164097084339383,
+      "kinetic_energy_before_j": 0.27673248137789214,
+      "kinetic_energy_after_j": 0.03681663634952542,
+      "energy_loss_j": 0.23991584502836671
+    },
+    {
+      "event_id": "LAND-007",
+      "contact_normal_impulses_ns": [
+        0.0,
+        9.511588555588894
+      ],
+      "contact_tangent_impulses_ns": [
+        {
+          "x": 0.0,
+          "y": 0.0
+        },
+        {
+          "x": 0.0,
+          "y": -3.7251763094585173
+        }
+      ],
+      "contact_modes": [
+        "inactive",
+        "stick"
+      ],
+      "velocity_after_m_s": {
+        "x": 0.08709621127260814,
+        "y": 0.10711863603624117
+      },
+      "angular_velocity_after_rad_s": 1.162261143572774,
+      "kinetic_energy_before_j": 9.620794749221727,
+      "kinetic_energy_after_j": 0.8296380825671671,
+      "energy_loss_j": 8.79115666665456
+    },
+    {
+      "event_id": "LAND-008",
+      "contact_normal_impulses_ns": [
+        0.0,
+        4.169679802413569
+      ],
+      "contact_tangent_impulses_ns": [
+        {
+          "x": 0.0,
+          "y": 0.0
+        },
+        {
+          "x": 0.9341229960283642,
+          "y": 1.2454973280378192
+        }
+      ],
+      "contact_modes": [
+        "inactive",
+        "stick"
+      ],
+      "velocity_after_m_s": {
+        "x": -0.8486053603562258,
+        "y": -0.14023118653062105
+      },
+      "angular_velocity_after_rad_s": -2.7652220748382623,
+      "kinetic_energy_before_j": 4.640263930307927,
+      "kinetic_energy_after_j": 2.213079708218359,
+      "energy_loss_j": 2.4271842220895676
+    }
+  ],
+  "summary": {
+    "event_count": 8,
+    "stick_count": 8,
+    "slide_count": 4,
+    "inactive_count": 4,
+    "total_energy_loss_j": 53.76723875364557,
+    "maximum_energy_gain_j": 0.0
+  }
+}

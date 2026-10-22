@@ -1,0 +1,624 @@
+case: bypass-empty
+workspace: /var/folders/jz/2ksjlg25597g30hd7ltt3nd00000gn/T/impact-bypass-empty-uh3_a754/workspace
+command: /Users/zhangchengcheng/Documents/Codex/2026-08-24/xh/work/bin/python3 -m pytest /Users/zhangchengcheng/harbor/parcel-impact-audit/tests/test_outputs.py -q --junitxml=/var/folders/jz/2ksjlg25597g30hd7ltt3nd00000gn/T/impact-bypass-empty-uh3_a754/junit.xml
+process_returncode: 1
+test_status:
+  test_c1_centered_spherical_impulse: FAIL
+  test_c1_inertia_cross_terms_change_normal_impulse: FAIL
+  test_c1_oblique_contact_updates_full_spin: FAIL
+  test_c1_offset_matches_scalar_limit: FAIL
+  test_c2_friction_changes_all_spatial_angular_components: FAIL
+  test_c2_normal_aligned_arm_has_no_tangent_impulse: FAIL
+  test_c2_slide_obeys_vector_friction_cone: FAIL
+  test_c2_stick_cancels_contact_tangent_velocity: FAIL
+  test_c2_tangent_matrix_retains_cross_coupling: FAIL
+  test_c3_energy_uses_full_inertia_tensor: FAIL
+  test_c3_summary_aggregates_modes_and_energy: FAIL
+  test_c4_missing_columns_and_nonfinite_values_rejected: FAIL
+  test_c4_nonpositive_inertia_rejected: FAIL
+  test_c4_nonunit_normal_rejected_without_output: FAIL
+  test_c4_separating_contact_preserves_existing_output: FAIL
+  test_c5_both_contact_normals_are_coupled: FAIL
+  test_c5_one_sided_contact_sets_other_impulse_to_zero: FAIL
+  test_c5_pair_energy_and_angular_state_match_reference: FAIL
+  test_c5_pair_rejects_no_approach_and_coincident_points: PASS
+  test_c5_two_point_stick_uses_joint_tangent_matrix: FAIL
+  test_c5_two_slide_impulses_obey_individual_box_limits: FAIL
+  test_e2e_pair_batch_report: FAIL
+  test_e2e_sample_batch_report: FAIL
+pytest_output:
+FFFFFFFFFFFFFFFFFFFF.FF                                                  [100%]
+=================================== FAILURES ===================================
+______________________ test_c1_centered_spherical_impulse ______________________
+
+    def test_c1_centered_spherical_impulse():
+        """A centered spherical impact uses only mass and restitution."""
+        row = _row(
+            "centered",
+            ixx=0.6,
+            iyy=0.6,
+            izz=0.6,
+            ixy=0.0,
+            ixz=0.0,
+            iyz=0.0,
+            vx=-3.0,
+            vy=0.0,
+            vz=0.0,
+            wx=0.0,
+            wy=0.0,
+            wz=0.0,
+            rx=0.0,
+            ry=0.0,
+            rz=0.0,
+            restitution=0.5,
+            friction=0.0,
+        )
+        report = _report_for(TEST_ROOT / "parcel-impact-3d-c1-a", [row])
+>       event = report["events"][0]
+                ^^^^^^^^^^^^^^^^
+E       KeyError: 'events'
+
+tests/test_outputs.py:736: KeyError
+_____________________ test_c1_offset_matches_scalar_limit ______________________
+
+    def test_c1_offset_matches_scalar_limit():
+        """The spatial contact matrix reproduces the scalar-inertia offset result."""
+        row = _row(
+            "offset",
+            ixx=0.5,
+            iyy=0.5,
+            izz=0.5,
+            ixy=0.0,
+            ixz=0.0,
+            iyz=0.0,
+            vx=-3.0,
+            vy=0.0,
+            vz=0.0,
+            wx=0.0,
+            wy=0.0,
+            wz=0.0,
+            rx=0.0,
+            ry=0.3,
+            rz=0.0,
+            restitution=0.5,
+            friction=0.0,
+        )
+        report = _report_for(TEST_ROOT / "parcel-impact-3d-c1-b", [row])
+>       event = report["events"][0]
+                ^^^^^^^^^^^^^^^^
+E       KeyError: 'events'
+
+tests/test_outputs.py:764: KeyError
+______________ test_c1_inertia_cross_terms_change_normal_impulse _______________
+
+    def test_c1_inertia_cross_terms_change_normal_impulse():
+        """A non-diagonal inertia tensor changes the effective normal mass."""
+        row = _row(
+            "cross-inertia",
+            ixx=0.8,
+            iyy=0.65,
+            izz=0.9,
+            ixy=0.12,
+            ixz=-0.07,
+            iyz=0.04,
+            vx=-1.6,
+            vy=0.5,
+            vz=-0.4,
+            wx=0.6,
+            wy=-0.4,
+            wz=0.3,
+            rx=0.12,
+            ry=-0.08,
+            rz=0.1,
+            nx=0.48,
+            ny=-0.6,
+            nz=0.64,
+            restitution=0.35,
+            friction=0.0,
+        )
+        report = _report_for(TEST_ROOT / "parcel-impact-3d-c1-c", [row])
+        diagonal = {**row, "ixy": 0.0, "ixz": 0.0, "iyz": 0.0}
+        expected = _reference(row)
+        diagonal_expected = _reference(diagonal)
+>       assert report["events"][0]["normal_impulse_ns"] == pytest.approx(
+               ^^^^^^^^^^^^^^^^
+            expected["normal_impulse_ns"], rel=1e-10
+        )
+E       KeyError: 'events'
+
+tests/test_outputs.py:797: KeyError
+__________________ test_c1_oblique_contact_updates_full_spin ___________________
+
+    def test_c1_oblique_contact_updates_full_spin():
+        """An oblique contact produces the expected velocity and angular vector."""
+        row = _row(
+            "oblique",
+            ixx=0.72,
+            iyy=0.61,
+            izz=0.84,
+            ixy=0.08,
+            ixz=-0.05,
+            iyz=0.03,
+            vx=-1.1,
+            vy=-1.4,
+            vz=0.8,
+            wx=0.5,
+            wy=-0.3,
+            wz=0.2,
+            rx=-0.09,
+            ry=0.11,
+            rz=0.07,
+            nx=0.6,
+            ny=0.8,
+            nz=0.0,
+            restitution=0.2,
+            friction=0.0,
+        )
+        report = _report_for(TEST_ROOT / "parcel-impact-3d-c1-d", [row])
+>       event = report["events"][0]
+                ^^^^^^^^^^^^^^^^
+E       KeyError: 'events'
+
+tests/test_outputs.py:831: KeyError
+______________ test_c2_normal_aligned_arm_has_no_tangent_impulse _______________
+
+    def test_c2_normal_aligned_arm_has_no_tangent_impulse():
+        """A normal impulse parallel to the arm creates no tangent demand."""
+        row = _row(
+            "pure-normal",
+            vx=-1.2,
+            vy=-1.6,
+            vz=0.0,
+            wx=0.0,
+            wy=0.0,
+            wz=0.0,
+            rx=0.06,
+            ry=0.08,
+            rz=0.0,
+            nx=0.6,
+            ny=0.8,
+            nz=0.0,
+            friction=0.8,
+        )
+        report = _report_for(TEST_ROOT / "parcel-impact-3d-c2-a", [row])
+>       event = report["events"][0]
+                ^^^^^^^^^^^^^^^^
+E       KeyError: 'events'
+
+tests/test_outputs.py:860: KeyError
+________________ test_c2_stick_cancels_contact_tangent_velocity ________________
+
+    def test_c2_stick_cancels_contact_tangent_velocity():
+        """A tangential demand inside the friction cone removes contact slip."""
+        row = _row("stick", restitution=0.25, friction=0.95)
+        report = _report_for(TEST_ROOT / "parcel-impact-3d-c2-b", [row])
+>       event = report["events"][0]
+                ^^^^^^^^^^^^^^^^
+E       KeyError: 'events'
+
+tests/test_outputs.py:871: KeyError
+___________________ test_c2_slide_obeys_vector_friction_cone ___________________
+
+    def test_c2_slide_obeys_vector_friction_cone():
+        """A high tangent demand has the full signed Coulomb magnitude."""
+        row = _row("slide", vx=-1.0, vy=2.6, vz=1.4, friction=0.02)
+        report = _report_for(TEST_ROOT / "parcel-impact-3d-c2-c", [row])
+>       event = report["events"][0]
+                ^^^^^^^^^^^^^^^^
+E       KeyError: 'events'
+
+tests/test_outputs.py:897: KeyError
+___________ test_c2_friction_changes_all_spatial_angular_components ____________
+
+    def test_c2_friction_changes_all_spatial_angular_components():
+        """Tangential impulse acts through the full inverse inertia tensor."""
+        row = _row(
+            "spatial-spin",
+            ixx=0.8,
+            iyy=0.7,
+            izz=0.95,
+            ixy=0.11,
+            ixz=-0.06,
+            iyz=0.05,
+            vx=-1.2,
+            vy=1.1,
+            vz=-0.6,
+            wx=0.7,
+            wy=-0.4,
+            wz=0.3,
+            rx=0.1,
+            ry=-0.07,
+            rz=0.08,
+            nx=0.48,
+            ny=-0.6,
+            nz=0.64,
+            friction=0.16,
+        )
+        report = _report_for(TEST_ROOT / "parcel-impact-3d-c2-d", [row])
+>       event = report["events"][0]
+                ^^^^^^^^^^^^^^^^
+E       KeyError: 'events'
+
+tests/test_outputs.py:932: KeyError
+________________ test_c2_tangent_matrix_retains_cross_coupling _________________
+
+    def test_c2_tangent_matrix_retains_cross_coupling():
+        """An anisotropic tangent system produces a vector not parallel to slip."""
+        row = _row(
+            "coupled-tangent",
+            ixx=0.56,
+            iyy=0.73,
+            izz=0.91,
+            ixy=0.14,
+            ixz=-0.09,
+            iyz=0.08,
+            vx=-1.3,
+            vy=0.45,
+            vz=-0.35,
+            wx=0.8,
+            wy=-0.35,
+            wz=0.55,
+            rx=0.13,
+            ry=-0.09,
+            rz=0.11,
+            nx=0.36,
+            ny=-0.48,
+            nz=0.8,
+            friction=0.95,
+        )
+        report = _report_for(TEST_ROOT / "parcel-impact-3d-c2-e", [row])
+>       event = report["events"][0]
+                ^^^^^^^^^^^^^^^^
+E       KeyError: 'events'
+
+tests/test_outputs.py:970: KeyError
+___________________ test_c3_energy_uses_full_inertia_tensor ____________________
+
+    def test_c3_energy_uses_full_inertia_tensor():
+        """Kinetic energy includes the complete rotational quadratic form."""
+        row = _row(
+            "energy",
+            ixx=0.75,
+            iyy=0.62,
+            izz=0.88,
+            ixy=0.07,
+            ixz=-0.04,
+            iyz=0.03,
+            friction=0.42,
+        )
+        report = _report_for(TEST_ROOT / "parcel-impact-3d-c3-a", [row])
+>       event = report["events"][0]
+                ^^^^^^^^^^^^^^^^
+E       KeyError: 'events'
+
+tests/test_outputs.py:998: KeyError
+_________________ test_c3_summary_aggregates_modes_and_energy __________________
+
+    def test_c3_summary_aggregates_modes_and_energy():
+        """Summary counts contact modes and sums per-event energy loss."""
+        stick = _row("stick-summary", restitution=0.25, friction=0.95)
+        slide = _row("slide-summary", vx=-1.0, vy=2.6, vz=1.4, friction=0.02)
+        report = _report_for(TEST_ROOT / "parcel-impact-3d-c3-b", [stick, slide])
+        expected_loss = sum(
+            float(_reference(row)["energy_loss_j"]) for row in [stick, slide]
+        )
+>       assert report["summary"]["event_count"] == 2
+               ^^^^^^^^^^^^^^^^^
+E       KeyError: 'summary'
+
+tests/test_outputs.py:1019: KeyError
+________________ test_c4_nonunit_normal_rejected_without_output ________________
+
+    def test_c4_nonunit_normal_rejected_without_output():
+        """A non-unit contact normal rejects the complete batch."""
+        row = _row("bad-normal", nx=1.2)
+        input_path = TEST_ROOT / "parcel-impact-3d-c4-a.csv"
+        output_path = TEST_ROOT / "parcel-impact-3d-c4-a.json"
+        output_path.unlink(missing_ok=True)
+        _write_csv(input_path, [row])
+        completed = _run_cli(input_path, output_path)
+>       assert completed.returncode != 0
+E       AssertionError: assert 0 != 0
+E        +  where 0 = CompletedProcess(args=['/Users/zhangchengcheng/Documents/Codex/2026-08-24/xh/work/bin/python3', '-m', 'impact_audit', ...97g30hd7ltt3nd00000gn/T/parcel-impact-checks-uyohxy4v/parcel-impact-3d-c4-a.json'], returncode=0, stdout='', stderr='').returncode
+
+tests/test_outputs.py:1036: AssertionError
+_____________________ test_c4_nonpositive_inertia_rejected _____________________
+
+    def test_c4_nonpositive_inertia_rejected():
+        """A non-positive-definite inertia tensor fails before output."""
+        row = _row("bad-inertia", ixx=0.5, iyy=0.5, ixy=0.8)
+        input_path = TEST_ROOT / "parcel-impact-3d-c4-b.csv"
+        output_path = TEST_ROOT / "parcel-impact-3d-c4-b.json"
+        output_path.unlink(missing_ok=True)
+        _write_csv(input_path, [row])
+        completed = _run_cli(input_path, output_path)
+>       assert completed.returncode != 0
+E       AssertionError: assert 0 != 0
+E        +  where 0 = CompletedProcess(args=['/Users/zhangchengcheng/Documents/Codex/2026-08-24/xh/work/bin/python3', '-m', 'impact_audit', ...97g30hd7ltt3nd00000gn/T/parcel-impact-checks-uyohxy4v/parcel-impact-3d-c4-b.json'], returncode=0, stdout='', stderr='').returncode
+
+tests/test_outputs.py:1048: AssertionError
+_____________ test_c4_separating_contact_preserves_existing_output _____________
+
+    def test_c4_separating_contact_preserves_existing_output():
+        """A separating contact does not replace an existing report."""
+        row = _row("separating", vx=2.0)
+        input_path = TEST_ROOT / "parcel-impact-3d-c4-c.csv"
+        output_path = TEST_ROOT / "parcel-impact-3d-c4-c.json"
+        _write_csv(input_path, [row])
+        output_path.write_text("existing-report\n", encoding="utf-8")
+        completed = _run_cli(input_path, output_path)
+>       assert completed.returncode != 0
+E       AssertionError: assert 0 != 0
+E        +  where 0 = CompletedProcess(args=['/Users/zhangchengcheng/Documents/Codex/2026-08-24/xh/work/bin/python3', '-m', 'impact_audit', ...97g30hd7ltt3nd00000gn/T/parcel-impact-checks-uyohxy4v/parcel-impact-3d-c4-c.json'], returncode=0, stdout='', stderr='').returncode
+
+tests/test_outputs.py:1060: AssertionError
+____________ test_c4_missing_columns_and_nonfinite_values_rejected _____________
+
+    def test_c4_missing_columns_and_nonfinite_values_rejected():
+        """Incomplete schemas and non-finite values both fail cleanly."""
+        missing_input = TEST_ROOT / "parcel-impact-3d-c4-d.csv"
+        missing_output = TEST_ROOT / "parcel-impact-3d-c4-d.json"
+        missing_input.write_text("event_id,mass_kg\nmissing,2\n", encoding="utf-8")
+        missing_completed = _run_cli(missing_input, missing_output)
+    
+        row = _row("nan")
+        nan_input = TEST_ROOT / "parcel-impact-3d-c4-e.csv"
+        nan_output = TEST_ROOT / "parcel-impact-3d-c4-e.json"
+        _write_csv(nan_input, [row])
+        text = nan_input.read_text(encoding="utf-8").replace("-1.5", "nan", 1)
+        nan_input.write_text(text, encoding="utf-8")
+        nan_completed = _run_cli(nan_input, nan_output)
+    
+>       assert missing_completed.returncode != 0
+E       AssertionError: assert 0 != 0
+E        +  where 0 = CompletedProcess(args=['/Users/zhangchengcheng/Documents/Codex/2026-08-24/xh/work/bin/python3', '-m', 'impact_audit', ...97g30hd7ltt3nd00000gn/T/parcel-impact-checks-uyohxy4v/parcel-impact-3d-c4-d.json'], returncode=0, stdout='', stderr='').returncode
+
+tests/test_outputs.py:1079: AssertionError
+___________________ test_c5_both_contact_normals_are_coupled ___________________
+
+    def test_c5_both_contact_normals_are_coupled():
+        """Two approaching contacts use the full nonnegative normal mass matrix."""
+        row = _pair_row("coupled-normal", restitution=0.2, friction=0.8)
+>       report = _pair_report_for(TEST_ROOT / "parcel-pair-c5-a", [row])
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_outputs.py:1088: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+tmp_path = PosixPath('/var/folders/jz/2ksjlg25597g30hd7ltt3nd00000gn/T/parcel-impact-checks-uyohxy4v/parcel-pair-c5-a')
+rows = [{'event_id': 'coupled-normal', 'mass_kg': 3.0, 'inertia_kg_m2': 0.45, 'vx_m_s': -0.3, ...}]
+stem = 'landings'
+
+    def _pair_report_for(
+        tmp_path: Path,
+        rows: list[dict[str, object]],
+        stem: str = "landings",
+    ) -> dict[str, Any]:
+        """Create a pair batch, invoke the entry point, and load its report."""
+        input_path = tmp_path / f"{stem}.csv"
+        output_path = tmp_path / f"{stem}.json"
+        _write_pair_csv(input_path, rows)
+        completed = _run_pair_cli(input_path, output_path)
+        if completed.returncode != 0:
+>           raise RuntimeError(completed.stderr)
+E           RuntimeError: usage: python3 -m impact_audit [-h] --input INPUT --output OUTPUT
+E           python3 -m impact_audit: error: unrecognized arguments: pair
+
+tests/test_outputs.py:207: RuntimeError
+_____________ test_c5_one_sided_contact_sets_other_impulse_to_zero _____________
+
+    def test_c5_one_sided_contact_sets_other_impulse_to_zero():
+        """A separating corner leaves the other contact to carry the impact."""
+        row = _pair_row(
+            "one-sided",
+            vx=0.0,
+            vy=-1.0,
+            omega=10.0,
+            friction=0.8,
+        )
+>       report = _pair_report_for(TEST_ROOT / "parcel-pair-c5-b", [row])
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_outputs.py:1107: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+tmp_path = PosixPath('/var/folders/jz/2ksjlg25597g30hd7ltt3nd00000gn/T/parcel-impact-checks-uyohxy4v/parcel-pair-c5-b')
+rows = [{'event_id': 'one-sided', 'mass_kg': 3.0, 'inertia_kg_m2': 0.45, 'vx_m_s': 0.0, ...}]
+stem = 'landings'
+
+    def _pair_report_for(
+        tmp_path: Path,
+        rows: list[dict[str, object]],
+        stem: str = "landings",
+    ) -> dict[str, Any]:
+        """Create a pair batch, invoke the entry point, and load its report."""
+        input_path = tmp_path / f"{stem}.csv"
+        output_path = tmp_path / f"{stem}.json"
+        _write_pair_csv(input_path, rows)
+        completed = _run_pair_cli(input_path, output_path)
+        if completed.returncode != 0:
+>           raise RuntimeError(completed.stderr)
+E           RuntimeError: usage: python3 -m impact_audit [-h] --input INPUT --output OUTPUT
+E           python3 -m impact_audit: error: unrecognized arguments: pair
+
+tests/test_outputs.py:207: RuntimeError
+______________ test_c5_two_point_stick_uses_joint_tangent_matrix _______________
+
+    def test_c5_two_point_stick_uses_joint_tangent_matrix():
+        """Both sticking contacts are solved together rather than independently."""
+        row = _pair_row(
+            "two-stick",
+            vx=0.0,
+            vy=-1.0,
+            omega=0.02,
+            friction=0.95,
+        )
+>       report = _pair_report_for(TEST_ROOT / "parcel-pair-c5-c", [row])
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_outputs.py:1126: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+tmp_path = PosixPath('/var/folders/jz/2ksjlg25597g30hd7ltt3nd00000gn/T/parcel-impact-checks-uyohxy4v/parcel-pair-c5-c')
+rows = [{'event_id': 'two-stick', 'mass_kg': 3.0, 'inertia_kg_m2': 0.45, 'vx_m_s': 0.0, ...}]
+stem = 'landings'
+
+    def _pair_report_for(
+        tmp_path: Path,
+        rows: list[dict[str, object]],
+        stem: str = "landings",
+    ) -> dict[str, Any]:
+        """Create a pair batch, invoke the entry point, and load its report."""
+        input_path = tmp_path / f"{stem}.csv"
+        output_path = tmp_path / f"{stem}.json"
+        _write_pair_csv(input_path, rows)
+        completed = _run_pair_cli(input_path, output_path)
+        if completed.returncode != 0:
+>           raise RuntimeError(completed.stderr)
+E           RuntimeError: usage: python3 -m impact_audit [-h] --input INPUT --output OUTPUT
+E           python3 -m impact_audit: error: unrecognized arguments: pair
+
+tests/test_outputs.py:207: RuntimeError
+____________ test_c5_two_slide_impulses_obey_individual_box_limits _____________
+
+    def test_c5_two_slide_impulses_obey_individual_box_limits():
+        """A sliding contact pair respects each normal-impulse friction cap."""
+        row = _pair_row(
+            "two-slide",
+            vx=-0.3,
+            vy=-1.0,
+            omega=0.0,
+            friction=0.05,
+        )
+>       report = _pair_report_for(TEST_ROOT / "parcel-pair-c5-d", [row])
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_outputs.py:1144: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+tmp_path = PosixPath('/var/folders/jz/2ksjlg25597g30hd7ltt3nd00000gn/T/parcel-impact-checks-uyohxy4v/parcel-pair-c5-d')
+rows = [{'event_id': 'two-slide', 'mass_kg': 3.0, 'inertia_kg_m2': 0.45, 'vx_m_s': -0.3, ...}]
+stem = 'landings'
+
+    def _pair_report_for(
+        tmp_path: Path,
+        rows: list[dict[str, object]],
+        stem: str = "landings",
+    ) -> dict[str, Any]:
+        """Create a pair batch, invoke the entry point, and load its report."""
+        input_path = tmp_path / f"{stem}.csv"
+        output_path = tmp_path / f"{stem}.json"
+        _write_pair_csv(input_path, rows)
+        completed = _run_pair_cli(input_path, output_path)
+        if completed.returncode != 0:
+>           raise RuntimeError(completed.stderr)
+E           RuntimeError: usage: python3 -m impact_audit [-h] --input INPUT --output OUTPUT
+E           python3 -m impact_audit: error: unrecognized arguments: pair
+
+tests/test_outputs.py:207: RuntimeError
+____________ test_c5_pair_energy_and_angular_state_match_reference _____________
+
+    def test_c5_pair_energy_and_angular_state_match_reference():
+        """Two-contact angular recoil and energy use the combined impulse state."""
+        row = _pair_row(
+            "pair-energy",
+            mass=4.2,
+            inertia=0.73,
+            vx=-0.8,
+            vy=-1.7,
+            omega=0.6,
+            r1x=-0.19,
+            r1y=-0.03,
+            r2x=0.24,
+            r2y=-0.11,
+            friction=0.34,
+        )
+>       report = _pair_report_for(TEST_ROOT / "parcel-pair-c5-e", [row])
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_outputs.py:1172: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+tmp_path = PosixPath('/var/folders/jz/2ksjlg25597g30hd7ltt3nd00000gn/T/parcel-impact-checks-uyohxy4v/parcel-pair-c5-e')
+rows = [{'event_id': 'pair-energy', 'mass_kg': 4.2, 'inertia_kg_m2': 0.73, 'vx_m_s': -0.8, ...}]
+stem = 'landings'
+
+    def _pair_report_for(
+        tmp_path: Path,
+        rows: list[dict[str, object]],
+        stem: str = "landings",
+    ) -> dict[str, Any]:
+        """Create a pair batch, invoke the entry point, and load its report."""
+        input_path = tmp_path / f"{stem}.csv"
+        output_path = tmp_path / f"{stem}.json"
+        _write_pair_csv(input_path, rows)
+        completed = _run_pair_cli(input_path, output_path)
+        if completed.returncode != 0:
+>           raise RuntimeError(completed.stderr)
+E           RuntimeError: usage: python3 -m impact_audit [-h] --input INPUT --output OUTPUT
+E           python3 -m impact_audit: error: unrecognized arguments: pair
+
+tests/test_outputs.py:207: RuntimeError
+__________________________ test_e2e_pair_batch_report __________________________
+
+    def test_e2e_pair_batch_report():
+        """The bundled two-contact batch yields ordered events and summaries."""
+        input_path = WORKSPACE / "data" / "pallet_landings.csv"
+        output_path = TEST_ROOT / "parcel-pair-e2e.json"
+        completed = _run_pair_cli(input_path, output_path)
+>       assert completed.returncode == 0, completed.stderr
+E       AssertionError: usage: python3 -m impact_audit [-h] --input INPUT --output OUTPUT
+E         python3 -m impact_audit: error: unrecognized arguments: pair
+E         
+E       assert 2 == 0
+E        +  where 2 = CompletedProcess(args=['/Users/zhangchengcheng/Documents/Codex/2026-08-24/xh/work/bin/python3', '-m', 'impact_audit', ...n3 -m impact_audit [-h] --input INPUT --output OUTPUT\npython3 -m impact_audit: error: unrecognized arguments: pair\n').returncode
+
+tests/test_outputs.py:1219: AssertionError
+_________________________ test_e2e_sample_batch_report _________________________
+
+    def test_e2e_sample_batch_report():
+        """The bundled simulated batch yields twelve ordered spatial results."""
+        input_path = WORKSPACE / "data" / "impact_events.csv"
+        output_path = TEST_ROOT / "parcel-impact-3d-e2e.json"
+        completed = _run_cli(input_path, output_path)
+        assert completed.returncode == 0, completed.stderr
+        report = json.loads(output_path.read_text(encoding="utf-8"))
+    
+        with input_path.open(newline="", encoding="utf-8") as handle:
+            rows = list(csv.DictReader(handle))
+        expected_events = [_reference(row) for row in rows]
+        expected_loss = sum(float(event["energy_loss_j"]) for event in expected_events)
+        expected_sticks = sum(event["contact_mode"] == "stick" for event in expected_events)
+        expected_slides = sum(event["contact_mode"] == "slide" for event in expected_events)
+    
+>       assert len(report["events"]) == 12
+                   ^^^^^^^^^^^^^^^^
+E       KeyError: 'events'
+
+tests/test_outputs.py:1257: KeyError
+=========================== short test summary info ============================
+FAILED tests/test_outputs.py::test_c1_centered_spherical_impulse - KeyError: ...
+FAILED tests/test_outputs.py::test_c1_offset_matches_scalar_limit - KeyError:...
+FAILED tests/test_outputs.py::test_c1_inertia_cross_terms_change_normal_impulse
+FAILED tests/test_outputs.py::test_c1_oblique_contact_updates_full_spin - Key...
+FAILED tests/test_outputs.py::test_c2_normal_aligned_arm_has_no_tangent_impulse
+FAILED tests/test_outputs.py::test_c2_stick_cancels_contact_tangent_velocity
+FAILED tests/test_outputs.py::test_c2_slide_obeys_vector_friction_cone - KeyE...
+FAILED tests/test_outputs.py::test_c2_friction_changes_all_spatial_angular_components
+FAILED tests/test_outputs.py::test_c2_tangent_matrix_retains_cross_coupling
+FAILED tests/test_outputs.py::test_c3_energy_uses_full_inertia_tensor - KeyEr...
+FAILED tests/test_outputs.py::test_c3_summary_aggregates_modes_and_energy - K...
+FAILED tests/test_outputs.py::test_c4_nonunit_normal_rejected_without_output
+FAILED tests/test_outputs.py::test_c4_nonpositive_inertia_rejected - Assertio...
+FAILED tests/test_outputs.py::test_c4_separating_contact_preserves_existing_output
+FAILED tests/test_outputs.py::test_c4_missing_columns_and_nonfinite_values_rejected
+FAILED tests/test_outputs.py::test_c5_both_contact_normals_are_coupled - Runt...
+FAILED tests/test_outputs.py::test_c5_one_sided_contact_sets_other_impulse_to_zero
+FAILED tests/test_outputs.py::test_c5_two_point_stick_uses_joint_tangent_matrix
+FAILED tests/test_outputs.py::test_c5_two_slide_impulses_obey_individual_box_limits
+FAILED tests/test_outputs.py::test_c5_pair_energy_and_angular_state_match_reference
+FAILED tests/test_outputs.py::test_e2e_pair_batch_report - AssertionError: us...
+FAILED tests/test_outputs.py::test_e2e_sample_batch_report - KeyError: 'events'
+22 failed, 1 passed in 1.55s
+
+weighted_reward: 0.000000

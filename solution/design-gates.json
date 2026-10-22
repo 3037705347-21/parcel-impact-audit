@@ -1,0 +1,353 @@
+{
+  "name": "parcel-impact-audit",
+  "category": "D.3 物理模拟 (Physics Simulation)",
+  "scene": "仓储物流跌落试验台上，仪表箱角部以三维姿态斜撞固定挡板后的冲量、摩擦和转动复核",
+  "core_task": "读取三维刚体单点碰撞批次CSV，用完整对称惯性张量求接触逆质量矩阵，按先法向恢复、后切向摩擦锥的顺序输出冲量向量、碰后速度与角速度、能量损失及批次汇总",
+  "data_provenance": {
+    "kind": "generated",
+    "source": "按固定质量、正定惯性张量、三维入射速度、角速度、接触偏心、单位法向、恢复系数和摩擦系数范围，用固定种子生成可复现的试验台模拟批次；生成规则保存在solution/generate_events.py，README明确标注为模拟记录",
+    "seed": 41729
+  },
+  "answer_verification": "测试内独立用三维刚体冲量公式复算：接触点速度vc=v+omega×r，接触逆质量矩阵K=I/m-C(r)Inv(I)C(r)，法向J_n=-(1+e)vc·n/(n·K n)；施加法向冲量后重取接触切向速度，在n的正交基上解2x2方程T·K·T*t=-T·vc，超过mu*J_n时沿当前切向速度反向截断；碰后线速度和角速度分别由J/m和Inv(I)(r×J)更新，能量按平动加三维转动积分计算",
+  "environment": {
+    "base_image": "python:3.12.8-slim-bookworm@sha256:2199a62885a12290dc9c5be3ca0681d367576ab7bf037da120e564723292a2f0",
+    "dependencies_locked": true,
+    "allow_internet": true,
+    "network_reason": "业务程序只使用Python标准库；测试依赖在验证阶段从本地哈希清单安装；镜像内运行的真实模型需通过本地代理访问模型服务，因此运行阶段保留联网开关",
+    "architectures": [
+      "amd64",
+      "arm64"
+    ]
+  },
+  "requirements": [
+    {
+      "id": "R1",
+      "statement": "由完整对称惯性张量求逆，形成三维接触逆质量矩阵，并用偏心接触的法向有效逆质量计算恢复冲量",
+      "observable": "normal_impulse_ns、法向冲量后的角速度及接触状态与独立三维矩阵复算一致；带惯性积或斜法向的记录不能被降成标量转动惯量",
+      "expected_basis": "W=inverse(I)，C(r)为叉乘矩阵；K=I/m-C(r)W C(r)，J_n=-(1+e)(vc·n)/(n^T K n)，法向角冲量按W(r×J_n n)更新",
+      "test_ids": [
+        "T1",
+        "T2",
+        "T3",
+        "T4"
+      ]
+    },
+    {
+      "id": "R2",
+      "statement": "在法向冲量之后重算接触切向速度，用切平面上的2x2有效质量求粘着需求，超过库仑上限时沿当前切向速度反向截断",
+      "observable": "tangential_impulse_ns的三分量、contact_mode、碰后角速度与独立2x2复算一致；低切向速度被完整抵消，高切向速度满足向量模长等于mu*J_n",
+      "expected_basis": "切平面选正交基t1,t2，M_ij=t_i^T K t_j，r=(-t1·vc,-t2·vc)；若|M^-1 r|<=mu*J_n取M^-1 r，否则J_t=-(mu*J_n)*vc_t/|vc_t|",
+      "test_ids": [
+        "T5",
+        "T6",
+        "T7",
+        "T8",
+        "T9"
+      ]
+    },
+    {
+      "id": "R3",
+      "statement": "报告每个事件碰撞前后三维平动加转动动能、能量损失，以及批次粘着数、滑移数、总损失和最大能量增量",
+      "observable": "逐事件能量字段和summary五项与碰后状态独立复算一致，事件顺序保持输入顺序",
+      "expected_basis": "E=0.5*m*|v|^2+0.5*omega^T I omega；energy_loss=E_before-E_after；summary按逐事件结果计数和求和",
+      "test_ids": [
+        "T10",
+        "T11",
+        "T12"
+      ]
+    },
+    {
+      "id": "R4",
+      "statement": "严格校验命令行参数、CSV列集合、有限数值、正质量、正定惯性张量、恢复系数范围、非负摩擦系数、单位法向和入射接近条件，并原子写出结果",
+      "observable": "合法批次写出JSON；非单位法向、非正定惯性矩阵、不接近接触或非有限数返回非零，且不创建输出或覆盖已有输出",
+      "expected_basis": "惯性矩阵按一阶、二阶、三阶顺序主子式均为正验收；所有事件先验证并求解到内存，全部成功后才原子替换目标JSON",
+      "test_ids": [
+        "T13",
+        "T14",
+        "T15",
+        "T16"
+      ]
+    },
+    {
+      "id": "R5",
+      "statement": "对托盘双点同时落地批次，先按非负法向冲量与分离速度互补条件枚举有效接触集，再在有效接触的非负冲量上限内解二维切向箱约束最小化问题",
+      "observable": "contact_normal_impulses_ns两个分量、contact_tangent_impulses_ns两个向量、三个接触模式和碰后状态与独立互补枚举及QP复算一致；单个接触自由、单点有效、双点粘着和双点滑移都不能被逐点独立钳制误判",
+      "expected_basis": "二维接触法向矩阵K_nn_ij=1/m+(r_i×n)(r_j×n)/I，切向矩阵同式用t=(-ny,nx)；法向有效集解K_SS J_S=-(1+e)v_nS，要求J>=0且非有效接触碰后法向速度>=0；有效接触切向最小化0.5*q^T K_tt q+v_t^T q，受|q_i|<=mu*J_i约束，枚举每个分量的自由、下界、上界三种状态",
+      "test_ids": [
+        "T17",
+        "T18",
+        "T19",
+        "T20",
+        "T21",
+        "T22",
+        "T23"
+      ]
+    }
+  ],
+  "tests": [
+    {
+      "id": "T1",
+      "kind": "boundary",
+      "requirement_ids": [
+        "R1"
+      ],
+      "expected": "球形惯性且对心正碰时，法向冲量为m(1+e)|v·n|"
+    },
+    {
+      "id": "T2",
+      "kind": "normal",
+      "requirement_ids": [
+        "R1"
+      ],
+      "expected": "偏心接触的标量惯性极限得到与二维公式相同的法向有效质量"
+    },
+    {
+      "id": "T3",
+      "kind": "combination",
+      "requirement_ids": [
+        "R1"
+      ],
+      "expected": "含非零惯性积的惯性张量改变接触逆质量和法向冲量，结果与3x3矩阵复算一致"
+    },
+    {
+      "id": "T4",
+      "kind": "combination",
+      "requirement_ids": [
+        "R1"
+      ],
+      "expected": "斜法向、非零角速度的接触点速度与法向角冲量三个分量均正确"
+    },
+    {
+      "id": "T5",
+      "kind": "boundary",
+      "requirement_ids": [
+        "R2"
+      ],
+      "expected": "法向冲量后接触点无切向速度时切向冲量为零且模式为stick"
+    },
+    {
+      "id": "T6",
+      "kind": "normal",
+      "requirement_ids": [
+        "R2"
+      ],
+      "expected": "低于摩擦上限的粘着需求经2x2有效质量求解后，碰后接触切向速度为零"
+    },
+    {
+      "id": "T7",
+      "kind": "boundary",
+      "requirement_ids": [
+        "R2"
+      ],
+      "expected": "超过摩擦上限时切向冲量向量模长为mu*J_n且方向与碰后观测切向速度相反"
+    },
+    {
+      "id": "T8",
+      "kind": "combination",
+      "requirement_ids": [
+        "R2"
+      ],
+      "expected": "法向冲量产生非零切向速度时，摩擦冲量通过惯性张量耦合改变三个角速度分量"
+    },
+    {
+      "id": "T9",
+      "kind": "combination",
+      "requirement_ids": [
+        "R2"
+      ],
+      "expected": "非正交主轴的切平面2x2矩阵交叉项被保留，粘着冲量两个基分量均非零"
+    },
+    {
+      "id": "T10",
+      "kind": "normal",
+      "requirement_ids": [
+        "R3"
+      ],
+      "expected": "单事件的三维转动动能、碰后动能和能量损失与独立复算一致"
+    },
+    {
+      "id": "T11",
+      "kind": "combination",
+      "requirement_ids": [
+        "R3"
+      ],
+      "expected": "包含粘着和滑移事件的summary计数、总损失和最大能量增量正确"
+    },
+    {
+      "id": "T12",
+      "kind": "end_to_end",
+      "requirement_ids": [
+        "R3"
+      ],
+      "expected": "随包模拟批次输出12个有序三维事件及完整summary"
+    },
+    {
+      "id": "T13",
+      "kind": "error",
+      "requirement_ids": [
+        "R4"
+      ],
+      "expected": "法向模长不为1时返回非零且不创建输出"
+    },
+    {
+      "id": "T14",
+      "kind": "error",
+      "requirement_ids": [
+        "R4"
+      ],
+      "expected": "非正定惯性张量返回非零且不创建输出"
+    },
+    {
+      "id": "T15",
+      "kind": "error",
+      "requirement_ids": [
+        "R4"
+      ],
+      "expected": "接触点不朝挡板运动时拒绝批次，已有输出内容保持不变"
+    },
+    {
+      "id": "T16",
+      "kind": "error",
+      "requirement_ids": [
+        "R4"
+      ],
+      "expected": "缺列或非有限数返回非零，不写出半成品JSON"
+    },
+    {
+      "id": "T17",
+      "kind": "combination",
+      "requirement_ids": [
+        "R5"
+      ],
+      "expected": "双点均接近时法向冲量按2x2接触矩阵求解且两个分量非负"
+    },
+    {
+      "id": "T18",
+      "kind": "boundary",
+      "requirement_ids": [
+        "R5"
+      ],
+      "expected": "只有一个接触需要冲量时另一接触冲量为零且碰后不穿透"
+    },
+    {
+      "id": "T19",
+      "kind": "normal",
+      "requirement_ids": [
+        "R5"
+      ],
+      "expected": "双点粘着摩擦按2x2切向矩阵同时求解，两个切向速度均被抵消"
+    },
+    {
+      "id": "T20",
+      "kind": "combination",
+      "requirement_ids": [
+        "R5"
+      ],
+      "expected": "双点滑移时摩擦冲量落在各自法向冲量决定的箱约束内，且联合目标最小"
+    },
+    {
+      "id": "T21",
+      "kind": "combination",
+      "requirement_ids": [
+        "R5"
+      ],
+      "expected": "双点事件碰后动能、能量损失和两维角速度与独立冲量施加结果一致"
+    },
+    {
+      "id": "T22",
+      "kind": "error",
+      "requirement_ids": [
+        "R5"
+      ],
+      "expected": "两个接触点均不接近或接触矩阵奇异时命令非零且不改动已有输出"
+    },
+    {
+      "id": "T23",
+      "kind": "end_to_end",
+      "requirement_ids": [
+        "R5"
+      ],
+      "expected": "随包双点模拟批次按输入顺序输出8个事件和接触级汇总"
+    }
+  ],
+  "challenges": [
+    {
+      "id": "C1",
+      "description": "三维接触逆质量必须保留完整对称惯性张量和叉乘矩阵耦合，不能退化成标量转动惯量",
+      "failure_mode": "把三维惯性积忽略或把接触力臂只用于一个平面，导致法向冲量及碰后角速度错误",
+      "fix_action": "求3x3惯性逆矩阵，构造C(r)Inv(I)C(r)，用n^T K n作为法向有效逆质量并按叉乘矩阵更新角速度",
+      "requirement_ids": [
+        "R1"
+      ],
+      "test_ids": [
+        "T1",
+        "T2",
+        "T3",
+        "T4"
+      ]
+    },
+    {
+      "id": "C2",
+      "description": "切向摩擦需要重新采样接触切向速度并解切平面2x2系统，惯性积会产生两个方向耦合",
+      "failure_mode": "用碰前切向速度或只沿单一切向轴施加摩擦，忽略K的交叉项和法向冲量后的状态变化",
+      "fix_action": "在法向冲量后投影切向速度，建立正交切平面，解T^T K T并检查向量摩擦锥，超限时沿当前切向速度反向截断",
+      "requirement_ids": [
+        "R2"
+      ],
+      "test_ids": [
+        "T5",
+        "T6",
+        "T7",
+        "T8",
+        "T9"
+      ]
+    },
+    {
+      "id": "C3",
+      "description": "碰撞结果需要形成三维平动加转动的能量账和批次汇总，支持逐事件复核",
+      "failure_mode": "缺少能量字段或汇总，或只使用标量角速度平方而漏掉惯性张量定义的三维转动动能",
+      "fix_action": "按0.5*omega^T*I*omega计算转动能量，并用最终状态逐事件汇总损失与计数",
+      "requirement_ids": [
+        "R3"
+      ],
+      "test_ids": [
+        "T10",
+        "T11",
+        "T12"
+      ]
+    },
+    {
+      "id": "C4",
+      "description": "三维批次必须先整体验收惯性矩阵和接触条件，再原子发布结果",
+      "failure_mode": "逐行写出中途失败的结果，或只在求得冲量时才发现非正定惯性矩阵，导致旧报告被覆盖",
+      "fix_action": "在求解前用顺序主子式检查正定惯性，验证单位法向和接近条件，全部成功后通过同目录临时文件原子替换",
+      "requirement_ids": [
+        "R4"
+      ],
+      "test_ids": [
+        "T13",
+        "T14",
+        "T15",
+        "T16"
+      ]
+    },
+    {
+      "id": "C5",
+      "description": "双点同时落地需要把法向单边约束与二维摩擦箱约束作为耦合问题求解，不能逐接触套用单点公式",
+      "failure_mode": "逐点独立计算和钳制冲量，导致一个接触出现负法向冲量或摩擦组合不在联合可行域内",
+      "fix_action": "枚举非负法向有效集并检查非有效接触分离速度，再对有效接触枚举二维摩擦箱的自由/上下界状态求解最小化问题",
+      "requirement_ids": [
+        "R5"
+      ],
+      "test_ids": [
+        "T17",
+        "T18",
+        "T19",
+        "T20",
+        "T21",
+        "T22",
+        "T23"
+      ]
+    }
+  ]
+}

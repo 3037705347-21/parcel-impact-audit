@@ -1,0 +1,587 @@
+case: baseline
+workspace: /var/folders/jz/2ksjlg25597g30hd7ltt3nd00000gn/T/impact-baseline-ayplrzi7/workspace
+command: /Users/zhangchengcheng/Documents/Codex/2026-08-24/xh/work/bin/python3 -m pytest /Users/zhangchengcheng/harbor/parcel-impact-audit/tests/test_outputs.py -q --junitxml=/var/folders/jz/2ksjlg25597g30hd7ltt3nd00000gn/T/impact-baseline-ayplrzi7/junit.xml
+process_returncode: 1
+test_status:
+  test_c1_centered_spherical_impulse: PASS
+  test_c1_inertia_cross_terms_change_normal_impulse: FAIL
+  test_c1_oblique_contact_updates_full_spin: FAIL
+  test_c1_offset_matches_scalar_limit: FAIL
+  test_c2_friction_changes_all_spatial_angular_components: FAIL
+  test_c2_normal_aligned_arm_has_no_tangent_impulse: PASS
+  test_c2_slide_obeys_vector_friction_cone: FAIL
+  test_c2_stick_cancels_contact_tangent_velocity: FAIL
+  test_c2_tangent_matrix_retains_cross_coupling: FAIL
+  test_c3_energy_uses_full_inertia_tensor: FAIL
+  test_c3_summary_aggregates_modes_and_energy: FAIL
+  test_c4_missing_columns_and_nonfinite_values_rejected: PASS
+  test_c4_nonpositive_inertia_rejected: FAIL
+  test_c4_nonunit_normal_rejected_without_output: FAIL
+  test_c4_separating_contact_preserves_existing_output: FAIL
+  test_c5_both_contact_normals_are_coupled: PASS
+  test_c5_one_sided_contact_sets_other_impulse_to_zero: FAIL
+  test_c5_pair_energy_and_angular_state_match_reference: FAIL
+  test_c5_pair_rejects_no_approach_and_coincident_points: FAIL
+  test_c5_two_point_stick_uses_joint_tangent_matrix: FAIL
+  test_c5_two_slide_impulses_obey_individual_box_limits: FAIL
+  test_e2e_pair_batch_report: FAIL
+  test_e2e_sample_batch_report: FAIL
+pytest_output:
+.FFF.FFFFFFFFF..FFFFFFF                                                  [100%]
+=================================== FAILURES ===================================
+_____________________ test_c1_offset_matches_scalar_limit ______________________
+
+    def test_c1_offset_matches_scalar_limit():
+        """The spatial contact matrix reproduces the scalar-inertia offset result."""
+        row = _row(
+            "offset",
+            ixx=0.5,
+            iyy=0.5,
+            izz=0.5,
+            ixy=0.0,
+            ixz=0.0,
+            iyz=0.0,
+            vx=-3.0,
+            vy=0.0,
+            vz=0.0,
+            wx=0.0,
+            wy=0.0,
+            wz=0.0,
+            rx=0.0,
+            ry=0.3,
+            rz=0.0,
+            restitution=0.5,
+            friction=0.0,
+        )
+        report = _report_for(TEST_ROOT / "parcel-impact-3d-c1-b", [row])
+        event = report["events"][0]
+>       assert event["normal_impulse_ns"] == pytest.approx(4.5 / 0.68, rel=1e-10)
+E       assert 9.0 == 6.617647058823529 ± 6.6e-10
+E         
+E         comparison failed
+E         Obtained: 9.0
+E         Expected: 6.617647058823529 ± 6.6e-10
+
+tests/test_outputs.py:765: AssertionError
+______________ test_c1_inertia_cross_terms_change_normal_impulse _______________
+
+    def test_c1_inertia_cross_terms_change_normal_impulse():
+        """A non-diagonal inertia tensor changes the effective normal mass."""
+        row = _row(
+            "cross-inertia",
+            ixx=0.8,
+            iyy=0.65,
+            izz=0.9,
+            ixy=0.12,
+            ixz=-0.07,
+            iyz=0.04,
+            vx=-1.6,
+            vy=0.5,
+            vz=-0.4,
+            wx=0.6,
+            wy=-0.4,
+            wz=0.3,
+            rx=0.12,
+            ry=-0.08,
+            rz=0.1,
+            nx=0.48,
+            ny=-0.6,
+            nz=0.64,
+            restitution=0.35,
+            friction=0.0,
+        )
+        report = _report_for(TEST_ROOT / "parcel-impact-3d-c1-c", [row])
+        diagonal = {**row, "ixy": 0.0, "ixz": 0.0, "iyz": 0.0}
+        expected = _reference(row)
+        diagonal_expected = _reference(diagonal)
+>       assert report["events"][0]["normal_impulse_ns"] == pytest.approx(
+            expected["normal_impulse_ns"], rel=1e-10
+        )
+E       assert 3.5748 == 3.5384512018004624 ± 3.5e-10
+E         
+E         comparison failed
+E         Obtained: 3.5748
+E         Expected: 3.5384512018004624 ± 3.5e-10
+
+tests/test_outputs.py:797: AssertionError
+__________________ test_c1_oblique_contact_updates_full_spin ___________________
+
+    def test_c1_oblique_contact_updates_full_spin():
+        """An oblique contact produces the expected velocity and angular vector."""
+        row = _row(
+            "oblique",
+            ixx=0.72,
+            iyy=0.61,
+            izz=0.84,
+            ixy=0.08,
+            ixz=-0.05,
+            iyz=0.03,
+            vx=-1.1,
+            vy=-1.4,
+            vz=0.8,
+            wx=0.5,
+            wy=-0.3,
+            wz=0.2,
+            rx=-0.09,
+            ry=0.11,
+            rz=0.07,
+            nx=0.6,
+            ny=0.8,
+            nz=0.0,
+            restitution=0.2,
+            friction=0.0,
+        )
+        report = _report_for(TEST_ROOT / "parcel-impact-3d-c1-d", [row])
+        event = report["events"][0]
+        expected = _reference(row)
+>       assert event["velocity_after_m_s"] == pytest.approx(
+            expected["velocity_after_m_s"], rel=1e-10
+        )
+E       AssertionError: assert {'x': 0.18159...996, 'z': 0.8} == approx({'x': ....8 ± 8.0e-11})
+E         
+E         comparison failed. Mismatched elements: 2 / 3:
+E         Max absolute difference: 0.04541326495545106
+E         Max relative difference: 0.23085222229699554
+E         Index | Obtained            | Expected                     
+E         x     | 0.18159999999999976 | 0.14754005128341152 ± 1.5e-11
+E         y     | 0.30879999999999996 | 0.2633867350445489 ± 2.6e-11
+
+tests/test_outputs.py:833: AssertionError
+________________ test_c2_stick_cancels_contact_tangent_velocity ________________
+
+    def test_c2_stick_cancels_contact_tangent_velocity():
+        """A tangential demand inside the friction cone removes contact slip."""
+        row = _row("stick", restitution=0.25, friction=0.95)
+        report = _report_for(TEST_ROOT / "parcel-impact-3d-c2-b", [row])
+        event = report["events"][0]
+        velocity: Vector = (
+            event["velocity_after_m_s"]["x"],
+            event["velocity_after_m_s"]["y"],
+            event["velocity_after_m_s"]["z"],
+        )
+        angular: Vector = (
+            event["angular_velocity_after_rad_s"]["x"],
+            event["angular_velocity_after_rad_s"]["y"],
+            event["angular_velocity_after_rad_s"]["z"],
+        )
+        arm: Vector = (float(row["rx"]), float(row["ry"]), float(row["rz"]))
+        normal: Vector = (float(row["nx"]), float(row["ny"]), float(row["nz"]))
+        contact_velocity = _contact_velocity(velocity, angular, arm)
+        tangent_velocity = tuple(
+            contact_velocity[index] - _dot(contact_velocity, normal) * normal[index]
+            for index in range(3)
+        )
+        assert event["contact_mode"] == "stick"
+>       assert _norm(tangent_velocity) == pytest.approx(0.0, abs=1e-9)
+E       assert 0.22365151463828722 == 0.0 ± 1.0e-09
+E         
+E         comparison failed
+E         Obtained: 0.22365151463828722
+E         Expected: 0.0 ± 1.0e-09
+
+tests/test_outputs.py:890: AssertionError
+___________________ test_c2_slide_obeys_vector_friction_cone ___________________
+
+    def test_c2_slide_obeys_vector_friction_cone():
+        """A high tangent demand has the full signed Coulomb magnitude."""
+        row = _row("slide", vx=-1.0, vy=2.6, vz=1.4, friction=0.02)
+        report = _report_for(TEST_ROOT / "parcel-impact-3d-c2-c", [row])
+        event = report["events"][0]
+        impulse: Vector = (
+            event["tangential_impulse_ns"]["x"],
+            event["tangential_impulse_ns"]["y"],
+            event["tangential_impulse_ns"]["z"],
+        )
+>       assert event["contact_mode"] == "slide"
+E       AssertionError: assert 'stick' == 'slide'
+E         
+E         - slide
+E         + stick
+
+tests/test_outputs.py:903: AssertionError
+___________ test_c2_friction_changes_all_spatial_angular_components ____________
+
+    def test_c2_friction_changes_all_spatial_angular_components():
+        """Tangential impulse acts through the full inverse inertia tensor."""
+        row = _row(
+            "spatial-spin",
+            ixx=0.8,
+            iyy=0.7,
+            izz=0.95,
+            ixy=0.11,
+            ixz=-0.06,
+            iyz=0.05,
+            vx=-1.2,
+            vy=1.1,
+            vz=-0.6,
+            wx=0.7,
+            wy=-0.4,
+            wz=0.3,
+            rx=0.1,
+            ry=-0.07,
+            rz=0.08,
+            nx=0.48,
+            ny=-0.6,
+            nz=0.64,
+            friction=0.16,
+        )
+        report = _report_for(TEST_ROOT / "parcel-impact-3d-c2-d", [row])
+        event = report["events"][0]
+        expected = _reference(row)
+>       assert event["tangential_impulse_ns"] == pytest.approx(
+            expected["tangential_impulse_ns"], rel=1e-10
+        )
+E       AssertionError: assert {'x': 0.0, 'y': 0.0, 'z': 0.0} == approx({'x': ...37 ± 4.6e-11})
+E         
+E         comparison failed. Mismatched elements: 3 / 3:
+E         Max absolute difference: 0.4811270016911565
+E         Max relative difference: 1.0
+E         Index | Obtained | Expected                      
+E         x     | 0.0      | 0.4811270016911565 ± 4.8e-11  
+E         y     | 0.0      | -0.10054684810673602 ± 1.0e-11
+E         z     | 0.0      | -0.45510792136843237 ± 4.6e-11
+
+tests/test_outputs.py:934: AssertionError
+________________ test_c2_tangent_matrix_retains_cross_coupling _________________
+
+    def test_c2_tangent_matrix_retains_cross_coupling():
+        """An anisotropic tangent system produces a vector not parallel to slip."""
+        row = _row(
+            "coupled-tangent",
+            ixx=0.56,
+            iyy=0.73,
+            izz=0.91,
+            ixy=0.14,
+            ixz=-0.09,
+            iyz=0.08,
+            vx=-1.3,
+            vy=0.45,
+            vz=-0.35,
+            wx=0.8,
+            wy=-0.35,
+            wz=0.55,
+            rx=0.13,
+            ry=-0.09,
+            rz=0.11,
+            nx=0.36,
+            ny=-0.48,
+            nz=0.8,
+            friction=0.95,
+        )
+        report = _report_for(TEST_ROOT / "parcel-impact-3d-c2-e", [row])
+        event = report["events"][0]
+        expected = _reference(row)
+        impulse: Vector = (
+            event["tangential_impulse_ns"]["x"],
+            event["tangential_impulse_ns"]["y"],
+            event["tangential_impulse_ns"]["z"],
+        )
+        tangent_velocity: Vector = expected["diagnostics"]["tangent_velocity_before_friction"]
+        assert event["contact_mode"] == "stick"
+>       assert event["tangential_impulse_ns"] == pytest.approx(
+            expected["tangential_impulse_ns"], rel=1e-10
+        )
+E       AssertionError: assert {'x': 0.0, 'y': 0.0, 'z': 0.0} == approx({'x': ...85 ± 7.8e-11})
+E         
+E         comparison failed. Mismatched elements: 3 / 3:
+E         Max absolute difference: 1.8108322290905237
+E         Max relative difference: 1.0
+E         Index | Obtained | Expected                     
+E         x     | 0.0      | 1.8108322290905237 ± 1.8e-10 
+E         y     | 0.0      | 0.05748275343480941 ± 5.7e-12
+E         z     | 0.0      | -0.78038485102985 ± 7.8e-11
+
+tests/test_outputs.py:979: AssertionError
+___________________ test_c3_energy_uses_full_inertia_tensor ____________________
+
+    def test_c3_energy_uses_full_inertia_tensor():
+        """Kinetic energy includes the complete rotational quadratic form."""
+        row = _row(
+            "energy",
+            ixx=0.75,
+            iyy=0.62,
+            izz=0.88,
+            ixy=0.07,
+            ixz=-0.04,
+            iyz=0.03,
+            friction=0.42,
+        )
+        report = _report_for(TEST_ROOT / "parcel-impact-3d-c3-a", [row])
+        event = report["events"][0]
+        expected = _reference(row)
+>       assert event["kinetic_energy_before_j"] == pytest.approx(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+            expected["kinetic_energy_before_j"], rel=1e-10
+        )
+E       KeyError: 'kinetic_energy_before_j'
+
+tests/test_outputs.py:1000: KeyError
+_________________ test_c3_summary_aggregates_modes_and_energy __________________
+
+    def test_c3_summary_aggregates_modes_and_energy():
+        """Summary counts contact modes and sums per-event energy loss."""
+        stick = _row("stick-summary", restitution=0.25, friction=0.95)
+        slide = _row("slide-summary", vx=-1.0, vy=2.6, vz=1.4, friction=0.02)
+        report = _report_for(TEST_ROOT / "parcel-impact-3d-c3-b", [stick, slide])
+        expected_loss = sum(
+            float(_reference(row)["energy_loss_j"]) for row in [stick, slide]
+        )
+        assert report["summary"]["event_count"] == 2
+>       assert report["summary"]["stick_count"] == 1
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       KeyError: 'stick_count'
+
+tests/test_outputs.py:1020: KeyError
+________________ test_c4_nonunit_normal_rejected_without_output ________________
+
+    def test_c4_nonunit_normal_rejected_without_output():
+        """A non-unit contact normal rejects the complete batch."""
+        row = _row("bad-normal", nx=1.2)
+        input_path = TEST_ROOT / "parcel-impact-3d-c4-a.csv"
+        output_path = TEST_ROOT / "parcel-impact-3d-c4-a.json"
+        output_path.unlink(missing_ok=True)
+        _write_csv(input_path, [row])
+        completed = _run_cli(input_path, output_path)
+>       assert completed.returncode != 0
+E       AssertionError: assert 0 != 0
+E        +  where 0 = CompletedProcess(args=['/Users/zhangchengcheng/Documents/Codex/2026-08-24/xh/work/bin/python3', '-m', 'impact_audit', ...97g30hd7ltt3nd00000gn/T/parcel-impact-checks-zbpq9ndj/parcel-impact-3d-c4-a.json'], returncode=0, stdout='', stderr='').returncode
+
+tests/test_outputs.py:1036: AssertionError
+_____________________ test_c4_nonpositive_inertia_rejected _____________________
+
+    def test_c4_nonpositive_inertia_rejected():
+        """A non-positive-definite inertia tensor fails before output."""
+        row = _row("bad-inertia", ixx=0.5, iyy=0.5, ixy=0.8)
+        input_path = TEST_ROOT / "parcel-impact-3d-c4-b.csv"
+        output_path = TEST_ROOT / "parcel-impact-3d-c4-b.json"
+        output_path.unlink(missing_ok=True)
+        _write_csv(input_path, [row])
+        completed = _run_cli(input_path, output_path)
+>       assert completed.returncode != 0
+E       AssertionError: assert 0 != 0
+E        +  where 0 = CompletedProcess(args=['/Users/zhangchengcheng/Documents/Codex/2026-08-24/xh/work/bin/python3', '-m', 'impact_audit', ...97g30hd7ltt3nd00000gn/T/parcel-impact-checks-zbpq9ndj/parcel-impact-3d-c4-b.json'], returncode=0, stdout='', stderr='').returncode
+
+tests/test_outputs.py:1048: AssertionError
+_____________ test_c4_separating_contact_preserves_existing_output _____________
+
+    def test_c4_separating_contact_preserves_existing_output():
+        """A separating contact does not replace an existing report."""
+        row = _row("separating", vx=2.0)
+        input_path = TEST_ROOT / "parcel-impact-3d-c4-c.csv"
+        output_path = TEST_ROOT / "parcel-impact-3d-c4-c.json"
+        _write_csv(input_path, [row])
+        output_path.write_text("existing-report\n", encoding="utf-8")
+        completed = _run_cli(input_path, output_path)
+>       assert completed.returncode != 0
+E       AssertionError: assert 0 != 0
+E        +  where 0 = CompletedProcess(args=['/Users/zhangchengcheng/Documents/Codex/2026-08-24/xh/work/bin/python3', '-m', 'impact_audit', ...97g30hd7ltt3nd00000gn/T/parcel-impact-checks-zbpq9ndj/parcel-impact-3d-c4-c.json'], returncode=0, stdout='', stderr='').returncode
+
+tests/test_outputs.py:1060: AssertionError
+_____________ test_c5_one_sided_contact_sets_other_impulse_to_zero _____________
+
+    def test_c5_one_sided_contact_sets_other_impulse_to_zero():
+        """A separating corner leaves the other contact to carry the impact."""
+        row = _pair_row(
+            "one-sided",
+            vx=0.0,
+            vy=-1.0,
+            omega=10.0,
+            friction=0.8,
+        )
+        report = _pair_report_for(TEST_ROOT / "parcel-pair-c5-b", [row])
+        event = report["events"][0]
+        expected = _pair_reference(row)
+>       assert event["contact_normal_impulses_ns"] == pytest.approx(
+            expected["contact_normal_impulses_ns"], rel=1e-10
+        )
+E       assert [1.7999999999...9999999999998] == approx([8.526....0 ± 1.0e-12])
+E         
+E         comparison failed. Mismatched elements: 2 / 2:
+E         Max absolute difference: 6.726315789473683
+E         Max relative difference: 3.736842105263158
+E         Index | Obtained           | Expected                   
+E         0     | 1.7999999999999998 | 8.526315789473683 ± 8.5e-10
+E         1     | 1.7999999999999998 | 0.0 ± 1.0e-12
+
+tests/test_outputs.py:1110: AssertionError
+______________ test_c5_two_point_stick_uses_joint_tangent_matrix _______________
+
+    def test_c5_two_point_stick_uses_joint_tangent_matrix():
+        """Both sticking contacts are solved together rather than independently."""
+        row = _pair_row(
+            "two-stick",
+            vx=0.0,
+            vy=-1.0,
+            omega=0.02,
+            friction=0.95,
+        )
+        report = _pair_report_for(TEST_ROOT / "parcel-pair-c5-c", [row])
+        event = report["events"][0]
+        expected = _pair_reference(row)
+        assert event["contact_modes"] == ["stick", "stick"]
+>       assert event["contact_tangent_impulses_ns"] == pytest.approx(
+            expected["contact_tangent_impulses_ns"], rel=1e-10
+        )
+E       AssertionError: assert [{'x': 0.0, '....0, 'y': 0.0}] == approx([{'x':..., 'y': -0.0}])
+E         
+E         (pytest_assertion plugin: representation of details failed: /Users/zhangchengcheng/Documents/Codex/2026-08-24/xh/work/tools/miniforge2/lib/python3.14/site-packages/_pytest/python_api.py:350: AttributeError: 'list' object has no attribute 'expected'.
+E          Probably an object has a faulty __repr__.)
+
+tests/test_outputs.py:1130: AssertionError
+____________ test_c5_two_slide_impulses_obey_individual_box_limits _____________
+
+    def test_c5_two_slide_impulses_obey_individual_box_limits():
+        """A sliding contact pair respects each normal-impulse friction cap."""
+        row = _pair_row(
+            "two-slide",
+            vx=-0.3,
+            vy=-1.0,
+            omega=0.0,
+            friction=0.05,
+        )
+        report = _pair_report_for(TEST_ROOT / "parcel-pair-c5-d", [row])
+        event = report["events"][0]
+        limits = [
+            0.05 * impulse for impulse in event["contact_normal_impulses_ns"]
+        ]
+        magnitudes = [
+            math.hypot(impulse["x"], impulse["y"])
+            for impulse in event["contact_tangent_impulses_ns"]
+        ]
+>       assert event["contact_modes"] == ["slide", "slide"]
+E       AssertionError: assert ['stick', 'stick'] == ['slide', 'slide']
+E         
+E         At index 0 diff: 'stick' != 'slide'
+E         Use -v to get more diff
+
+tests/test_outputs.py:1153: AssertionError
+____________ test_c5_pair_energy_and_angular_state_match_reference _____________
+
+    def test_c5_pair_energy_and_angular_state_match_reference():
+        """Two-contact angular recoil and energy use the combined impulse state."""
+        row = _pair_row(
+            "pair-energy",
+            mass=4.2,
+            inertia=0.73,
+            vx=-0.8,
+            vy=-1.7,
+            omega=0.6,
+            r1x=-0.19,
+            r1y=-0.03,
+            r2x=0.24,
+            r2y=-0.11,
+            friction=0.34,
+        )
+        report = _pair_report_for(TEST_ROOT / "parcel-pair-c5-e", [row])
+        event = report["events"][0]
+        expected = _pair_reference(row)
+>       assert event["angular_velocity_after_rad_s"] == pytest.approx(
+            expected["angular_velocity_after_rad_s"], rel=1e-10
+        )
+E       assert 0.6 == 0.09523527237973756 ± 9.5e-12
+E         
+E         comparison failed
+E         Obtained: 0.6
+E         Expected: 0.09523527237973756 ± 9.5e-12
+
+tests/test_outputs.py:1175: AssertionError
+____________ test_c5_pair_rejects_no_approach_and_coincident_points ____________
+
+    def test_c5_pair_rejects_no_approach_and_coincident_points():
+        """No approaching corner and duplicate contact points both fail cleanly."""
+        no_approach = _pair_row("no-approach", vx=0.0, vy=1.0, omega=0.0)
+        coincident = _pair_row(
+            "coincident",
+            r1x=0.1,
+            r1y=-0.1,
+            r2x=0.1,
+            r2y=-0.1,
+        )
+        first_input = TEST_ROOT / "parcel-pair-c5-f1.csv"
+        first_output = TEST_ROOT / "parcel-pair-c5-f1.json"
+        second_input = TEST_ROOT / "parcel-pair-c5-f2.csv"
+        second_output = TEST_ROOT / "parcel-pair-c5-f2.json"
+        _write_pair_csv(first_input, [no_approach])
+        _write_pair_csv(second_input, [coincident])
+        second_output.write_text("existing-pair-report\n", encoding="utf-8")
+        first_completed = _run_pair_cli(first_input, first_output)
+        second_completed = _run_pair_cli(second_input, second_output)
+>       assert first_completed.returncode != 0
+E       AssertionError: assert 0 != 0
+E        +  where 0 = CompletedProcess(args=['/Users/zhangchengcheng/Documents/Codex/2026-08-24/xh/work/bin/python3', '-m', 'impact_audit', ...g25597g30hd7ltt3nd00000gn/T/parcel-impact-checks-zbpq9ndj/parcel-pair-c5-f1.json'], returncode=0, stdout='', stderr='').returncode
+
+tests/test_outputs.py:1208: AssertionError
+__________________________ test_e2e_pair_batch_report __________________________
+
+    def test_e2e_pair_batch_report():
+        """The bundled two-contact batch yields ordered events and summaries."""
+        input_path = WORKSPACE / "data" / "pallet_landings.csv"
+        output_path = TEST_ROOT / "parcel-pair-e2e.json"
+        completed = _run_pair_cli(input_path, output_path)
+        assert completed.returncode == 0, completed.stderr
+        report = json.loads(output_path.read_text(encoding="utf-8"))
+        with input_path.open(newline="", encoding="utf-8") as handle:
+            rows = list(csv.DictReader(handle))
+        expected_events = [_pair_reference(row) for row in rows]
+        modes = [mode for event in expected_events for mode in event["contact_modes"]]
+        expected_loss = sum(float(event["energy_loss_j"]) for event in expected_events)
+        assert len(report["events"]) == 8
+        assert [event["event_id"] for event in report["events"]] == [
+            str(row["event_id"]) for row in rows
+        ]
+        assert report["summary"]["event_count"] == 8
+>       assert report["summary"]["stick_count"] == modes.count("stick")
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       KeyError: 'stick_count'
+
+tests/test_outputs.py:1231: KeyError
+_________________________ test_e2e_sample_batch_report _________________________
+
+    def test_e2e_sample_batch_report():
+        """The bundled simulated batch yields twelve ordered spatial results."""
+        input_path = WORKSPACE / "data" / "impact_events.csv"
+        output_path = TEST_ROOT / "parcel-impact-3d-e2e.json"
+        completed = _run_cli(input_path, output_path)
+        assert completed.returncode == 0, completed.stderr
+        report = json.loads(output_path.read_text(encoding="utf-8"))
+    
+        with input_path.open(newline="", encoding="utf-8") as handle:
+            rows = list(csv.DictReader(handle))
+        expected_events = [_reference(row) for row in rows]
+        expected_loss = sum(float(event["energy_loss_j"]) for event in expected_events)
+        expected_sticks = sum(event["contact_mode"] == "stick" for event in expected_events)
+        expected_slides = sum(event["contact_mode"] == "slide" for event in expected_events)
+    
+        assert len(report["events"]) == 12
+        assert [event["event_id"] for event in report["events"]] == [
+            str(row["event_id"]) for row in rows
+        ]
+        assert report["summary"]["event_count"] == 12
+>       assert report["summary"]["stick_count"] == expected_sticks
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       KeyError: 'stick_count'
+
+tests/test_outputs.py:1262: KeyError
+=========================== short test summary info ============================
+FAILED tests/test_outputs.py::test_c1_offset_matches_scalar_limit - assert 9....
+FAILED tests/test_outputs.py::test_c1_inertia_cross_terms_change_normal_impulse
+FAILED tests/test_outputs.py::test_c1_oblique_contact_updates_full_spin - Ass...
+FAILED tests/test_outputs.py::test_c2_stick_cancels_contact_tangent_velocity
+FAILED tests/test_outputs.py::test_c2_slide_obeys_vector_friction_cone - Asse...
+FAILED tests/test_outputs.py::test_c2_friction_changes_all_spatial_angular_components
+FAILED tests/test_outputs.py::test_c2_tangent_matrix_retains_cross_coupling
+FAILED tests/test_outputs.py::test_c3_energy_uses_full_inertia_tensor - KeyEr...
+FAILED tests/test_outputs.py::test_c3_summary_aggregates_modes_and_energy - K...
+FAILED tests/test_outputs.py::test_c4_nonunit_normal_rejected_without_output
+FAILED tests/test_outputs.py::test_c4_nonpositive_inertia_rejected - Assertio...
+FAILED tests/test_outputs.py::test_c4_separating_contact_preserves_existing_output
+FAILED tests/test_outputs.py::test_c5_one_sided_contact_sets_other_impulse_to_zero
+FAILED tests/test_outputs.py::test_c5_two_point_stick_uses_joint_tangent_matrix
+FAILED tests/test_outputs.py::test_c5_two_slide_impulses_obey_individual_box_limits
+FAILED tests/test_outputs.py::test_c5_pair_energy_and_angular_state_match_reference
+FAILED tests/test_outputs.py::test_c5_pair_rejects_no_approach_and_coincident_points
+FAILED tests/test_outputs.py::test_e2e_pair_batch_report - KeyError: 'stick_c...
+FAILED tests/test_outputs.py::test_e2e_sample_batch_report - KeyError: 'stick...
+19 failed, 4 passed in 1.60s
+
+weighted_reward: 0.000000
