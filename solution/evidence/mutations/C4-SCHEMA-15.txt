@@ -1,0 +1,42 @@
+============================= test session starts ==============================
+platform darwin -- Python 3.14.6, pytest-9.1.1, pluggy-1.6.0 -- /Users/zhangchengcheng/Documents/Codex/2026-08-24/xh/work/bin/python3
+cachedir: .pytest_cache
+hypothesis profile 'default'
+rootdir: /Users/zhangchengcheng/harbor/parcel-impact-audit
+plugins: httpx2-pytest-2.0.0, mock-3.15.1, syrupy-6.1.1, flaky-3.8.1, asyncio-1.4.0, recording-0.14.0, anyio-4.14.2, env-1.7.1, factoryboy-2.8.1, hypothesis-6.167.1, respx-0.23.1, requests-mock-1.12.1, Faker-40.39.0
+asyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function
+collecting ... collected 1 item
+
+tests/test_outputs.py::test_c4_missing_columns_and_nonfinite_values_rejected[C4-SCHEMA-15] FAILED [100%]
+
+=================================== FAILURES ===================================
+_____ test_c4_missing_columns_and_nonfinite_values_rejected[C4-SCHEMA-15] ______
+
+_case_label = 'C4-SCHEMA-15'
+
+    @pytest.mark.parametrize("_case_label", ["C4-SCHEMA-15"])
+    def test_c4_missing_columns_and_nonfinite_values_rejected(_case_label):
+        """C4-SCHEMA-15: 题面规定“CSV 必须包含以下列，允许额外列，事件按文件中的先后顺序处理：”。"""
+        case_id = "C4-SCHEMA-15"
+        missing_input = TEST_ROOT / "parcel-impact-3d-c4-d.csv"
+        missing_output = TEST_ROOT / "parcel-impact-3d-c4-d.json"
+        missing_input.write_text("event_id,mass_kg\nmissing,2\n", encoding="utf-8")
+        missing_completed = _run_cli(missing_input, missing_output)
+    
+        row = _row("nan")
+        nan_input = TEST_ROOT / "parcel-impact-3d-c4-e.csv"
+        nan_output = TEST_ROOT / "parcel-impact-3d-c4-e.json"
+        _write_csv(nan_input, [row])
+        text = nan_input.read_text(encoding="utf-8").replace("-1.5", "nan", 1)
+        nan_input.write_text(text, encoding="utf-8")
+        nan_completed = _run_cli(nan_input, nan_output)
+    
+>       assert missing_completed.returncode != 0
+E       AssertionError: assert 0 != 0
+E        +  where 0 = CompletedProcess(args=['/Users/zhangchengcheng/Documents/Codex/2026-08-24/xh/work/bin/python3', '-m', 'impact_audit', '--input', '/var/folders/jz/2ksjlg25597g30hd7ltt3nd00000gn/T/parcel-impact-checks-_ed8v6b8/parcel-impact-3d-c4-d.csv', '--output', '/var/folders/jz/2ksjlg25597g30hd7ltt3nd00000gn/T/parcel-impact-checks-_ed8v6b8/parcel-impact-3d-c4-d.json'], returncode=0, stdout='{}\n', stderr='').returncode
+
+tests/test_outputs.py:1125: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_outputs.py::test_c4_missing_columns_and_nonfinite_values_rejected[C4-SCHEMA-15] - AssertionError: assert 0 != 0
+ +  where 0 = CompletedProcess(args=['/Users/zhangchengcheng/Documents/Codex/2026-08-24/xh/work/bin/python3', '-m', 'impact_audit', '--input', '/var/folders/jz/2ksjlg25597g30hd7ltt3nd00000gn/T/parcel-impact-checks-_ed8v6b8/parcel-impact-3d-c4-d.csv', '--output', '/var/folders/jz/2ksjlg25597g30hd7ltt3nd00000gn/T/parcel-impact-checks-_ed8v6b8/parcel-impact-3d-c4-d.json'], returncode=0, stdout='{}\n', stderr='').returncode
+============================== 1 failed in 0.35s ===============================

@@ -1,0 +1,53 @@
+============================= test session starts ==============================
+platform darwin -- Python 3.14.6, pytest-9.1.1, pluggy-1.6.0 -- /Users/zhangchengcheng/Documents/Codex/2026-08-24/xh/work/bin/python3
+cachedir: .pytest_cache
+hypothesis profile 'default'
+rootdir: /Users/zhangchengcheng/harbor/parcel-impact-audit
+plugins: httpx2-pytest-2.0.0, mock-3.15.1, syrupy-6.1.1, flaky-3.8.1, asyncio-1.4.0, recording-0.14.0, anyio-4.14.2, env-1.7.1, factoryboy-2.8.1, hypothesis-6.167.1, respx-0.23.1, requests-mock-1.12.1, Faker-40.39.0
+asyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function
+collecting ... collected 1 item
+
+tests/test_outputs.py::test_c5_both_contact_normals_are_coupled[C5-NORMAL-PAIR-16] FAILED [100%]
+
+=================================== FAILURES ===================================
+_________ test_c5_both_contact_normals_are_coupled[C5-NORMAL-PAIR-16] __________
+
+_case_label = 'C5-NORMAL-PAIR-16'
+
+    @pytest.mark.parametrize("_case_label", ["C5-NORMAL-PAIR-16"])
+    def test_c5_both_contact_normals_are_coupled(_case_label):
+        """C5-NORMAL-PAIR-16: 题面规定“有效接触集必须满足”。"""
+        case_id = "C5-NORMAL-PAIR-16"
+        row = _pair_row("coupled-normal", restitution=0.2, friction=0.8)
+>       report = _pair_report_for(TEST_ROOT / "parcel-pair-c5-a", [row])
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_outputs.py:1136: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_outputs.py:208: in _pair_report_for
+    return json.loads(output_path.read_text(encoding="utf-8"))
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+../../Documents/Codex/2026-08-24/xh/work/tools/miniforge2/lib/python3.14/pathlib/__init__.py:787: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors, newline=newline) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = PosixPath('/var/folders/jz/2ksjlg25597g30hd7ltt3nd00000gn/T/parcel-impact-checks-vve563yd/parcel-pair-c5-a/landings.json')
+mode = 'r', buffering = -1, encoding = 'utf-8', errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: '/var/folders/jz/2ksjlg25597g30hd7ltt3nd00000gn/T/parcel-impact-checks-vve563yd/parcel-pair-c5-a/landings.json'
+
+../../Documents/Codex/2026-08-24/xh/work/tools/miniforge2/lib/python3.14/pathlib/__init__.py:771: FileNotFoundError
+=========================== short test summary info ============================
+FAILED tests/test_outputs.py::test_c5_both_contact_normals_are_coupled[C5-NORMAL-PAIR-16] - FileNotFoundError: [Errno 2] No such file or directory: '/var/folders/jz/2ksjlg25597g30hd7ltt3nd00000gn/T/parcel-impact-checks-vve563yd/parcel-pair-c5-a/landings.json'
+============================== 1 failed in 0.32s ===============================

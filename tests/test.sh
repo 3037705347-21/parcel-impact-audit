@@ -23,7 +23,7 @@ if ! python -m pip install --user --no-cache-dir --disable-pip-version-check \
 fi
 
 cd /workspace
-timeout 240s python -m pytest --junitxml "$JUNIT_FILE" /tests/test_outputs.py -q
+timeout 240s python -m pytest -vv --junitxml "$JUNIT_FILE" /tests/test_outputs.py
 
 if ! test -s "$JUNIT_FILE"; then
   write_reward_zero

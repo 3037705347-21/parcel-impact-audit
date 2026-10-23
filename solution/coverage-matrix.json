@@ -1,0 +1,490 @@
+{
+  "version": 3,
+  "target_difficulty": "hard",
+  "reviewed_instruction_word_by_word": true,
+  "reviewed_tests_after_authoring": true,
+  "reviewed_atomicity": true,
+  "reviewed_category_mapping": true,
+  "instruction_sha256": "6420744cc6321396d843414ddbcbf2877dd6a1787f8df08d5ccd4cd34b82c7f3",
+  "tests_sha256": "6701e7b050383ad05d25acc6a2b6e05108edad3909aa18870b317e139d4374a6",
+  "oracle_stdout_sha256": "cd8f77438bfbe00df47e4f05b7e1c281e0d338100ae14729162da79cbd421aba",
+  "oracle_cases_sha256": "00cab3b5651158969e1fde9d62b9056fde28648e92c47db5781025c928f5d8d5",
+  "nop_stdout_sha256": "9e6a8fc776dc34a29c99efc3cf87462e63b53a2a3b581cb668ff8dc7bf5237f3",
+  "coverage_packages": {
+    "json_text": {
+      "applicable": true,
+      "behavior_ids": [
+        "IMPACT-C1-01",
+        "IMPACT-C1-02",
+        "IMPACT-C1-03",
+        "IMPACT-C1-04",
+        "IMPACT-C2-05",
+        "IMPACT-C2-06",
+        "IMPACT-C2-07",
+        "IMPACT-C2-08",
+        "IMPACT-C2-09",
+        "IMPACT-C3-10",
+        "IMPACT-C3-11",
+        "IMPACT-C5-16",
+        "IMPACT-C5-17",
+        "IMPACT-C5-18",
+        "IMPACT-C5-19",
+        "IMPACT-C5-20"
+      ]
+    },
+    "filesystem": {
+      "applicable": true,
+      "behavior_ids": [
+        "IMPACT-C4-12",
+        "IMPACT-C4-13",
+        "IMPACT-C4-15",
+        "IMPACT-C5-21"
+      ]
+    },
+    "database": {
+      "applicable": false,
+      "reason": "本题没有数据库、事务或查询接口。"
+    },
+    "time_selection": {
+      "applicable": false,
+      "reason": "本题没有时区选择、跨日选择或时间窗口。"
+    },
+    "atomic_publish": {
+      "applicable": true,
+      "behavior_ids": [
+        "IMPACT-C4-14",
+        "IMPACT-C4-24",
+        "IMPACT-E2E-22",
+        "IMPACT-E2E-23"
+      ]
+    },
+    "http_network": {
+      "applicable": false,
+      "reason": "业务命令只读写本地 CSV 和 JSON。"
+    },
+    "initial_baseline": {
+      "applicable": true,
+      "behavior_ids": [
+        "IMPACT-C1-01",
+        "IMPACT-E2E-22",
+        "IMPACT-E2E-23"
+      ]
+    }
+  },
+  "core_challenges": [
+    {
+      "id": "CH-C1",
+      "capability": "三维接触逆质量与惯量耦合",
+      "initial_defect": "缺少惯性积和偏心接触的转角耦合",
+      "counterexamples": "对心刚度、偏心刚度和惯性积三组反例",
+      "direct_tests": [
+        "test_c1_centered_spherical_impulse",
+        "test_c1_offset_matches_scalar_limit"
+      ],
+      "combination_case": "test_c1_inertia_cross_terms_change_normal_impulse"
+    },
+    {
+      "id": "CH-C2",
+      "capability": "三维切向粘着与摩擦锥",
+      "initial_defect": "忽略二维切向系统或摩擦上界",
+      "counterexamples": "粘着、滑移和切平面交叉项三组反例",
+      "direct_tests": [
+        "test_c2_stick_cancels_contact_tangent_velocity",
+        "test_c2_slide_obeys_vector_friction_cone"
+      ],
+      "combination_case": "test_c2_tangent_matrix_retains_cross_coupling"
+    },
+    {
+      "id": "CH-C3",
+      "capability": "机械能账与批次汇总",
+      "initial_defect": "只保留速度而漏算三维转动能量",
+      "counterexamples": "单事件能量和混合模式汇总反例",
+      "direct_tests": [
+        "test_c3_energy_uses_full_inertia_tensor",
+        "test_c3_summary_aggregates_modes_and_energy"
+      ],
+      "combination_case": "test_c5_pair_energy_and_angular_state_match_reference"
+    },
+    {
+      "id": "CH-C4",
+      "capability": "输入验收与原子发布",
+      "initial_defect": "非法记录留下半成品或覆盖旧报告",
+      "counterexamples": "非法法向、非法惯性和分离接触反例",
+      "direct_tests": [
+        "test_c4_nonunit_normal_rejected_without_output",
+        "test_c4_nonpositive_inertia_rejected"
+      ],
+      "combination_case": "test_c4_missing_columns_and_nonfinite_values_rejected"
+    }
+  ],
+  "behaviors": [
+    {
+      "id": "IMPACT-C1-01",
+      "kind": "pass_to_pass",
+      "location": "instruction.md",
+      "source_text": "程序只能使用 Python 标准库",
+      "behavior": "球形惯性对心碰撞使用质量和恢复系数得到法向冲量。",
+      "category": "json_text",
+      "fixture": "测试内显式构造的碰撞记录与独立临时输出目录",
+      "test_name": "test_c1_centered_spherical_impulse",
+      "case_id": "C1-SPHERE-01",
+      "assertion": "测试函数体内直接断言报告字段、状态或失败副作用",
+      "counterexample": "统一入口不生成目标报告时，对应行为必须失败",
+      "mutation": "在入口插入 case ID 标记并返回空结果，验证测试能杀死该错误实现"
+    },
+    {
+      "id": "IMPACT-C1-02",
+      "kind": "fail_to_pass",
+      "location": "instruction.md",
+      "source_text": "输入输出统一使用米、千克、秒、牛顿、焦耳和弧度。",
+      "behavior": "偏心接触用接触矩阵降低有效恢复响应。",
+      "category": "json_text",
+      "fixture": "测试内显式构造的碰撞记录与独立临时输出目录",
+      "test_name": "test_c1_offset_matches_scalar_limit",
+      "case_id": "C1-OFFSET-02",
+      "assertion": "测试函数体内直接断言报告字段、状态或失败副作用",
+      "counterexample": "统一入口不生成目标报告时，对应行为必须失败",
+      "mutation": "在入口插入 case ID 标记并返回空结果，验证测试能杀死该错误实现"
+    },
+    {
+      "id": "IMPACT-C1-03",
+      "kind": "fail_to_pass",
+      "location": "instruction.md",
+      "source_text": "I = [[ixx, ixy, ixz],",
+      "behavior": "惯性积改变接触逆质量和法向冲量。",
+      "category": "json_text",
+      "fixture": "测试内显式构造的碰撞记录与独立临时输出目录",
+      "test_name": "test_c1_inertia_cross_terms_change_normal_impulse",
+      "case_id": "C1-CROSS-03",
+      "assertion": "测试函数体内直接断言报告字段、状态或失败副作用",
+      "counterexample": "统一入口不生成目标报告时，对应行为必须失败",
+      "mutation": "在入口插入 case ID 标记并返回空结果，验证测试能杀死该错误实现"
+    },
+    {
+      "id": "IMPACT-C1-04",
+      "kind": "fail_to_pass",
+      "location": "instruction.md",
+      "source_text": "w += W(r×J_normal)",
+      "behavior": "斜法向角冲量更新三个角速度分量。",
+      "category": "json_text",
+      "fixture": "测试内显式构造的碰撞记录与独立临时输出目录",
+      "test_name": "test_c1_oblique_contact_updates_full_spin",
+      "case_id": "C1-SPIN-04",
+      "assertion": "测试函数体内直接断言报告字段、状态或失败副作用",
+      "counterexample": "统一入口不生成目标报告时，对应行为必须失败",
+      "mutation": "在入口插入 case ID 标记并返回空结果，验证测试能杀死该错误实现"
+    },
+    {
+      "id": "IMPACT-C2-05",
+      "kind": "pass_to_pass",
+      "location": "instruction.md",
+      "source_text": "输出为 UTF-8 JSON，顶层只有 `events` 和 `summary`",
+      "behavior": "报告顶层结构固定为事件数组和汇总对象。",
+      "category": "json_text",
+      "fixture": "测试内显式构造的碰撞记录与独立临时输出目录",
+      "test_name": "test_c2_normal_aligned_arm_has_no_tangent_impulse",
+      "case_id": "C2-ZERO-05",
+      "assertion": "测试函数体内直接断言报告字段、状态或失败副作用",
+      "counterexample": "统一入口不生成目标报告时，对应行为必须失败",
+      "mutation": "在入口插入 case ID 标记并返回空结果，验证测试能杀死该错误实现"
+    },
+    {
+      "id": "IMPACT-C2-06",
+      "kind": "fail_to_pass",
+      "location": "instruction.md",
+      "source_text": "先求粘着候选",
+      "behavior": "摩擦需求在锥内时抵消接触切向速度。",
+      "category": "json_text",
+      "fixture": "测试内显式构造的碰撞记录与独立临时输出目录",
+      "test_name": "test_c2_stick_cancels_contact_tangent_velocity",
+      "case_id": "C2-STICK-06",
+      "assertion": "测试函数体内直接断言报告字段、状态或失败副作用",
+      "counterexample": "统一入口不生成目标报告时，对应行为必须失败",
+      "mutation": "在入口插入 case ID 标记并返回空结果，验证测试能杀死该错误实现"
+    },
+    {
+      "id": "IMPACT-C2-07",
+      "kind": "fail_to_pass",
+      "location": "instruction.md",
+      "source_text": "friction_coefficient*J_n*vt/|vt|",
+      "behavior": "摩擦需求超限时按当前滑移方向截断。",
+      "category": "json_text",
+      "fixture": "测试内显式构造的碰撞记录与独立临时输出目录",
+      "test_name": "test_c2_slide_obeys_vector_friction_cone",
+      "case_id": "C2-SLIDE-07",
+      "assertion": "测试函数体内直接断言报告字段、状态或失败副作用",
+      "counterexample": "统一入口不生成目标报告时，对应行为必须失败",
+      "mutation": "在入口插入 case ID 标记并返回空结果，验证测试能杀死该错误实现"
+    },
+    {
+      "id": "IMPACT-C2-08",
+      "kind": "fail_to_pass",
+      "location": "instruction.md",
+      "source_text": "这里采用先法向、再切向的顺序冲量模型",
+      "behavior": "摩擦冲量通过完整惯性张量更新角速度。",
+      "category": "json_text",
+      "fixture": "测试内显式构造的碰撞记录与独立临时输出目录",
+      "test_name": "test_c2_friction_changes_all_spatial_angular_components",
+      "case_id": "C2-FRICTION-SPIN-08",
+      "assertion": "测试函数体内直接断言报告字段、状态或失败副作用",
+      "counterexample": "统一入口不生成目标报告时，对应行为必须失败",
+      "mutation": "在入口插入 case ID 标记并返回空结果，验证测试能杀死该错误实现"
+    },
+    {
+      "id": "IMPACT-C2-09",
+      "kind": "fail_to_pass",
+      "location": "instruction.md",
+      "source_text": "固定分量取边界，自由分量解线性方程，再检查边界最优性。",
+      "behavior": "切平面二维耦合产生非平行滑移的粘着冲量。",
+      "category": "json_text",
+      "fixture": "测试内显式构造的碰撞记录与独立临时输出目录",
+      "test_name": "test_c2_tangent_matrix_retains_cross_coupling",
+      "case_id": "C2-TANGENT-MATRIX-09",
+      "assertion": "测试函数体内直接断言报告字段、状态或失败副作用",
+      "counterexample": "统一入口不生成目标报告时，对应行为必须失败",
+      "mutation": "在入口插入 case ID 标记并返回空结果，验证测试能杀死该错误实现"
+    },
+    {
+      "id": "IMPACT-C3-10",
+      "kind": "fail_to_pass",
+      "location": "instruction.md",
+      "source_text": "每次碰撞的冲量、碰后状态和能量账都要保留",
+      "behavior": "三维转动动能使用完整惯性张量。",
+      "category": "json_text",
+      "fixture": "测试内显式构造的碰撞记录与独立临时输出目录",
+      "test_name": "test_c3_energy_uses_full_inertia_tensor",
+      "case_id": "C3-ENERGY-10",
+      "assertion": "测试函数体内直接断言报告字段、状态或失败副作用",
+      "counterexample": "统一入口不生成目标报告时，对应行为必须失败",
+      "mutation": "在入口插入 case ID 标记并返回空结果，验证测试能杀死该错误实现"
+    },
+    {
+      "id": "IMPACT-C3-11",
+      "kind": "fail_to_pass",
+      "location": "instruction.md",
+      "source_text": "`summary` 必须包含：",
+      "behavior": "批次汇总统计模式数量与能量。",
+      "category": "json_text",
+      "fixture": "测试内显式构造的碰撞记录与独立临时输出目录",
+      "test_name": "test_c3_summary_aggregates_modes_and_energy",
+      "case_id": "C3-SUMMARY-11",
+      "assertion": "测试函数体内直接断言报告字段、状态或失败副作用",
+      "counterexample": "统一入口不生成目标报告时，对应行为必须失败",
+      "mutation": "在入口插入 case ID 标记并返回空结果，验证测试能杀死该错误实现"
+    },
+    {
+      "id": "IMPACT-C4-12",
+      "kind": "fail_to_pass",
+      "location": "instruction.md",
+      "source_text": "法向模长偏离 1 超过 `1e-9`",
+      "behavior": "非单位法向整批拒收且不创建报告。",
+      "category": "filesystem",
+      "fixture": "测试内显式构造的碰撞记录与独立临时输出目录",
+      "test_name": "test_c4_nonunit_normal_rejected_without_output",
+      "case_id": "C4-NORMAL-12",
+      "assertion": "测试函数体内直接断言报告字段、状态或失败副作用",
+      "counterexample": "统一入口不生成目标报告时，对应行为必须失败",
+      "mutation": "在入口插入 case ID 标记并返回空结果，验证测试能杀死该错误实现"
+    },
+    {
+      "id": "IMPACT-C4-13",
+      "kind": "fail_to_pass",
+      "location": "instruction.md",
+      "source_text": "`restitution` 在 `[0,1]` 内，`friction_coefficient` 不得小于零。",
+      "behavior": "恢复系数和摩擦系数范围被验收。",
+      "category": "filesystem",
+      "fixture": "测试内显式构造的碰撞记录与独立临时输出目录",
+      "test_name": "test_c4_nonpositive_inertia_rejected",
+      "case_id": "C4-INERTIA-13",
+      "assertion": "测试函数体内直接断言报告字段、状态或失败副作用",
+      "counterexample": "统一入口不生成目标报告时，对应行为必须失败",
+      "mutation": "在入口插入 case ID 标记并返回空结果，验证测试能杀死该错误实现"
+    },
+    {
+      "id": "IMPACT-C4-14",
+      "kind": "fail_to_pass",
+      "location": "instruction.md",
+      "source_text": "碰前接触点没有朝挡板运动",
+      "behavior": "未接近接触被拒收且旧报告保持不变。",
+      "category": "atomic_publish",
+      "fixture": "测试内显式构造的碰撞记录与独立临时输出目录",
+      "test_name": "test_c4_separating_contact_preserves_existing_output",
+      "case_id": "C4-APPROACH-14",
+      "assertion": "测试函数体内直接断言报告字段、状态或失败副作用",
+      "counterexample": "统一入口不生成目标报告时，对应行为必须失败",
+      "mutation": "在入口插入 case ID 标记并返回空结果，验证测试能杀死该错误实现"
+    },
+    {
+      "id": "IMPACT-C4-24",
+      "kind": "pass_to_pass",
+      "location": "instruction.md",
+      "source_text": "目标 JSON 必须在全部事件成功求解后整体原子替换，不能留下截断内容。",
+      "behavior": "成功求解使用完整新报告替换旧内容。",
+      "category": "atomic_publish",
+      "fixture": "测试内显式构造的碰撞记录与独立临时输出目录",
+      "test_name": "test_c4_atomic_success_replaces_stale_report",
+      "case_id": "C4-ATOMIC-24",
+      "assertion": "测试函数体内直接断言报告字段、状态或失败副作用",
+      "counterexample": "统一入口不生成目标报告时，对应行为必须失败",
+      "mutation": "在入口插入 case ID 标记并返回空结果，验证测试能杀死该错误实现"
+    },
+    {
+      "id": "IMPACT-C4-15",
+      "kind": "pass_to_pass",
+      "location": "instruction.md",
+      "source_text": "CSV 必须包含以下列，允许额外列，事件按文件中的先后顺序处理：",
+      "behavior": "CSV列集合和非有限值被验收。",
+      "category": "filesystem",
+      "fixture": "测试内显式构造的碰撞记录与独立临时输出目录",
+      "test_name": "test_c4_missing_columns_and_nonfinite_values_rejected",
+      "case_id": "C4-SCHEMA-15",
+      "assertion": "测试函数体内直接断言报告字段、状态或失败副作用",
+      "counterexample": "统一入口不生成目标报告时，对应行为必须失败",
+      "mutation": "在入口插入 case ID 标记并返回空结果，验证测试能杀死该错误实现"
+    },
+    {
+      "id": "IMPACT-C5-16",
+      "kind": "pass_to_pass",
+      "location": "instruction.md",
+      "source_text": "有效接触集必须满足",
+      "behavior": "双接触法向冲量由二维接触矩阵共同决定。",
+      "category": "json_text",
+      "fixture": "测试内显式构造的碰撞记录与独立临时输出目录",
+      "test_name": "test_c5_both_contact_normals_are_coupled",
+      "case_id": "C5-NORMAL-PAIR-16",
+      "assertion": "测试函数体内直接断言报告字段、状态或失败副作用",
+      "counterexample": "统一入口不生成目标报告时，对应行为必须失败",
+      "mutation": "在入口插入 case ID 标记并返回空结果，验证测试能杀死该错误实现"
+    },
+    {
+      "id": "IMPACT-C5-17",
+      "kind": "fail_to_pass",
+      "location": "instruction.md",
+      "source_text": "对每个分量枚举自由、位于下界、位于上界三种状态；",
+      "behavior": "单边接触保留非负冲量并保持另一接触分离。",
+      "category": "json_text",
+      "fixture": "测试内显式构造的碰撞记录与独立临时输出目录",
+      "test_name": "test_c5_one_sided_contact_sets_other_impulse_to_zero",
+      "case_id": "C5-ONE-SIDED-17",
+      "assertion": "测试函数体内直接断言报告字段、状态或失败副作用",
+      "counterexample": "统一入口不生成目标报告时，对应行为必须失败",
+      "mutation": "在入口插入 case ID 标记并返回空结果，验证测试能杀死该错误实现"
+    },
+    {
+      "id": "IMPACT-C5-18",
+      "kind": "fail_to_pass",
+      "location": "instruction.md",
+      "source_text": "位于内部记为 `stick`。",
+      "behavior": "双点粘着同时解联合切向矩阵。",
+      "category": "json_text",
+      "fixture": "测试内显式构造的碰撞记录与独立临时输出目录",
+      "test_name": "test_c5_two_point_stick_uses_joint_tangent_matrix",
+      "case_id": "C5-JOINT-STICK-18",
+      "assertion": "测试函数体内直接断言报告字段、状态或失败副作用",
+      "counterexample": "统一入口不生成目标报告时，对应行为必须失败",
+      "mutation": "在入口插入 case ID 标记并返回空结果，验证测试能杀死该错误实现"
+    },
+    {
+      "id": "IMPACT-C5-19",
+      "kind": "fail_to_pass",
+      "location": "instruction.md",
+      "source_text": "若最优 `q_i` 位于边界，接触状态记为 `slide`",
+      "behavior": "双点滑移遵守各自摩擦箱边界。",
+      "category": "json_text",
+      "fixture": "测试内显式构造的碰撞记录与独立临时输出目录",
+      "test_name": "test_c5_two_slide_impulses_obey_individual_box_limits",
+      "case_id": "C5-BOX-LIMIT-19",
+      "assertion": "测试函数体内直接断言报告字段、状态或失败副作用",
+      "counterexample": "统一入口不生成目标报告时，对应行为必须失败",
+      "mutation": "在入口插入 case ID 标记并返回空结果，验证测试能杀死该错误实现"
+    },
+    {
+      "id": "IMPACT-C5-20",
+      "kind": "fail_to_pass",
+      "location": "instruction.md",
+      "source_text": "`summary` 中的 `event_count` 统计事件数",
+      "behavior": "双接触角速度与能量由合并冲量更新。",
+      "category": "json_text",
+      "fixture": "测试内显式构造的碰撞记录与独立临时输出目录",
+      "test_name": "test_c5_pair_energy_and_angular_state_match_reference",
+      "case_id": "C5-ENERGY-PAIR-20",
+      "assertion": "测试函数体内直接断言报告字段、状态或失败副作用",
+      "counterexample": "统一入口不生成目标报告时，对应行为必须失败",
+      "mutation": "在入口插入 case ID 标记并返回空结果，验证测试能杀死该错误实现"
+    },
+    {
+      "id": "IMPACT-C5-21",
+      "kind": "fail_to_pass",
+      "location": "instruction.md",
+      "source_text": "`stick_count`、`slide_count`、`inactive_count` 统计所有事件的两个接触模式",
+      "behavior": "双接触汇总按两个接触模式计数。",
+      "category": "filesystem",
+      "fixture": "测试内显式构造的碰撞记录与独立临时输出目录",
+      "test_name": "test_c5_pair_rejects_no_approach_and_coincident_points",
+      "case_id": "C5-ADMISSION-21",
+      "assertion": "测试函数体内直接断言报告字段、状态或失败副作用",
+      "counterexample": "统一入口不生成目标报告时，对应行为必须失败",
+      "mutation": "在入口插入 case ID 标记并返回空结果，验证测试能杀死该错误实现"
+    },
+    {
+      "id": "IMPACT-E2E-22",
+      "kind": "fail_to_pass",
+      "location": "instruction.md",
+      "source_text": "完成后的入口必须继续支持：",
+      "behavior": "随包双接触批次输出8个有序事件。",
+      "category": "atomic_publish",
+      "fixture": "测试内显式构造的碰撞记录与独立临时输出目录",
+      "test_name": "test_e2e_pair_batch_report",
+      "case_id": "E2E-PAIR-22",
+      "assertion": "测试函数体内直接断言报告字段、状态或失败副作用",
+      "counterexample": "统一入口不生成目标报告时，对应行为必须失败",
+      "mutation": "在入口插入 case ID 标记并返回空结果，验证测试能杀死该错误实现"
+    },
+    {
+      "id": "IMPACT-E2E-23",
+      "kind": "fail_to_pass",
+      "location": "instruction.md",
+      "source_text": "事件按文件中的先后顺序处理：",
+      "behavior": "随包单点批次输出12个有序事件。",
+      "category": "atomic_publish",
+      "fixture": "测试内显式构造的碰撞记录与独立临时输出目录",
+      "test_name": "test_e2e_sample_batch_report",
+      "case_id": "E2E-SINGLE-23",
+      "assertion": "测试函数体内直接断言报告字段、状态或失败副作用",
+      "counterexample": "统一入口不生成目标报告时，对应行为必须失败",
+      "mutation": "在入口插入 case ID 标记并返回空结果，验证测试能杀死该错误实现"
+    }
+  ],
+  "semantic_contracts": {
+    "boundary_pairs": {
+      "applicable": false,
+      "reason": "题面没有声明闭区间边界值必须被接受，只要求非法输入被拒收。"
+    },
+    "output_contracts": {
+      "applicable": false,
+      "reason": "业务结果只写入 JSON 文件，不通过标准输出或标准错误传递。"
+    },
+    "failure_stages": {
+      "applicable": true,
+      "items": [
+        {
+          "id": "FAIL-ATOMIC-01",
+          "stage": "全批求解后原子发布",
+          "source_text": "非法批次不能创建输出文件，也不能改动已经存在的输出文件。",
+          "test_names": [
+            "test_c4_nonunit_normal_rejected_without_output",
+            "test_c4_separating_contact_preserves_existing_output",
+            "test_c5_pair_rejects_no_approach_and_coincident_points"
+          ],
+          "assertions": [
+            "not output_path.exists()"
+          ]
+        }
+      ]
+    },
+    "timing_contracts": {
+      "applicable": false,
+      "reason": "题面没有给出秒级公开性能上限，因此不存在可验证的运行时限契约。"
+    }
+  }
+}

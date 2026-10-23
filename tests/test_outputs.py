@@ -710,8 +710,10 @@ def _pair_reference(row: dict[str, object]) -> dict[str, Any]:
     }
 
 
-def test_c1_centered_spherical_impulse():
-    """A centered spherical impact uses only mass and restitution."""
+@pytest.mark.parametrize("_case_label", ["C1-SPHERE-01"])
+def test_c1_centered_spherical_impulse(_case_label):
+    """C1-SPHERE-01: 题面规定“程序只能使用 Python 标准库”。"""
+    case_id = "C1-SPHERE-01"
     row = _row(
         "centered",
         ixx=0.6,
@@ -738,8 +740,10 @@ def test_c1_centered_spherical_impulse():
     assert event["velocity_after_m_s"]["x"] == pytest.approx(1.5, abs=1e-10)
 
 
-def test_c1_offset_matches_scalar_limit():
-    """The spatial contact matrix reproduces the scalar-inertia offset result."""
+@pytest.mark.parametrize("_case_label", ["C1-OFFSET-02"])
+def test_c1_offset_matches_scalar_limit(_case_label):
+    """C1-OFFSET-02: 题面规定“输入输出统一使用米、千克、秒、牛顿、焦耳和弧度。”"""
+    case_id = "C1-OFFSET-02"
     row = _row(
         "offset",
         ixx=0.5,
@@ -765,8 +769,10 @@ def test_c1_offset_matches_scalar_limit():
     assert event["normal_impulse_ns"] == pytest.approx(4.5 / 0.68, rel=1e-10)
 
 
-def test_c1_inertia_cross_terms_change_normal_impulse():
-    """A non-diagonal inertia tensor changes the effective normal mass."""
+@pytest.mark.parametrize("_case_label", ["C1-CROSS-03"])
+def test_c1_inertia_cross_terms_change_normal_impulse(_case_label):
+    """C1-CROSS-03: 题面规定“I = [[ixx, ixy, ixz],”。"""
+    case_id = "C1-CROSS-03"
     row = _row(
         "cross-inertia",
         ixx=0.8,
@@ -802,8 +808,10 @@ def test_c1_inertia_cross_terms_change_normal_impulse():
     )
 
 
-def test_c1_oblique_contact_updates_full_spin():
-    """An oblique contact produces the expected velocity and angular vector."""
+@pytest.mark.parametrize("_case_label", ["C1-SPIN-04"])
+def test_c1_oblique_contact_updates_full_spin(_case_label):
+    """C1-SPIN-04: 题面规定“w += W(r×J_normal)”。"""
+    case_id = "C1-SPIN-04"
     row = _row(
         "oblique",
         ixx=0.72,
@@ -838,8 +846,10 @@ def test_c1_oblique_contact_updates_full_spin():
     )
 
 
-def test_c2_normal_aligned_arm_has_no_tangent_impulse():
-    """A normal impulse parallel to the arm creates no tangent demand."""
+@pytest.mark.parametrize("_case_label", ["C2-ZERO-05"])
+def test_c2_normal_aligned_arm_has_no_tangent_impulse(_case_label):
+    """C2-ZERO-05: 题面规定“输出为 UTF-8 JSON，顶层只有 `events` 和 `summary`”。"""
+    case_id = "C2-ZERO-05"
     row = _row(
         "pure-normal",
         vx=-1.2,
@@ -864,8 +874,10 @@ def test_c2_normal_aligned_arm_has_no_tangent_impulse():
     )
 
 
-def test_c2_stick_cancels_contact_tangent_velocity():
-    """A tangential demand inside the friction cone removes contact slip."""
+@pytest.mark.parametrize("_case_label", ["C2-STICK-06"])
+def test_c2_stick_cancels_contact_tangent_velocity(_case_label):
+    """C2-STICK-06: 题面规定“Jt_need”。"""
+    case_id = "C2-STICK-06"
     row = _row("stick", restitution=0.25, friction=0.95)
     report = _report_for(TEST_ROOT / "parcel-impact-3d-c2-b", [row])
     event = report["events"][0]
@@ -890,8 +902,10 @@ def test_c2_stick_cancels_contact_tangent_velocity():
     assert _norm(tangent_velocity) == pytest.approx(0.0, abs=1e-9)
 
 
-def test_c2_slide_obeys_vector_friction_cone():
-    """A high tangent demand has the full signed Coulomb magnitude."""
+@pytest.mark.parametrize("_case_label", ["C2-SLIDE-07"])
+def test_c2_slide_obeys_vector_friction_cone(_case_label):
+    """C2-SLIDE-07: 题面规定“friction_coefficient*J_n*vt/|vt|”。"""
+    case_id = "C2-SLIDE-07"
     row = _row("slide", vx=-1.0, vy=2.6, vz=1.4, friction=0.02)
     report = _report_for(TEST_ROOT / "parcel-impact-3d-c2-c", [row])
     event = report["events"][0]
@@ -904,8 +918,10 @@ def test_c2_slide_obeys_vector_friction_cone():
     assert _norm(impulse) == pytest.approx(0.02 * event["normal_impulse_ns"], rel=1e-10)
 
 
-def test_c2_friction_changes_all_spatial_angular_components():
-    """Tangential impulse acts through the full inverse inertia tensor."""
+@pytest.mark.parametrize("_case_label", ["C2-FRICTION-SPIN-08"])
+def test_c2_friction_changes_all_spatial_angular_components(_case_label):
+    """C2-FRICTION-SPIN-08: 题面规定“这里采用先法向、再切向的顺序冲量模型”。"""
+    case_id = "C2-FRICTION-SPIN-08"
     row = _row(
         "spatial-spin",
         ixx=0.8,
@@ -942,8 +958,10 @@ def test_c2_friction_changes_all_spatial_angular_components():
     assert event["angular_velocity_after_rad_s"]["z"] != pytest.approx(0.3, abs=1e-5)
 
 
-def test_c2_tangent_matrix_retains_cross_coupling():
-    """An anisotropic tangent system produces a vector not parallel to slip."""
+@pytest.mark.parametrize("_case_label", ["C2-TANGENT-MATRIX-09"])
+def test_c2_tangent_matrix_retains_cross_coupling(_case_label):
+    """C2-TANGENT-MATRIX-09: 题面规定“固定分量取边界，自由分量解线性方程，再检查边界最优性。”"""
+    case_id = "C2-TANGENT-MATRIX-09"
     row = _row(
         "coupled-tangent",
         ixx=0.56,
@@ -982,8 +1000,10 @@ def test_c2_tangent_matrix_retains_cross_coupling():
     assert _norm(_cross(impulse, tangent_velocity)) > 1e-5
 
 
-def test_c3_energy_uses_full_inertia_tensor():
-    """Kinetic energy includes the complete rotational quadratic form."""
+@pytest.mark.parametrize("_case_label", ["C3-ENERGY-10"])
+def test_c3_energy_uses_full_inertia_tensor(_case_label):
+    """C3-ENERGY-10: 题面规定“每次碰撞的冲量、碰后状态和能量账都要保留”。"""
+    case_id = "C3-ENERGY-10"
     row = _row(
         "energy",
         ixx=0.75,
@@ -1008,8 +1028,10 @@ def test_c3_energy_uses_full_inertia_tensor():
     )
 
 
-def test_c3_summary_aggregates_modes_and_energy():
-    """Summary counts contact modes and sums per-event energy loss."""
+@pytest.mark.parametrize("_case_label", ["C3-SUMMARY-11"])
+def test_c3_summary_aggregates_modes_and_energy(_case_label):
+    """C3-SUMMARY-11: 题面规定“`summary` 必须包含：”以及“maximum_energy_gain_j”。"""
+    case_id = "C3-SUMMARY-11"
     stick = _row("stick-summary", restitution=0.25, friction=0.95)
     slide = _row("slide-summary", vx=-1.0, vy=2.6, vz=1.4, friction=0.02)
     report = _report_for(TEST_ROOT / "parcel-impact-3d-c3-b", [stick, slide])
@@ -1025,8 +1047,10 @@ def test_c3_summary_aggregates_modes_and_energy():
     assert report["summary"]["maximum_energy_gain_j"] == pytest.approx(0.0, abs=1e-10)
 
 
-def test_c4_nonunit_normal_rejected_without_output():
-    """A non-unit contact normal rejects the complete batch."""
+@pytest.mark.parametrize("_case_label", ["C4-NORMAL-12"])
+def test_c4_nonunit_normal_rejected_without_output(_case_label):
+    """C4-NORMAL-12: 题面规定“法向模长偏离 1 超过 `1e-9`”。"""
+    case_id = "C4-NORMAL-12"
     row = _row("bad-normal", nx=1.2)
     input_path = TEST_ROOT / "parcel-impact-3d-c4-a.csv"
     output_path = TEST_ROOT / "parcel-impact-3d-c4-a.json"
@@ -1037,8 +1061,10 @@ def test_c4_nonunit_normal_rejected_without_output():
     assert not output_path.exists()
 
 
-def test_c4_nonpositive_inertia_rejected():
-    """A non-positive-definite inertia tensor fails before output."""
+@pytest.mark.parametrize("_case_label", ["C4-INERTIA-13"])
+def test_c4_nonpositive_inertia_rejected(_case_label):
+    """C4-INERTIA-13: 题面规定“`restitution` 在 `[0,1]` 内，`friction_coefficient` 不得小于零。”"""
+    case_id = "C4-INERTIA-13"
     row = _row("bad-inertia", ixx=0.5, iyy=0.5, ixy=0.8)
     input_path = TEST_ROOT / "parcel-impact-3d-c4-b.csv"
     output_path = TEST_ROOT / "parcel-impact-3d-c4-b.json"
@@ -1049,8 +1075,10 @@ def test_c4_nonpositive_inertia_rejected():
     assert not output_path.exists()
 
 
-def test_c4_separating_contact_preserves_existing_output():
-    """A separating contact does not replace an existing report."""
+@pytest.mark.parametrize("_case_label", ["C4-APPROACH-14"])
+def test_c4_separating_contact_preserves_existing_output(_case_label):
+    """C4-APPROACH-14: 题面规定“目标 JSON 必须在全部事件成功求解后整体原子替换，不能留下截断内容。”"""
+    case_id = "C4-APPROACH-14"
     row = _row("separating", vx=2.0)
     input_path = TEST_ROOT / "parcel-impact-3d-c4-c.csv"
     output_path = TEST_ROOT / "parcel-impact-3d-c4-c.json"
@@ -1061,8 +1089,26 @@ def test_c4_separating_contact_preserves_existing_output():
     assert output_path.read_text(encoding="utf-8") == "existing-report\n"
 
 
-def test_c4_missing_columns_and_nonfinite_values_rejected():
-    """Incomplete schemas and non-finite values both fail cleanly."""
+@pytest.mark.parametrize("_case_label", ["C4-ATOMIC-24"])
+def test_c4_atomic_success_replaces_stale_report(_case_label):
+    """C4-ATOMIC-24: 题面规定“目标 JSON 必须在全部事件成功求解后整体原子替换，不能留下截断内容。”"""
+    case_id = "C4-ATOMIC-24"
+    row = _row("atomic", vx=-2.0, vy=0.0, vz=0.0, friction=0.2)
+    input_path = TEST_ROOT / "parcel-impact-3d-c4-atomic.csv"
+    output_path = TEST_ROOT / "parcel-impact-3d-c4-atomic.json"
+    _write_csv(input_path, [row])
+    output_path.write_text("stale-report\n", encoding="utf-8")
+    completed = _run_cli(input_path, output_path)
+    report = json.loads(output_path.read_text(encoding="utf-8"))
+    assert completed.returncode == 0, completed.stderr
+    assert report["summary"]["event_count"] == 1
+    assert report["events"][0]["event_id"] == "atomic"
+
+
+@pytest.mark.parametrize("_case_label", ["C4-SCHEMA-15"])
+def test_c4_missing_columns_and_nonfinite_values_rejected(_case_label):
+    """C4-SCHEMA-15: 题面规定“CSV 必须包含以下列，允许额外列，事件按文件中的先后顺序处理：”。"""
+    case_id = "C4-SCHEMA-15"
     missing_input = TEST_ROOT / "parcel-impact-3d-c4-d.csv"
     missing_output = TEST_ROOT / "parcel-impact-3d-c4-d.json"
     missing_input.write_text("event_id,mass_kg\nmissing,2\n", encoding="utf-8")
@@ -1082,8 +1128,10 @@ def test_c4_missing_columns_and_nonfinite_values_rejected():
     assert not nan_output.exists()
 
 
-def test_c5_both_contact_normals_are_coupled():
-    """Two approaching contacts use the full nonnegative normal mass matrix."""
+@pytest.mark.parametrize("_case_label", ["C5-NORMAL-PAIR-16"])
+def test_c5_both_contact_normals_are_coupled(_case_label):
+    """C5-NORMAL-PAIR-16: 题面规定“有效接触集必须满足”。"""
+    case_id = "C5-NORMAL-PAIR-16"
     row = _pair_row("coupled-normal", restitution=0.2, friction=0.8)
     report = _pair_report_for(TEST_ROOT / "parcel-pair-c5-a", [row])
     event = report["events"][0]
@@ -1095,8 +1143,10 @@ def test_c5_both_contact_normals_are_coupled():
     assert "inactive" not in event["contact_modes"]
 
 
-def test_c5_one_sided_contact_sets_other_impulse_to_zero():
-    """A separating corner leaves the other contact to carry the impact."""
+@pytest.mark.parametrize("_case_label", ["C5-ONE-SIDED-17"])
+def test_c5_one_sided_contact_sets_other_impulse_to_zero(_case_label):
+    """C5-ONE-SIDED-17: 题面规定“对每个分量枚举自由、位于下界、位于上界三种状态；”。"""
+    case_id = "C5-ONE-SIDED-17"
     row = _pair_row(
         "one-sided",
         vx=0.0,
@@ -1114,8 +1164,10 @@ def test_c5_one_sided_contact_sets_other_impulse_to_zero():
     assert 0.0 in event["contact_normal_impulses_ns"]
 
 
-def test_c5_two_point_stick_uses_joint_tangent_matrix():
-    """Both sticking contacts are solved together rather than independently."""
+@pytest.mark.parametrize("_case_label", ["C5-JOINT-STICK-18"])
+def test_c5_two_point_stick_uses_joint_tangent_matrix(_case_label):
+    """C5-JOINT-STICK-18: 题面规定“位于内部记为 `stick`。”。"""
+    case_id = "C5-JOINT-STICK-18"
     row = _pair_row(
         "two-stick",
         vx=0.0,
@@ -1132,8 +1184,10 @@ def test_c5_two_point_stick_uses_joint_tangent_matrix():
     )
 
 
-def test_c5_two_slide_impulses_obey_individual_box_limits():
-    """A sliding contact pair respects each normal-impulse friction cap."""
+@pytest.mark.parametrize("_case_label", ["C5-BOX-LIMIT-19"])
+def test_c5_two_slide_impulses_obey_individual_box_limits(_case_label):
+    """C5-BOX-LIMIT-19: 题面规定“若最优 `q_i` 位于边界，接触状态记为 `slide`”。"""
+    case_id = "C5-BOX-LIMIT-19"
     row = _pair_row(
         "two-slide",
         vx=-0.3,
@@ -1154,8 +1208,10 @@ def test_c5_two_slide_impulses_obey_individual_box_limits():
     assert magnitudes == pytest.approx(limits, rel=1e-10)
 
 
-def test_c5_pair_energy_and_angular_state_match_reference():
-    """Two-contact angular recoil and energy use the combined impulse state."""
+@pytest.mark.parametrize("_case_label", ["C5-ENERGY-PAIR-20"])
+def test_c5_pair_energy_and_angular_state_match_reference(_case_label):
+    """C5-ENERGY-PAIR-20: 题面规定“`summary` 中的 `event_count` 统计事件数”。"""
+    case_id = "C5-ENERGY-PAIR-20"
     row = _pair_row(
         "pair-energy",
         mass=4.2,
@@ -1186,8 +1242,10 @@ def test_c5_pair_energy_and_angular_state_match_reference():
     )
 
 
-def test_c5_pair_rejects_no_approach_and_coincident_points():
-    """No approaching corner and duplicate contact points both fail cleanly."""
+@pytest.mark.parametrize("_case_label", ["C5-ADMISSION-21"])
+def test_c5_pair_rejects_no_approach_and_coincident_points(_case_label):
+    """C5-ADMISSION-21: 题面规定“`stick_count`、`slide_count`、`inactive_count` 统计所有事件的两个接触模式”。"""
+    case_id = "C5-ADMISSION-21"
     no_approach = _pair_row("no-approach", vx=0.0, vy=1.0, omega=0.0)
     coincident = _pair_row(
         "coincident",
@@ -1211,8 +1269,10 @@ def test_c5_pair_rejects_no_approach_and_coincident_points():
     assert second_output.read_text(encoding="utf-8") == "existing-pair-report\n"
 
 
-def test_e2e_pair_batch_report():
-    """The bundled two-contact batch yields ordered events and summaries."""
+@pytest.mark.parametrize("_case_label", ["E2E-PAIR-22"])
+def test_e2e_pair_batch_report(_case_label):
+    """E2E-PAIR-22: 题面规定“完成后的入口必须继续支持：”。"""
+    case_id = "E2E-PAIR-22"
     input_path = WORKSPACE / "data" / "pallet_landings.csv"
     output_path = TEST_ROOT / "parcel-pair-e2e.json"
     completed = _run_pair_cli(input_path, output_path)
@@ -1239,8 +1299,10 @@ def test_e2e_pair_batch_report():
     )
 
 
-def test_e2e_sample_batch_report():
-    """The bundled simulated batch yields twelve ordered spatial results."""
+@pytest.mark.parametrize("_case_label", ["E2E-SINGLE-23"])
+def test_e2e_sample_batch_report(_case_label):
+    """E2E-SINGLE-23: 题面规定“事件按文件中的先后顺序处理：”。"""
+    case_id = "E2E-SINGLE-23"
     input_path = WORKSPACE / "data" / "impact_events.csv"
     output_path = TEST_ROOT / "parcel-impact-3d-e2e.json"
     completed = _run_cli(input_path, output_path)

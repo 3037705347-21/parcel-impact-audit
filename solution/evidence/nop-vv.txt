@@ -1,0 +1,746 @@
+============================= test session starts ==============================
+platform darwin -- Python 3.14.6, pytest-9.1.1, pluggy-1.6.0 -- /Users/zhangchengcheng/Documents/Codex/2026-08-24/xh/work/bin/python3
+cachedir: .pytest_cache
+hypothesis profile 'default'
+rootdir: /Users/zhangchengcheng/harbor/parcel-impact-audit
+plugins: httpx2-pytest-2.0.0, mock-3.15.1, syrupy-6.1.1, flaky-3.8.1, asyncio-1.4.0, recording-0.14.0, anyio-4.14.2, env-1.7.1, factoryboy-2.8.1, hypothesis-6.167.1, respx-0.23.1, requests-mock-1.12.1, Faker-40.39.0
+asyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function
+collecting ... collected 24 items
+
+tests/test_outputs.py::test_c1_centered_spherical_impulse[C1-SPHERE-01] PASSED [  4%]
+tests/test_outputs.py::test_c1_offset_matches_scalar_limit[C1-OFFSET-02] FAILED [  8%]
+tests/test_outputs.py::test_c1_inertia_cross_terms_change_normal_impulse[C1-CROSS-03] FAILED [ 12%]
+tests/test_outputs.py::test_c1_oblique_contact_updates_full_spin[C1-SPIN-04] FAILED [ 16%]
+tests/test_outputs.py::test_c2_normal_aligned_arm_has_no_tangent_impulse[C2-ZERO-05] PASSED [ 20%]
+tests/test_outputs.py::test_c2_stick_cancels_contact_tangent_velocity[C2-STICK-06] FAILED [ 25%]
+tests/test_outputs.py::test_c2_slide_obeys_vector_friction_cone[C2-SLIDE-07] FAILED [ 29%]
+tests/test_outputs.py::test_c2_friction_changes_all_spatial_angular_components[C2-FRICTION-SPIN-08] FAILED [ 33%]
+tests/test_outputs.py::test_c2_tangent_matrix_retains_cross_coupling[C2-TANGENT-MATRIX-09] FAILED [ 37%]
+tests/test_outputs.py::test_c3_energy_uses_full_inertia_tensor[C3-ENERGY-10] FAILED [ 41%]
+tests/test_outputs.py::test_c3_summary_aggregates_modes_and_energy[C3-SUMMARY-11] FAILED [ 45%]
+tests/test_outputs.py::test_c4_nonunit_normal_rejected_without_output[C4-NORMAL-12] FAILED [ 50%]
+tests/test_outputs.py::test_c4_nonpositive_inertia_rejected[C4-INERTIA-13] FAILED [ 54%]
+tests/test_outputs.py::test_c4_separating_contact_preserves_existing_output[C4-APPROACH-14] FAILED [ 58%]
+tests/test_outputs.py::test_c4_atomic_success_replaces_stale_report[C4-ATOMIC-24] PASSED [ 62%]
+tests/test_outputs.py::test_c4_missing_columns_and_nonfinite_values_rejected[C4-SCHEMA-15] PASSED [ 66%]
+tests/test_outputs.py::test_c5_both_contact_normals_are_coupled[C5-NORMAL-PAIR-16] PASSED [ 70%]
+tests/test_outputs.py::test_c5_one_sided_contact_sets_other_impulse_to_zero[C5-ONE-SIDED-17] FAILED [ 75%]
+tests/test_outputs.py::test_c5_two_point_stick_uses_joint_tangent_matrix[C5-JOINT-STICK-18] FAILED [ 79%]
+tests/test_outputs.py::test_c5_two_slide_impulses_obey_individual_box_limits[C5-BOX-LIMIT-19] FAILED [ 83%]
+tests/test_outputs.py::test_c5_pair_energy_and_angular_state_match_reference[C5-ENERGY-PAIR-20] FAILED [ 87%]
+tests/test_outputs.py::test_c5_pair_rejects_no_approach_and_coincident_points[C5-ADMISSION-21] FAILED [ 91%]
+tests/test_outputs.py::test_e2e_pair_batch_report[E2E-PAIR-22] FAILED    [ 95%]
+tests/test_outputs.py::test_e2e_sample_batch_report[E2E-SINGLE-23] FAILED [100%]
+
+=================================== FAILURES ===================================
+______________ test_c1_offset_matches_scalar_limit[C1-OFFSET-02] _______________
+
+_case_label = 'C1-OFFSET-02'
+
+    @pytest.mark.parametrize("_case_label", ["C1-OFFSET-02"])
+    def test_c1_offset_matches_scalar_limit(_case_label):
+        """C1-OFFSET-02: 题面规定“输入输出统一使用米、千克、秒、牛顿、焦耳和弧度。”"""
+        case_id = "C1-OFFSET-02"
+        row = _row(
+            "offset",
+            ixx=0.5,
+            iyy=0.5,
+            izz=0.5,
+            ixy=0.0,
+            ixz=0.0,
+            iyz=0.0,
+            vx=-3.0,
+            vy=0.0,
+            vz=0.0,
+            wx=0.0,
+            wy=0.0,
+            wz=0.0,
+            rx=0.0,
+            ry=0.3,
+            rz=0.0,
+            restitution=0.5,
+            friction=0.0,
+        )
+        report = _report_for(TEST_ROOT / "parcel-impact-3d-c1-b", [row])
+        event = report["events"][0]
+>       assert event["normal_impulse_ns"] == pytest.approx(4.5 / 0.68, rel=1e-10)
+E       assert 9.0 == 6.617647058823529 ± 6.6e-10
+E         
+E         comparison failed
+E         Obtained: 9.0
+E         Expected: 6.617647058823529 ± 6.6e-10
+
+tests/test_outputs.py:769: AssertionError
+________ test_c1_inertia_cross_terms_change_normal_impulse[C1-CROSS-03] ________
+
+_case_label = 'C1-CROSS-03'
+
+    @pytest.mark.parametrize("_case_label", ["C1-CROSS-03"])
+    def test_c1_inertia_cross_terms_change_normal_impulse(_case_label):
+        """C1-CROSS-03: 题面规定“I = [[ixx, ixy, ixz],”。"""
+        case_id = "C1-CROSS-03"
+        row = _row(
+            "cross-inertia",
+            ixx=0.8,
+            iyy=0.65,
+            izz=0.9,
+            ixy=0.12,
+            ixz=-0.07,
+            iyz=0.04,
+            vx=-1.6,
+            vy=0.5,
+            vz=-0.4,
+            wx=0.6,
+            wy=-0.4,
+            wz=0.3,
+            rx=0.12,
+            ry=-0.08,
+            rz=0.1,
+            nx=0.48,
+            ny=-0.6,
+            nz=0.64,
+            restitution=0.35,
+            friction=0.0,
+        )
+        report = _report_for(TEST_ROOT / "parcel-impact-3d-c1-c", [row])
+        diagonal = {**row, "ixy": 0.0, "ixz": 0.0, "iyz": 0.0}
+        expected = _reference(row)
+        diagonal_expected = _reference(diagonal)
+>       assert report["events"][0]["normal_impulse_ns"] == pytest.approx(
+            expected["normal_impulse_ns"], rel=1e-10
+        )
+E       assert 3.5748 == 3.5384512018004624 ± 3.5e-10
+E         
+E         comparison failed
+E         Obtained: 3.5748
+E         Expected: 3.5384512018004624 ± 3.5e-10
+
+tests/test_outputs.py:803: AssertionError
+____________ test_c1_oblique_contact_updates_full_spin[C1-SPIN-04] _____________
+
+_case_label = 'C1-SPIN-04'
+
+    @pytest.mark.parametrize("_case_label", ["C1-SPIN-04"])
+    def test_c1_oblique_contact_updates_full_spin(_case_label):
+        """C1-SPIN-04: 题面规定“w += W(r×J_normal)”。"""
+        case_id = "C1-SPIN-04"
+        row = _row(
+            "oblique",
+            ixx=0.72,
+            iyy=0.61,
+            izz=0.84,
+            ixy=0.08,
+            ixz=-0.05,
+            iyz=0.03,
+            vx=-1.1,
+            vy=-1.4,
+            vz=0.8,
+            wx=0.5,
+            wy=-0.3,
+            wz=0.2,
+            rx=-0.09,
+            ry=0.11,
+            rz=0.07,
+            nx=0.6,
+            ny=0.8,
+            nz=0.0,
+            restitution=0.2,
+            friction=0.0,
+        )
+        report = _report_for(TEST_ROOT / "parcel-impact-3d-c1-d", [row])
+        event = report["events"][0]
+        expected = _reference(row)
+>       assert event["velocity_after_m_s"] == pytest.approx(
+            expected["velocity_after_m_s"], rel=1e-10
+        )
+E       AssertionError: assert {'x': 0.18159999999999976, 'y': 0.30879999999999996, 'z': 0.8} == approx({'x': 0.14754005128341152 ± 1.5e-11, 'y': 0.2633867350445489 ± 2.6e-11, 'z': 0.8 ± 8.0e-11})
+E         
+E         comparison failed. Mismatched elements: 2 / 3:
+E         Max absolute difference: 0.04541326495545106
+E         Max relative difference: 0.23085222229699554
+E         Index | Obtained            | Expected                     
+E         x     | 0.18159999999999976 | 0.14754005128341152 ± 1.5e-11
+E         y     | 0.30879999999999996 | 0.2633867350445489 ± 2.6e-11
+
+tests/test_outputs.py:841: AssertionError
+_________ test_c2_stick_cancels_contact_tangent_velocity[C2-STICK-06] __________
+
+_case_label = 'C2-STICK-06'
+
+    @pytest.mark.parametrize("_case_label", ["C2-STICK-06"])
+    def test_c2_stick_cancels_contact_tangent_velocity(_case_label):
+        """C2-STICK-06: 题面规定“Jt_need”。"""
+        case_id = "C2-STICK-06"
+        row = _row("stick", restitution=0.25, friction=0.95)
+        report = _report_for(TEST_ROOT / "parcel-impact-3d-c2-b", [row])
+        event = report["events"][0]
+        velocity: Vector = (
+            event["velocity_after_m_s"]["x"],
+            event["velocity_after_m_s"]["y"],
+            event["velocity_after_m_s"]["z"],
+        )
+        angular: Vector = (
+            event["angular_velocity_after_rad_s"]["x"],
+            event["angular_velocity_after_rad_s"]["y"],
+            event["angular_velocity_after_rad_s"]["z"],
+        )
+        arm: Vector = (float(row["rx"]), float(row["ry"]), float(row["rz"]))
+        normal: Vector = (float(row["nx"]), float(row["ny"]), float(row["nz"]))
+        contact_velocity = _contact_velocity(velocity, angular, arm)
+        tangent_velocity = tuple(
+            contact_velocity[index] - _dot(contact_velocity, normal) * normal[index]
+            for index in range(3)
+        )
+        assert event["contact_mode"] == "stick"
+>       assert _norm(tangent_velocity) == pytest.approx(0.0, abs=1e-9)
+E       assert 0.22365151463828722 == 0.0 ± 1.0e-09
+E         
+E         comparison failed
+E         Obtained: 0.22365151463828722
+E         Expected: 0.0 ± 1.0e-09
+
+tests/test_outputs.py:902: AssertionError
+____________ test_c2_slide_obeys_vector_friction_cone[C2-SLIDE-07] _____________
+
+_case_label = 'C2-SLIDE-07'
+
+    @pytest.mark.parametrize("_case_label", ["C2-SLIDE-07"])
+    def test_c2_slide_obeys_vector_friction_cone(_case_label):
+        """C2-SLIDE-07: 题面规定“friction_coefficient*J_n*vt/|vt|”。"""
+        case_id = "C2-SLIDE-07"
+        row = _row("slide", vx=-1.0, vy=2.6, vz=1.4, friction=0.02)
+        report = _report_for(TEST_ROOT / "parcel-impact-3d-c2-c", [row])
+        event = report["events"][0]
+        impulse: Vector = (
+            event["tangential_impulse_ns"]["x"],
+            event["tangential_impulse_ns"]["y"],
+            event["tangential_impulse_ns"]["z"],
+        )
+>       assert event["contact_mode"] == "slide"
+E       AssertionError: assert 'stick' == 'slide'
+E         
+E         - slide
+E         + stick
+
+tests/test_outputs.py:917: AssertionError
+_ test_c2_friction_changes_all_spatial_angular_components[C2-FRICTION-SPIN-08] _
+
+_case_label = 'C2-FRICTION-SPIN-08'
+
+    @pytest.mark.parametrize("_case_label", ["C2-FRICTION-SPIN-08"])
+    def test_c2_friction_changes_all_spatial_angular_components(_case_label):
+        """C2-FRICTION-SPIN-08: 题面规定“这里采用先法向、再切向的顺序冲量模型”。"""
+        case_id = "C2-FRICTION-SPIN-08"
+        row = _row(
+            "spatial-spin",
+            ixx=0.8,
+            iyy=0.7,
+            izz=0.95,
+            ixy=0.11,
+            ixz=-0.06,
+            iyz=0.05,
+            vx=-1.2,
+            vy=1.1,
+            vz=-0.6,
+            wx=0.7,
+            wy=-0.4,
+            wz=0.3,
+            rx=0.1,
+            ry=-0.07,
+            rz=0.08,
+            nx=0.48,
+            ny=-0.6,
+            nz=0.64,
+            friction=0.16,
+        )
+        report = _report_for(TEST_ROOT / "parcel-impact-3d-c2-d", [row])
+        event = report["events"][0]
+        expected = _reference(row)
+>       assert event["tangential_impulse_ns"] == pytest.approx(
+            expected["tangential_impulse_ns"], rel=1e-10
+        )
+E       AssertionError: assert {'x': 0.0, 'y': 0.0, 'z': 0.0} == approx({'x': 0.4811270016911565 ± 4.8e-11, 'y': -0.10054684810673602 ± 1.0e-11, 'z': -0.45510792136843237 ± 4.6e-11})
+E         
+E         comparison failed. Mismatched elements: 3 / 3:
+E         Max absolute difference: 0.4811270016911565
+E         Max relative difference: 1.0
+E         Index | Obtained | Expected                      
+E         x     | 0.0      | 0.4811270016911565 ± 4.8e-11  
+E         y     | 0.0      | -0.10054684810673602 ± 1.0e-11
+E         z     | 0.0      | -0.45510792136843237 ± 4.6e-11
+
+tests/test_outputs.py:950: AssertionError
+_____ test_c2_tangent_matrix_retains_cross_coupling[C2-TANGENT-MATRIX-09] ______
+
+_case_label = 'C2-TANGENT-MATRIX-09'
+
+    @pytest.mark.parametrize("_case_label", ["C2-TANGENT-MATRIX-09"])
+    def test_c2_tangent_matrix_retains_cross_coupling(_case_label):
+        """C2-TANGENT-MATRIX-09: 题面规定“固定分量取边界，自由分量解线性方程，再检查边界最优性。”"""
+        case_id = "C2-TANGENT-MATRIX-09"
+        row = _row(
+            "coupled-tangent",
+            ixx=0.56,
+            iyy=0.73,
+            izz=0.91,
+            ixy=0.14,
+            ixz=-0.09,
+            iyz=0.08,
+            vx=-1.3,
+            vy=0.45,
+            vz=-0.35,
+            wx=0.8,
+            wy=-0.35,
+            wz=0.55,
+            rx=0.13,
+            ry=-0.09,
+            rz=0.11,
+            nx=0.36,
+            ny=-0.48,
+            nz=0.8,
+            friction=0.95,
+        )
+        report = _report_for(TEST_ROOT / "parcel-impact-3d-c2-e", [row])
+        event = report["events"][0]
+        expected = _reference(row)
+        impulse: Vector = (
+            event["tangential_impulse_ns"]["x"],
+            event["tangential_impulse_ns"]["y"],
+            event["tangential_impulse_ns"]["z"],
+        )
+        tangent_velocity: Vector = expected["diagnostics"]["tangent_velocity_before_friction"]
+        assert event["contact_mode"] == "stick"
+>       assert event["tangential_impulse_ns"] == pytest.approx(
+            expected["tangential_impulse_ns"], rel=1e-10
+        )
+E       AssertionError: assert {'x': 0.0, 'y': 0.0, 'z': 0.0} == approx({'x': 1.8108322290905237 ± 1.8e-10, 'y': 0.05748275343480941 ± 5.7e-12, 'z': -0.78038485102985 ± 7.8e-11})
+E         
+E         comparison failed. Mismatched elements: 3 / 3:
+E         Max absolute difference: 1.8108322290905237
+E         Max relative difference: 1.0
+E         Index | Obtained | Expected                     
+E         x     | 0.0      | 1.8108322290905237 ± 1.8e-10 
+E         y     | 0.0      | 0.05748275343480941 ± 5.7e-12
+E         z     | 0.0      | -0.78038485102985 ± 7.8e-11
+
+tests/test_outputs.py:997: AssertionError
+____________ test_c3_energy_uses_full_inertia_tensor[C3-ENERGY-10] _____________
+
+_case_label = 'C3-ENERGY-10'
+
+    @pytest.mark.parametrize("_case_label", ["C3-ENERGY-10"])
+    def test_c3_energy_uses_full_inertia_tensor(_case_label):
+        """C3-ENERGY-10: 题面规定“每次碰撞的冲量、碰后状态和能量账都要保留”。"""
+        case_id = "C3-ENERGY-10"
+        row = _row(
+            "energy",
+            ixx=0.75,
+            iyy=0.62,
+            izz=0.88,
+            ixy=0.07,
+            ixz=-0.04,
+            iyz=0.03,
+            friction=0.42,
+        )
+        report = _report_for(TEST_ROOT / "parcel-impact-3d-c3-a", [row])
+        event = report["events"][0]
+        expected = _reference(row)
+>       assert event["kinetic_energy_before_j"] == pytest.approx(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+            expected["kinetic_energy_before_j"], rel=1e-10
+        )
+E       KeyError: 'kinetic_energy_before_j'
+
+tests/test_outputs.py:1020: KeyError
+__________ test_c3_summary_aggregates_modes_and_energy[C3-SUMMARY-11] __________
+
+_case_label = 'C3-SUMMARY-11'
+
+    @pytest.mark.parametrize("_case_label", ["C3-SUMMARY-11"])
+    def test_c3_summary_aggregates_modes_and_energy(_case_label):
+        """C3-SUMMARY-11: 题面规定“`summary` 必须包含：”以及“maximum_energy_gain_j”。"""
+        case_id = "C3-SUMMARY-11"
+        stick = _row("stick-summary", restitution=0.25, friction=0.95)
+        slide = _row("slide-summary", vx=-1.0, vy=2.6, vz=1.4, friction=0.02)
+        report = _report_for(TEST_ROOT / "parcel-impact-3d-c3-b", [stick, slide])
+        expected_loss = sum(
+            float(_reference(row)["energy_loss_j"]) for row in [stick, slide]
+        )
+        assert report["summary"]["event_count"] == 2
+>       assert report["summary"]["stick_count"] == 1
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       KeyError: 'stick_count'
+
+tests/test_outputs.py:1042: KeyError
+_________ test_c4_nonunit_normal_rejected_without_output[C4-NORMAL-12] _________
+
+_case_label = 'C4-NORMAL-12'
+
+    @pytest.mark.parametrize("_case_label", ["C4-NORMAL-12"])
+    def test_c4_nonunit_normal_rejected_without_output(_case_label):
+        """C4-NORMAL-12: 题面规定“法向模长偏离 1 超过 `1e-9`”。"""
+        case_id = "C4-NORMAL-12"
+        row = _row("bad-normal", nx=1.2)
+        input_path = TEST_ROOT / "parcel-impact-3d-c4-a.csv"
+        output_path = TEST_ROOT / "parcel-impact-3d-c4-a.json"
+        output_path.unlink(missing_ok=True)
+        _write_csv(input_path, [row])
+        completed = _run_cli(input_path, output_path)
+>       assert completed.returncode != 0
+E       AssertionError: assert 0 != 0
+E        +  where 0 = CompletedProcess(args=['/Users/zhangchengcheng/Documents/Codex/2026-08-24/xh/work/bin/python3', '-m', 'impact_audit', '--input', '/var/folders/jz/2ksjlg25597g30hd7ltt3nd00000gn/T/parcel-impact-checks-vz8j1ooj/parcel-impact-3d-c4-a.csv', '--output', '/var/folders/jz/2ksjlg25597g30hd7ltt3nd00000gn/T/parcel-impact-checks-vz8j1ooj/parcel-impact-3d-c4-a.json'], returncode=0, stdout='', stderr='').returncode
+
+tests/test_outputs.py:1060: AssertionError
+_____________ test_c4_nonpositive_inertia_rejected[C4-INERTIA-13] ______________
+
+_case_label = 'C4-INERTIA-13'
+
+    @pytest.mark.parametrize("_case_label", ["C4-INERTIA-13"])
+    def test_c4_nonpositive_inertia_rejected(_case_label):
+        """C4-INERTIA-13: 题面规定“`restitution` 在 `[0,1]` 内，`friction_coefficient` 不得小于零。”"""
+        case_id = "C4-INERTIA-13"
+        row = _row("bad-inertia", ixx=0.5, iyy=0.5, ixy=0.8)
+        input_path = TEST_ROOT / "parcel-impact-3d-c4-b.csv"
+        output_path = TEST_ROOT / "parcel-impact-3d-c4-b.json"
+        output_path.unlink(missing_ok=True)
+        _write_csv(input_path, [row])
+        completed = _run_cli(input_path, output_path)
+>       assert completed.returncode != 0
+E       AssertionError: assert 0 != 0
+E        +  where 0 = CompletedProcess(args=['/Users/zhangchengcheng/Documents/Codex/2026-08-24/xh/work/bin/python3', '-m', 'impact_audit', '--input', '/var/folders/jz/2ksjlg25597g30hd7ltt3nd00000gn/T/parcel-impact-checks-vz8j1ooj/parcel-impact-3d-c4-b.csv', '--output', '/var/folders/jz/2ksjlg25597g30hd7ltt3nd00000gn/T/parcel-impact-checks-vz8j1ooj/parcel-impact-3d-c4-b.json'], returncode=0, stdout='', stderr='').returncode
+
+tests/test_outputs.py:1074: AssertionError
+_____ test_c4_separating_contact_preserves_existing_output[C4-APPROACH-14] _____
+
+_case_label = 'C4-APPROACH-14'
+
+    @pytest.mark.parametrize("_case_label", ["C4-APPROACH-14"])
+    def test_c4_separating_contact_preserves_existing_output(_case_label):
+        """C4-APPROACH-14: 题面规定“目标 JSON 必须在全部事件成功求解后整体原子替换，不能留下截断内容。”"""
+        case_id = "C4-APPROACH-14"
+        row = _row("separating", vx=2.0)
+        input_path = TEST_ROOT / "parcel-impact-3d-c4-c.csv"
+        output_path = TEST_ROOT / "parcel-impact-3d-c4-c.json"
+        _write_csv(input_path, [row])
+        output_path.write_text("existing-report\n", encoding="utf-8")
+        completed = _run_cli(input_path, output_path)
+>       assert completed.returncode != 0
+E       AssertionError: assert 0 != 0
+E        +  where 0 = CompletedProcess(args=['/Users/zhangchengcheng/Documents/Codex/2026-08-24/xh/work/bin/python3', '-m', 'impact_audit', '--input', '/var/folders/jz/2ksjlg25597g30hd7ltt3nd00000gn/T/parcel-impact-checks-vz8j1ooj/parcel-impact-3d-c4-c.csv', '--output', '/var/folders/jz/2ksjlg25597g30hd7ltt3nd00000gn/T/parcel-impact-checks-vz8j1ooj/parcel-impact-3d-c4-c.json'], returncode=0, stdout='', stderr='').returncode
+
+tests/test_outputs.py:1088: AssertionError
+____ test_c5_one_sided_contact_sets_other_impulse_to_zero[C5-ONE-SIDED-17] _____
+
+_case_label = 'C5-ONE-SIDED-17'
+
+    @pytest.mark.parametrize("_case_label", ["C5-ONE-SIDED-17"])
+    def test_c5_one_sided_contact_sets_other_impulse_to_zero(_case_label):
+        """C5-ONE-SIDED-17: 题面规定“对每个分量枚举自由、位于下界、位于上界三种状态；”。"""
+        case_id = "C5-ONE-SIDED-17"
+        row = _pair_row(
+            "one-sided",
+            vx=0.0,
+            vy=-1.0,
+            omega=10.0,
+            friction=0.8,
+        )
+        report = _pair_report_for(TEST_ROOT / "parcel-pair-c5-b", [row])
+        event = report["events"][0]
+        expected = _pair_reference(row)
+>       assert event["contact_normal_impulses_ns"] == pytest.approx(
+            expected["contact_normal_impulses_ns"], rel=1e-10
+        )
+E       assert [1.7999999999999998, 1.7999999999999998] == approx([8.526315789473683 ± 8.5e-10, 0.0 ± 1.0e-12])
+E         
+E         comparison failed. Mismatched elements: 2 / 2:
+E         Max absolute difference: 6.726315789473683
+E         Max relative difference: 3.736842105263158
+E         Index | Obtained           | Expected                   
+E         0     | 1.7999999999999998 | 8.526315789473683 ± 8.5e-10
+E         1     | 1.7999999999999998 | 0.0 ± 1.0e-12
+
+tests/test_outputs.py:1160: AssertionError
+_____ test_c5_two_point_stick_uses_joint_tangent_matrix[C5-JOINT-STICK-18] _____
+
+_case_label = 'C5-JOINT-STICK-18'
+
+    @pytest.mark.parametrize("_case_label", ["C5-JOINT-STICK-18"])
+    def test_c5_two_point_stick_uses_joint_tangent_matrix(_case_label):
+        """C5-JOINT-STICK-18: 题面规定“位于内部记为 `stick`。”。"""
+        case_id = "C5-JOINT-STICK-18"
+        row = _pair_row(
+            "two-stick",
+            vx=0.0,
+            vy=-1.0,
+            omega=0.02,
+            friction=0.95,
+        )
+        report = _pair_report_for(TEST_ROOT / "parcel-pair-c5-c", [row])
+        event = report["events"][0]
+        expected = _pair_reference(row)
+        assert event["contact_modes"] == ["stick", "stick"]
+>       assert event["contact_tangent_impulses_ns"] == pytest.approx(
+            expected["contact_tangent_impulses_ns"], rel=1e-10
+        )
+E       AssertionError: assert [{'x': 0.0, 'y': 0.0}, {'x': 0.0, 'y': 0.0}] == approx([{'x': -0.04499999999999963, 'y': 0.0}, {'x': 0.04499999999999965, 'y': -0.0}])
+E         
+E         (pytest_assertion plugin: representation of details failed: /Users/zhangchengcheng/Documents/Codex/2026-08-24/xh/work/tools/miniforge2/lib/python3.14/site-packages/_pytest/python_api.py:350: AttributeError: 'list' object has no attribute 'expected'.
+E          Probably an object has a faulty __repr__.)
+
+tests/test_outputs.py:1182: AssertionError
+____ test_c5_two_slide_impulses_obey_individual_box_limits[C5-BOX-LIMIT-19] ____
+
+_case_label = 'C5-BOX-LIMIT-19'
+
+    @pytest.mark.parametrize("_case_label", ["C5-BOX-LIMIT-19"])
+    def test_c5_two_slide_impulses_obey_individual_box_limits(_case_label):
+        """C5-BOX-LIMIT-19: 题面规定“若最优 `q_i` 位于边界，接触状态记为 `slide`”。"""
+        case_id = "C5-BOX-LIMIT-19"
+        row = _pair_row(
+            "two-slide",
+            vx=-0.3,
+            vy=-1.0,
+            omega=0.0,
+            friction=0.05,
+        )
+        report = _pair_report_for(TEST_ROOT / "parcel-pair-c5-d", [row])
+        event = report["events"][0]
+        limits = [
+            0.05 * impulse for impulse in event["contact_normal_impulses_ns"]
+        ]
+        magnitudes = [
+            math.hypot(impulse["x"], impulse["y"])
+            for impulse in event["contact_tangent_impulses_ns"]
+        ]
+>       assert event["contact_modes"] == ["slide", "slide"]
+E       AssertionError: assert ['stick', 'stick'] == ['slide', 'slide']
+E         
+E         At index 0 diff: 'stick' != 'slide'
+E         
+E         Full diff:
+E           [
+E         -     'slide',
+E         ?       ^ ^^
+E         +     'stick',
+E         ?       ^ ^^
+E         -     'slide',
+E         ?       ^ ^^
+E         +     'stick',
+E         ?       ^ ^^
+E           ]
+
+tests/test_outputs.py:1207: AssertionError
+___ test_c5_pair_energy_and_angular_state_match_reference[C5-ENERGY-PAIR-20] ___
+
+_case_label = 'C5-ENERGY-PAIR-20'
+
+    @pytest.mark.parametrize("_case_label", ["C5-ENERGY-PAIR-20"])
+    def test_c5_pair_energy_and_angular_state_match_reference(_case_label):
+        """C5-ENERGY-PAIR-20: 题面规定“`summary` 中的 `event_count` 统计事件数”。"""
+        case_id = "C5-ENERGY-PAIR-20"
+        row = _pair_row(
+            "pair-energy",
+            mass=4.2,
+            inertia=0.73,
+            vx=-0.8,
+            vy=-1.7,
+            omega=0.6,
+            r1x=-0.19,
+            r1y=-0.03,
+            r2x=0.24,
+            r2y=-0.11,
+            friction=0.34,
+        )
+        report = _pair_report_for(TEST_ROOT / "parcel-pair-c5-e", [row])
+        event = report["events"][0]
+        expected = _pair_reference(row)
+>       assert event["angular_velocity_after_rad_s"] == pytest.approx(
+            expected["angular_velocity_after_rad_s"], rel=1e-10
+        )
+E       assert 0.6 == 0.09523527237973756 ± 9.5e-12
+E         
+E         comparison failed
+E         Obtained: 0.6
+E         Expected: 0.09523527237973756 ± 9.5e-12
+
+tests/test_outputs.py:1231: AssertionError
+___ test_c5_pair_rejects_no_approach_and_coincident_points[C5-ADMISSION-21] ____
+
+_case_label = 'C5-ADMISSION-21'
+
+    @pytest.mark.parametrize("_case_label", ["C5-ADMISSION-21"])
+    def test_c5_pair_rejects_no_approach_and_coincident_points(_case_label):
+        """C5-ADMISSION-21: 题面规定“`stick_count`、`slide_count`、`inactive_count` 统计所有事件的两个接触模式”。"""
+        case_id = "C5-ADMISSION-21"
+        no_approach = _pair_row("no-approach", vx=0.0, vy=1.0, omega=0.0)
+        coincident = _pair_row(
+            "coincident",
+            r1x=0.1,
+            r1y=-0.1,
+            r2x=0.1,
+            r2y=-0.1,
+        )
+        first_input = TEST_ROOT / "parcel-pair-c5-f1.csv"
+        first_output = TEST_ROOT / "parcel-pair-c5-f1.json"
+        second_input = TEST_ROOT / "parcel-pair-c5-f2.csv"
+        second_output = TEST_ROOT / "parcel-pair-c5-f2.json"
+        _write_pair_csv(first_input, [no_approach])
+        _write_pair_csv(second_input, [coincident])
+        second_output.write_text("existing-pair-report\n", encoding="utf-8")
+        first_completed = _run_pair_cli(first_input, first_output)
+        second_completed = _run_pair_cli(second_input, second_output)
+>       assert first_completed.returncode != 0
+E       AssertionError: assert 0 != 0
+E        +  where 0 = CompletedProcess(args=['/Users/zhangchengcheng/Documents/Codex/2026-08-24/xh/work/bin/python3', '-m', 'impact_audit', 'pair', '--input', '/var/folders/jz/2ksjlg25597g30hd7ltt3nd00000gn/T/parcel-impact-checks-vz8j1ooj/parcel-pair-c5-f1.csv', '--output', '/var/folders/jz/2ksjlg25597g30hd7ltt3nd00000gn/T/parcel-impact-checks-vz8j1ooj/parcel-pair-c5-f1.json'], returncode=0, stdout='', stderr='').returncode
+
+tests/test_outputs.py:1266: AssertionError
+___________________ test_e2e_pair_batch_report[E2E-PAIR-22] ____________________
+
+_case_label = 'E2E-PAIR-22'
+
+    @pytest.mark.parametrize("_case_label", ["E2E-PAIR-22"])
+    def test_e2e_pair_batch_report(_case_label):
+        """E2E-PAIR-22: 题面规定“完成后的入口必须继续支持：”。"""
+        case_id = "E2E-PAIR-22"
+        input_path = WORKSPACE / "data" / "pallet_landings.csv"
+        output_path = TEST_ROOT / "parcel-pair-e2e.json"
+        completed = _run_pair_cli(input_path, output_path)
+        assert completed.returncode == 0, completed.stderr
+        report = json.loads(output_path.read_text(encoding="utf-8"))
+        with input_path.open(newline="", encoding="utf-8") as handle:
+            rows = list(csv.DictReader(handle))
+        expected_events = [_pair_reference(row) for row in rows]
+        modes = [mode for event in expected_events for mode in event["contact_modes"]]
+        expected_loss = sum(float(event["energy_loss_j"]) for event in expected_events)
+        assert len(report["events"]) == 8
+        assert [event["event_id"] for event in report["events"]] == [
+            str(row["event_id"]) for row in rows
+        ]
+        assert report["summary"]["event_count"] == 8
+>       assert report["summary"]["stick_count"] == modes.count("stick")
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       KeyError: 'stick_count'
+
+tests/test_outputs.py:1291: KeyError
+_________________ test_e2e_sample_batch_report[E2E-SINGLE-23] __________________
+
+_case_label = 'E2E-SINGLE-23'
+
+    @pytest.mark.parametrize("_case_label", ["E2E-SINGLE-23"])
+    def test_e2e_sample_batch_report(_case_label):
+        """E2E-SINGLE-23: 题面规定“事件按文件中的先后顺序处理：”。"""
+        case_id = "E2E-SINGLE-23"
+        input_path = WORKSPACE / "data" / "impact_events.csv"
+        output_path = TEST_ROOT / "parcel-impact-3d-e2e.json"
+        completed = _run_cli(input_path, output_path)
+        assert completed.returncode == 0, completed.stderr
+        report = json.loads(output_path.read_text(encoding="utf-8"))
+    
+        with input_path.open(newline="", encoding="utf-8") as handle:
+            rows = list(csv.DictReader(handle))
+        expected_events = [_reference(row) for row in rows]
+        expected_loss = sum(float(event["energy_loss_j"]) for event in expected_events)
+        expected_sticks = sum(event["contact_mode"] == "stick" for event in expected_events)
+        expected_slides = sum(event["contact_mode"] == "slide" for event in expected_events)
+    
+        assert len(report["events"]) == 12
+        assert [event["event_id"] for event in report["events"]] == [
+            str(row["event_id"]) for row in rows
+        ]
+        assert report["summary"]["event_count"] == 12
+>       assert report["summary"]["stick_count"] == expected_sticks
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       KeyError: 'stick_count'
+
+tests/test_outputs.py:1324: KeyError
+=========================== short test summary info ============================
+FAILED tests/test_outputs.py::test_c1_offset_matches_scalar_limit[C1-OFFSET-02] - assert 9.0 == 6.617647058823529 ± 6.6e-10
+  
+  comparison failed
+  Obtained: 9.0
+  Expected: 6.617647058823529 ± 6.6e-10
+FAILED tests/test_outputs.py::test_c1_inertia_cross_terms_change_normal_impulse[C1-CROSS-03] - assert 3.5748 == 3.5384512018004624 ± 3.5e-10
+  
+  comparison failed
+  Obtained: 3.5748
+  Expected: 3.5384512018004624 ± 3.5e-10
+FAILED tests/test_outputs.py::test_c1_oblique_contact_updates_full_spin[C1-SPIN-04] - AssertionError: assert {'x': 0.18159999999999976, 'y': 0.30879999999999996, 'z': 0.8} == approx({'x': 0.14754005128341152 ± 1.5e-11, 'y': 0.2633867350445489 ± 2.6e-11, 'z': 0.8 ± 8.0e-11})
+  
+  comparison failed. Mismatched elements: 2 / 3:
+  Max absolute difference: 0.04541326495545106
+  Max relative difference: 0.23085222229699554
+  Index | Obtained            | Expected                     
+  x     | 0.18159999999999976 | 0.14754005128341152 ± 1.5e-11
+  y     | 0.30879999999999996 | 0.2633867350445489 ± 2.6e-11
+FAILED tests/test_outputs.py::test_c2_stick_cancels_contact_tangent_velocity[C2-STICK-06] - assert 0.22365151463828722 == 0.0 ± 1.0e-09
+  
+  comparison failed
+  Obtained: 0.22365151463828722
+  Expected: 0.0 ± 1.0e-09
+FAILED tests/test_outputs.py::test_c2_slide_obeys_vector_friction_cone[C2-SLIDE-07] - AssertionError: assert 'stick' == 'slide'
+  
+  - slide
+  + stick
+FAILED tests/test_outputs.py::test_c2_friction_changes_all_spatial_angular_components[C2-FRICTION-SPIN-08] - AssertionError: assert {'x': 0.0, 'y': 0.0, 'z': 0.0} == approx({'x': 0.4811270016911565 ± 4.8e-11, 'y': -0.10054684810673602 ± 1.0e-11, 'z': -0.45510792136843237 ± 4.6e-11})
+  
+  comparison failed. Mismatched elements: 3 / 3:
+  Max absolute difference: 0.4811270016911565
+  Max relative difference: 1.0
+  Index | Obtained | Expected                      
+  x     | 0.0      | 0.4811270016911565 ± 4.8e-11  
+  y     | 0.0      | -0.10054684810673602 ± 1.0e-11
+  z     | 0.0      | -0.45510792136843237 ± 4.6e-11
+FAILED tests/test_outputs.py::test_c2_tangent_matrix_retains_cross_coupling[C2-TANGENT-MATRIX-09] - AssertionError: assert {'x': 0.0, 'y': 0.0, 'z': 0.0} == approx({'x': 1.8108322290905237 ± 1.8e-10, 'y': 0.05748275343480941 ± 5.7e-12, 'z': -0.78038485102985 ± 7.8e-11})
+  
+  comparison failed. Mismatched elements: 3 / 3:
+  Max absolute difference: 1.8108322290905237
+  Max relative difference: 1.0
+  Index | Obtained | Expected                     
+  x     | 0.0      | 1.8108322290905237 ± 1.8e-10 
+  y     | 0.0      | 0.05748275343480941 ± 5.7e-12
+  z     | 0.0      | -0.78038485102985 ± 7.8e-11
+FAILED tests/test_outputs.py::test_c3_energy_uses_full_inertia_tensor[C3-ENERGY-10] - KeyError: 'kinetic_energy_before_j'
+FAILED tests/test_outputs.py::test_c3_summary_aggregates_modes_and_energy[C3-SUMMARY-11] - KeyError: 'stick_count'
+FAILED tests/test_outputs.py::test_c4_nonunit_normal_rejected_without_output[C4-NORMAL-12] - AssertionError: assert 0 != 0
+ +  where 0 = CompletedProcess(args=['/Users/zhangchengcheng/Documents/Codex/2026-08-24/xh/work/bin/python3', '-m', 'impact_audit', '--input', '/var/folders/jz/2ksjlg25597g30hd7ltt3nd00000gn/T/parcel-impact-checks-vz8j1ooj/parcel-impact-3d-c4-a.csv', '--output', '/var/folders/jz/2ksjlg25597g30hd7ltt3nd00000gn/T/parcel-impact-checks-vz8j1ooj/parcel-impact-3d-c4-a.json'], returncode=0, stdout='', stderr='').returncode
+FAILED tests/test_outputs.py::test_c4_nonpositive_inertia_rejected[C4-INERTIA-13] - AssertionError: assert 0 != 0
+ +  where 0 = CompletedProcess(args=['/Users/zhangchengcheng/Documents/Codex/2026-08-24/xh/work/bin/python3', '-m', 'impact_audit', '--input', '/var/folders/jz/2ksjlg25597g30hd7ltt3nd00000gn/T/parcel-impact-checks-vz8j1ooj/parcel-impact-3d-c4-b.csv', '--output', '/var/folders/jz/2ksjlg25597g30hd7ltt3nd00000gn/T/parcel-impact-checks-vz8j1ooj/parcel-impact-3d-c4-b.json'], returncode=0, stdout='', stderr='').returncode
+FAILED tests/test_outputs.py::test_c4_separating_contact_preserves_existing_output[C4-APPROACH-14] - AssertionError: assert 0 != 0
+ +  where 0 = CompletedProcess(args=['/Users/zhangchengcheng/Documents/Codex/2026-08-24/xh/work/bin/python3', '-m', 'impact_audit', '--input', '/var/folders/jz/2ksjlg25597g30hd7ltt3nd00000gn/T/parcel-impact-checks-vz8j1ooj/parcel-impact-3d-c4-c.csv', '--output', '/var/folders/jz/2ksjlg25597g30hd7ltt3nd00000gn/T/parcel-impact-checks-vz8j1ooj/parcel-impact-3d-c4-c.json'], returncode=0, stdout='', stderr='').returncode
+FAILED tests/test_outputs.py::test_c5_one_sided_contact_sets_other_impulse_to_zero[C5-ONE-SIDED-17] - assert [1.7999999999999998, 1.7999999999999998] == approx([8.526315789473683 ± 8.5e-10, 0.0 ± 1.0e-12])
+  
+  comparison failed. Mismatched elements: 2 / 2:
+  Max absolute difference: 6.726315789473683
+  Max relative difference: 3.736842105263158
+  Index | Obtained           | Expected                   
+  0     | 1.7999999999999998 | 8.526315789473683 ± 8.5e-10
+  1     | 1.7999999999999998 | 0.0 ± 1.0e-12
+FAILED tests/test_outputs.py::test_c5_two_point_stick_uses_joint_tangent_matrix[C5-JOINT-STICK-18] - AssertionError: assert [{'x': 0.0, 'y': 0.0}, {'x': 0.0, 'y': 0.0}] == approx([{'x': -0.04499999999999963, 'y': 0.0}, {'x': 0.04499999999999965, 'y': -0.0}])
+  
+  (pytest_assertion plugin: representation of details failed: /Users/zhangchengcheng/Documents/Codex/2026-08-24/xh/work/tools/miniforge2/lib/python3.14/site-packages/_pytest/python_api.py:350: AttributeError: 'list' object has no attribute 'expected'.
+   Probably an object has a faulty __repr__.)
+FAILED tests/test_outputs.py::test_c5_two_slide_impulses_obey_individual_box_limits[C5-BOX-LIMIT-19] - AssertionError: assert ['stick', 'stick'] == ['slide', 'slide']
+  
+  At index 0 diff: 'stick' != 'slide'
+  
+  Full diff:
+    [
+  -     'slide',
+  ?       ^ ^^
+  +     'stick',
+  ?       ^ ^^
+  -     'slide',
+  ?       ^ ^^
+  +     'stick',
+  ?       ^ ^^
+    ]
+FAILED tests/test_outputs.py::test_c5_pair_energy_and_angular_state_match_reference[C5-ENERGY-PAIR-20] - assert 0.6 == 0.09523527237973756 ± 9.5e-12
+  
+  comparison failed
+  Obtained: 0.6
+  Expected: 0.09523527237973756 ± 9.5e-12
+FAILED tests/test_outputs.py::test_c5_pair_rejects_no_approach_and_coincident_points[C5-ADMISSION-21] - AssertionError: assert 0 != 0
+ +  where 0 = CompletedProcess(args=['/Users/zhangchengcheng/Documents/Codex/2026-08-24/xh/work/bin/python3', '-m', 'impact_audit', 'pair', '--input', '/var/folders/jz/2ksjlg25597g30hd7ltt3nd00000gn/T/parcel-impact-checks-vz8j1ooj/parcel-pair-c5-f1.csv', '--output', '/var/folders/jz/2ksjlg25597g30hd7ltt3nd00000gn/T/parcel-impact-checks-vz8j1ooj/parcel-pair-c5-f1.json'], returncode=0, stdout='', stderr='').returncode
+FAILED tests/test_outputs.py::test_e2e_pair_batch_report[E2E-PAIR-22] - KeyError: 'stick_count'
+FAILED tests/test_outputs.py::test_e2e_sample_batch_report[E2E-SINGLE-23] - KeyError: 'stick_count'
+========================= 19 failed, 5 passed in 1.77s =========================

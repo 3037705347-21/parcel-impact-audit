@@ -1,0 +1,61 @@
+============================= test session starts ==============================
+platform darwin -- Python 3.14.6, pytest-9.1.1, pluggy-1.6.0 -- /Users/zhangchengcheng/Documents/Codex/2026-08-24/xh/work/bin/python3
+cachedir: .pytest_cache
+hypothesis profile 'default'
+rootdir: /Users/zhangchengcheng/harbor/parcel-impact-audit
+plugins: httpx2-pytest-2.0.0, mock-3.15.1, syrupy-6.1.1, flaky-3.8.1, asyncio-1.4.0, recording-0.14.0, anyio-4.14.2, env-1.7.1, factoryboy-2.8.1, hypothesis-6.167.1, respx-0.23.1, requests-mock-1.12.1, Faker-40.39.0
+asyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function
+collecting ... collected 1 item
+
+tests/test_outputs.py::test_c4_atomic_success_replaces_stale_report[C4-ATOMIC-24] FAILED [100%]
+
+=================================== FAILURES ===================================
+__________ test_c4_atomic_success_replaces_stale_report[C4-ATOMIC-24] __________
+
+_case_label = 'C4-ATOMIC-24'
+
+    @pytest.mark.parametrize("_case_label", ["C4-ATOMIC-24"])
+    def test_c4_atomic_success_replaces_stale_report(_case_label):
+        """C4-ATOMIC-24: 题面规定“目标 JSON 必须在全部事件成功求解后整体原子替换，不能留下截断内容。”"""
+        case_id = "C4-ATOMIC-24"
+        row = _row("atomic", vx=-2.0, vy=0.0, vz=0.0, friction=0.2)
+        input_path = TEST_ROOT / "parcel-impact-3d-c4-atomic.csv"
+        output_path = TEST_ROOT / "parcel-impact-3d-c4-atomic.json"
+        _write_csv(input_path, [row])
+        output_path.write_text("stale-report\n", encoding="utf-8")
+        completed = _run_cli(input_path, output_path)
+>       report = json.loads(output_path.read_text(encoding="utf-8"))
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_outputs.py:1102: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+../../Documents/Codex/2026-08-24/xh/work/tools/miniforge2/lib/python3.14/json/__init__.py:352: in loads
+    return _default_decoder.decode(s)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+../../Documents/Codex/2026-08-24/xh/work/tools/miniforge2/lib/python3.14/json/decoder.py:345: in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <json.decoder.JSONDecoder object at 0x103f04830>, s = 'stale-report\n'
+idx = 0
+
+    def raw_decode(self, s, idx=0):
+        """Decode a JSON document from ``s`` (a ``str`` beginning with
+        a JSON document) and return a 2-tuple of the Python
+        representation and the index in ``s`` where the document ended.
+    
+        This can be used to decode a JSON document from a string that may
+        have extraneous data at the end.
+    
+        """
+        try:
+            obj, end = self.scan_once(s, idx)
+        except StopIteration as err:
+>           raise JSONDecodeError("Expecting value", s, err.value) from None
+E           json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+
+../../Documents/Codex/2026-08-24/xh/work/tools/miniforge2/lib/python3.14/json/decoder.py:363: JSONDecodeError
+=========================== short test summary info ============================
+FAILED tests/test_outputs.py::test_c4_atomic_success_replaces_stale_report[C4-ATOMIC-24] - json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+============================== 1 failed in 0.31s ===============================

@@ -1,0 +1,35 @@
+============================= test session starts ==============================
+platform darwin -- Python 3.14.6, pytest-9.1.1, pluggy-1.6.0 -- /Users/zhangchengcheng/Documents/Codex/2026-08-24/xh/work/bin/python3
+cachedir: .pytest_cache
+hypothesis profile 'default'
+rootdir: /Users/zhangchengcheng/harbor/parcel-impact-audit
+plugins: httpx2-pytest-2.0.0, mock-3.15.1, syrupy-6.1.1, flaky-3.8.1, asyncio-1.4.0, recording-0.14.0, anyio-4.14.2, env-1.7.1, factoryboy-2.8.1, hypothesis-6.167.1, respx-0.23.1, requests-mock-1.12.1, Faker-40.39.0
+asyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function
+collecting ... collected 1 item
+
+tests/test_outputs.py::test_c4_nonunit_normal_rejected_without_output[C4-NORMAL-12] FAILED [100%]
+
+=================================== FAILURES ===================================
+_________ test_c4_nonunit_normal_rejected_without_output[C4-NORMAL-12] _________
+
+_case_label = 'C4-NORMAL-12'
+
+    @pytest.mark.parametrize("_case_label", ["C4-NORMAL-12"])
+    def test_c4_nonunit_normal_rejected_without_output(_case_label):
+        """C4-NORMAL-12: 题面规定“法向模长偏离 1 超过 `1e-9`”。"""
+        case_id = "C4-NORMAL-12"
+        row = _row("bad-normal", nx=1.2)
+        input_path = TEST_ROOT / "parcel-impact-3d-c4-a.csv"
+        output_path = TEST_ROOT / "parcel-impact-3d-c4-a.json"
+        output_path.unlink(missing_ok=True)
+        _write_csv(input_path, [row])
+        completed = _run_cli(input_path, output_path)
+>       assert completed.returncode != 0
+E       AssertionError: assert 0 != 0
+E        +  where 0 = CompletedProcess(args=['/Users/zhangchengcheng/Documents/Codex/2026-08-24/xh/work/bin/python3', '-m', 'impact_audit', '--input', '/var/folders/jz/2ksjlg25597g30hd7ltt3nd00000gn/T/parcel-impact-checks-2sj4r3bh/parcel-impact-3d-c4-a.csv', '--output', '/var/folders/jz/2ksjlg25597g30hd7ltt3nd00000gn/T/parcel-impact-checks-2sj4r3bh/parcel-impact-3d-c4-a.json'], returncode=0, stdout='{}\n', stderr='').returncode
+
+tests/test_outputs.py:1060: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_outputs.py::test_c4_nonunit_normal_rejected_without_output[C4-NORMAL-12] - AssertionError: assert 0 != 0
+ +  where 0 = CompletedProcess(args=['/Users/zhangchengcheng/Documents/Codex/2026-08-24/xh/work/bin/python3', '-m', 'impact_audit', '--input', '/var/folders/jz/2ksjlg25597g30hd7ltt3nd00000gn/T/parcel-impact-checks-2sj4r3bh/parcel-impact-3d-c4-a.csv', '--output', '/var/folders/jz/2ksjlg25597g30hd7ltt3nd00000gn/T/parcel-impact-checks-2sj4r3bh/parcel-impact-3d-c4-a.json'], returncode=0, stdout='{}\n', stderr='').returncode
+============================== 1 failed in 0.29s ===============================

@@ -1,0 +1,46 @@
+============================= test session starts ==============================
+platform darwin -- Python 3.14.6, pytest-9.1.1, pluggy-1.6.0 -- /Users/zhangchengcheng/Documents/Codex/2026-08-24/xh/work/bin/python3
+cachedir: .pytest_cache
+hypothesis profile 'default'
+rootdir: /Users/zhangchengcheng/harbor/parcel-impact-audit
+plugins: httpx2-pytest-2.0.0, mock-3.15.1, syrupy-6.1.1, flaky-3.8.1, asyncio-1.4.0, recording-0.14.0, anyio-4.14.2, env-1.7.1, factoryboy-2.8.1, hypothesis-6.167.1, respx-0.23.1, requests-mock-1.12.1, Faker-40.39.0
+asyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function
+collecting ... collected 1 item
+
+tests/test_outputs.py::test_c5_pair_rejects_no_approach_and_coincident_points[C5-ADMISSION-21] FAILED [100%]
+
+=================================== FAILURES ===================================
+___ test_c5_pair_rejects_no_approach_and_coincident_points[C5-ADMISSION-21] ____
+
+_case_label = 'C5-ADMISSION-21'
+
+    @pytest.mark.parametrize("_case_label", ["C5-ADMISSION-21"])
+    def test_c5_pair_rejects_no_approach_and_coincident_points(_case_label):
+        """C5-ADMISSION-21: 题面规定“`stick_count`、`slide_count`、`inactive_count` 统计所有事件的两个接触模式”。"""
+        case_id = "C5-ADMISSION-21"
+        no_approach = _pair_row("no-approach", vx=0.0, vy=1.0, omega=0.0)
+        coincident = _pair_row(
+            "coincident",
+            r1x=0.1,
+            r1y=-0.1,
+            r2x=0.1,
+            r2y=-0.1,
+        )
+        first_input = TEST_ROOT / "parcel-pair-c5-f1.csv"
+        first_output = TEST_ROOT / "parcel-pair-c5-f1.json"
+        second_input = TEST_ROOT / "parcel-pair-c5-f2.csv"
+        second_output = TEST_ROOT / "parcel-pair-c5-f2.json"
+        _write_pair_csv(first_input, [no_approach])
+        _write_pair_csv(second_input, [coincident])
+        second_output.write_text("existing-pair-report\n", encoding="utf-8")
+        first_completed = _run_pair_cli(first_input, first_output)
+        second_completed = _run_pair_cli(second_input, second_output)
+>       assert first_completed.returncode != 0
+E       AssertionError: assert 0 != 0
+E        +  where 0 = CompletedProcess(args=['/Users/zhangchengcheng/Documents/Codex/2026-08-24/xh/work/bin/python3', '-m', 'impact_audit', 'pair', '--input', '/var/folders/jz/2ksjlg25597g30hd7ltt3nd00000gn/T/parcel-impact-checks-mciw0sut/parcel-pair-c5-f1.csv', '--output', '/var/folders/jz/2ksjlg25597g30hd7ltt3nd00000gn/T/parcel-impact-checks-mciw0sut/parcel-pair-c5-f1.json'], returncode=0, stdout='{}\n', stderr='').returncode
+
+tests/test_outputs.py:1266: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_outputs.py::test_c5_pair_rejects_no_approach_and_coincident_points[C5-ADMISSION-21] - AssertionError: assert 0 != 0
+ +  where 0 = CompletedProcess(args=['/Users/zhangchengcheng/Documents/Codex/2026-08-24/xh/work/bin/python3', '-m', 'impact_audit', 'pair', '--input', '/var/folders/jz/2ksjlg25597g30hd7ltt3nd00000gn/T/parcel-impact-checks-mciw0sut/parcel-pair-c5-f1.csv', '--output', '/var/folders/jz/2ksjlg25597g30hd7ltt3nd00000gn/T/parcel-impact-checks-mciw0sut/parcel-pair-c5-f1.json'], returncode=0, stdout='{}\n', stderr='').returncode
+============================== 1 failed in 0.35s ===============================
