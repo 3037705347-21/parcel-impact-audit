@@ -32,7 +32,7 @@ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
 
-self = PosixPath('/var/folders/jz/2ksjlg25597g30hd7ltt3nd00000gn/T/parcel-impact-checks-7sjkux9x/parcel-pair-e2e.json')
+self = PosixPath('/var/folders/jz/2ksjlg25597g30hd7ltt3nd00000gn/T/parcel-impact-checks-_8u9_7vc/parcel-pair-e2e.json')
 mode = 'r', buffering = -1, encoding = 'utf-8', errors = None, newline = None
 
     def open(self, mode='r', buffering=-1, encoding=None,
@@ -45,9 +45,9 @@ mode = 'r', buffering = -1, encoding = 'utf-8', errors = None, newline = None
             encoding = io.text_encoding(encoding)
 >       return io.open(self, mode, buffering, encoding, errors, newline)
                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-E       FileNotFoundError: [Errno 2] No such file or directory: '/var/folders/jz/2ksjlg25597g30hd7ltt3nd00000gn/T/parcel-impact-checks-7sjkux9x/parcel-pair-e2e.json'
+E       FileNotFoundError: [Errno 2] No such file or directory: '/var/folders/jz/2ksjlg25597g30hd7ltt3nd00000gn/T/parcel-impact-checks-_8u9_7vc/parcel-pair-e2e.json'
 
 ../../Documents/Codex/2026-08-24/xh/work/tools/miniforge2/lib/python3.14/pathlib/__init__.py:771: FileNotFoundError
 =========================== short test summary info ============================
-FAILED tests/test_outputs.py::test_e2e_pair_batch_report[E2E-PAIR-22] - FileNotFoundError: [Errno 2] No such file or directory: '/var/folders/jz/2ksjlg25597g30hd7ltt3nd00000gn/T/parcel-impact-checks-7sjkux9x/parcel-pair-e2e.json'
-============================== 1 failed in 0.30s ===============================
+FAILED tests/test_outputs.py::test_e2e_pair_batch_report[E2E-PAIR-22] - FileNotFoundError: [Errno 2] No such file or directory: '/var/folders/jz/2ksjlg25597g30hd7ltt3nd00000gn/T/parcel-impact-checks-_8u9_7vc/parcel-pair-e2e.json'
+============================== 1 failed in 0.38s ===============================

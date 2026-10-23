@@ -5,31 +5,32 @@ hypothesis profile 'default'
 rootdir: /Users/zhangchengcheng/harbor/parcel-impact-audit
 plugins: httpx2-pytest-2.0.0, mock-3.15.1, syrupy-6.1.1, flaky-3.8.1, asyncio-1.4.0, recording-0.14.0, anyio-4.14.2, env-1.7.1, factoryboy-2.8.1, hypothesis-6.167.1, respx-0.23.1, requests-mock-1.12.1, Faker-40.39.0
 asyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function
-collecting ... collected 24 items
+collecting ... collected 25 items
 
 tests/test_outputs.py::test_c1_centered_spherical_impulse[C1-SPHERE-01] PASSED [  4%]
 tests/test_outputs.py::test_c1_offset_matches_scalar_limit[C1-OFFSET-02] PASSED [  8%]
 tests/test_outputs.py::test_c1_inertia_cross_terms_change_normal_impulse[C1-CROSS-03] PASSED [ 12%]
 tests/test_outputs.py::test_c1_oblique_contact_updates_full_spin[C1-SPIN-04] PASSED [ 16%]
 tests/test_outputs.py::test_c2_normal_aligned_arm_has_no_tangent_impulse[C2-ZERO-05] PASSED [ 20%]
-tests/test_outputs.py::test_c2_stick_cancels_contact_tangent_velocity[C2-STICK-06] PASSED [ 25%]
-tests/test_outputs.py::test_c2_slide_obeys_vector_friction_cone[C2-SLIDE-07] PASSED [ 29%]
-tests/test_outputs.py::test_c2_friction_changes_all_spatial_angular_components[C2-FRICTION-SPIN-08] PASSED [ 33%]
-tests/test_outputs.py::test_c2_tangent_matrix_retains_cross_coupling[C2-TANGENT-MATRIX-09] PASSED [ 37%]
-tests/test_outputs.py::test_c3_energy_uses_full_inertia_tensor[C3-ENERGY-10] PASSED [ 41%]
-tests/test_outputs.py::test_c3_summary_aggregates_modes_and_energy[C3-SUMMARY-11] PASSED [ 45%]
-tests/test_outputs.py::test_c4_nonunit_normal_rejected_without_output[C4-NORMAL-12] PASSED [ 50%]
-tests/test_outputs.py::test_c4_nonpositive_inertia_rejected[C4-INERTIA-13] PASSED [ 54%]
-tests/test_outputs.py::test_c4_separating_contact_preserves_existing_output[C4-APPROACH-14] PASSED [ 58%]
-tests/test_outputs.py::test_c4_atomic_success_replaces_stale_report[C4-ATOMIC-24] PASSED [ 62%]
-tests/test_outputs.py::test_c4_missing_columns_and_nonfinite_values_rejected[C4-SCHEMA-15] PASSED [ 66%]
-tests/test_outputs.py::test_c5_both_contact_normals_are_coupled[C5-NORMAL-PAIR-16] PASSED [ 70%]
-tests/test_outputs.py::test_c5_one_sided_contact_sets_other_impulse_to_zero[C5-ONE-SIDED-17] PASSED [ 75%]
-tests/test_outputs.py::test_c5_two_point_stick_uses_joint_tangent_matrix[C5-JOINT-STICK-18] PASSED [ 79%]
-tests/test_outputs.py::test_c5_two_slide_impulses_obey_individual_box_limits[C5-BOX-LIMIT-19] PASSED [ 83%]
-tests/test_outputs.py::test_c5_pair_energy_and_angular_state_match_reference[C5-ENERGY-PAIR-20] PASSED [ 87%]
-tests/test_outputs.py::test_c5_pair_rejects_no_approach_and_coincident_points[C5-ADMISSION-21] PASSED [ 91%]
-tests/test_outputs.py::test_e2e_pair_batch_report[E2E-PAIR-22] PASSED    [ 95%]
-tests/test_outputs.py::test_e2e_sample_batch_report[E2E-SINGLE-23] PASSED [100%]
+tests/test_outputs.py::test_c2_stick_cancels_contact_tangent_velocity[C2-STICK-06] PASSED [ 24%]
+tests/test_outputs.py::test_c2_slide_obeys_vector_friction_cone[C2-SLIDE-07] PASSED [ 28%]
+tests/test_outputs.py::test_c2_friction_changes_all_spatial_angular_components[C2-FRICTION-SPIN-08] PASSED [ 32%]
+tests/test_outputs.py::test_c2_tangent_matrix_retains_cross_coupling[C2-TANGENT-MATRIX-09] PASSED [ 36%]
+tests/test_outputs.py::test_c3_energy_uses_full_inertia_tensor[C3-ENERGY-10] PASSED [ 40%]
+tests/test_outputs.py::test_c3_summary_aggregates_modes_and_energy[C3-SUMMARY-11] PASSED [ 44%]
+tests/test_outputs.py::test_c4_nonunit_normal_rejected_without_output[C4-NORMAL-12] PASSED [ 48%]
+tests/test_outputs.py::test_c4_nonpositive_inertia_rejected[C4-INERTIA-13] PASSED [ 52%]
+tests/test_outputs.py::test_c4_separating_contact_preserves_existing_output[C4-APPROACH-14] PASSED [ 56%]
+tests/test_outputs.py::test_c4_atomic_success_replaces_stale_report[C4-ATOMIC-24] PASSED [ 60%]
+tests/test_outputs.py::test_c4_missing_columns_and_nonfinite_values_rejected[C4-SCHEMA-15] PASSED [ 64%]
+tests/test_outputs.py::test_c5_both_contact_normals_are_coupled[C5-NORMAL-PAIR-16] PASSED [ 68%]
+tests/test_outputs.py::test_c5_one_sided_contact_sets_other_impulse_to_zero[C5-ONE-SIDED-17] PASSED [ 72%]
+tests/test_outputs.py::test_c5_two_point_stick_uses_joint_tangent_matrix[C5-JOINT-STICK-18] PASSED [ 76%]
+tests/test_outputs.py::test_c5_two_slide_impulses_obey_individual_box_limits[C5-BOX-LIMIT-19] PASSED [ 80%]
+tests/test_outputs.py::test_c5_pair_energy_and_angular_state_match_reference[C5-ENERGY-PAIR-20] PASSED [ 84%]
+tests/test_outputs.py::test_c5_pair_rejects_no_approach_and_coincident_points[C5-ADMISSION-21] PASSED [ 88%]
+tests/test_outputs.py::test_e2e_pair_batch_report[E2E-PAIR-22] PASSED    [ 92%]
+tests/test_outputs.py::test_e2e_sample_batch_report[E2E-SINGLE-23] PASSED [ 96%]
+tests/test_outputs.py::test_f7_rejected_released_rejected_net_counts[F7-STATE-25] PASSED [100%]
 
-============================== 24 passed in 1.79s ==============================
+============================== 25 passed in 1.61s ==============================

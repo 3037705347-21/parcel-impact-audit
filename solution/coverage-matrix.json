@@ -5,11 +5,11 @@
   "reviewed_tests_after_authoring": true,
   "reviewed_atomicity": true,
   "reviewed_category_mapping": true,
-  "instruction_sha256": "6420744cc6321396d843414ddbcbf2877dd6a1787f8df08d5ccd4cd34b82c7f3",
-  "tests_sha256": "6701e7b050383ad05d25acc6a2b6e05108edad3909aa18870b317e139d4374a6",
-  "oracle_stdout_sha256": "cd8f77438bfbe00df47e4f05b7e1c281e0d338100ae14729162da79cbd421aba",
-  "oracle_cases_sha256": "00cab3b5651158969e1fde9d62b9056fde28648e92c47db5781025c928f5d8d5",
-  "nop_stdout_sha256": "9e6a8fc776dc34a29c99efc3cf87462e63b53a2a3b581cb668ff8dc7bf5237f3",
+  "instruction_sha256": "1492a43b5505270c719540d8245ffe9944b494fc9eda032384f35127b7116066",
+  "tests_sha256": "d596ed9cb5a1dcb652834986c0676dae99a56ed88dc9f28a29285483eb2791bf",
+  "oracle_stdout_sha256": "43064bc0fbac79b16b71d30718a1b6faeac12ae40da0bb4dc3445785ec85dd92",
+  "oracle_cases_sha256": "f00594fd7d1dfac95e8e77f10527b88204156e6a8056024bddbc7ce111d0e72c",
+  "nop_stdout_sha256": "d67034c1f4e33b685a12942da46febe6b37c66164abd9cb9c9b0e0fcb0f9bdae",
   "coverage_packages": {
     "json_text": {
       "applicable": true,

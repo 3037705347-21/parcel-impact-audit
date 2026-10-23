@@ -5,32 +5,33 @@ hypothesis profile 'default'
 rootdir: /Users/zhangchengcheng/harbor/parcel-impact-audit
 plugins: httpx2-pytest-2.0.0, mock-3.15.1, syrupy-6.1.1, flaky-3.8.1, asyncio-1.4.0, recording-0.14.0, anyio-4.14.2, env-1.7.1, factoryboy-2.8.1, hypothesis-6.167.1, respx-0.23.1, requests-mock-1.12.1, Faker-40.39.0
 asyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function
-collecting ... collected 24 items
+collecting ... collected 25 items
 
 tests/test_outputs.py::test_c1_centered_spherical_impulse[C1-SPHERE-01] PASSED [  4%]
 tests/test_outputs.py::test_c1_offset_matches_scalar_limit[C1-OFFSET-02] FAILED [  8%]
 tests/test_outputs.py::test_c1_inertia_cross_terms_change_normal_impulse[C1-CROSS-03] FAILED [ 12%]
 tests/test_outputs.py::test_c1_oblique_contact_updates_full_spin[C1-SPIN-04] FAILED [ 16%]
 tests/test_outputs.py::test_c2_normal_aligned_arm_has_no_tangent_impulse[C2-ZERO-05] PASSED [ 20%]
-tests/test_outputs.py::test_c2_stick_cancels_contact_tangent_velocity[C2-STICK-06] FAILED [ 25%]
-tests/test_outputs.py::test_c2_slide_obeys_vector_friction_cone[C2-SLIDE-07] FAILED [ 29%]
-tests/test_outputs.py::test_c2_friction_changes_all_spatial_angular_components[C2-FRICTION-SPIN-08] FAILED [ 33%]
-tests/test_outputs.py::test_c2_tangent_matrix_retains_cross_coupling[C2-TANGENT-MATRIX-09] FAILED [ 37%]
-tests/test_outputs.py::test_c3_energy_uses_full_inertia_tensor[C3-ENERGY-10] FAILED [ 41%]
-tests/test_outputs.py::test_c3_summary_aggregates_modes_and_energy[C3-SUMMARY-11] FAILED [ 45%]
-tests/test_outputs.py::test_c4_nonunit_normal_rejected_without_output[C4-NORMAL-12] FAILED [ 50%]
-tests/test_outputs.py::test_c4_nonpositive_inertia_rejected[C4-INERTIA-13] FAILED [ 54%]
-tests/test_outputs.py::test_c4_separating_contact_preserves_existing_output[C4-APPROACH-14] FAILED [ 58%]
-tests/test_outputs.py::test_c4_atomic_success_replaces_stale_report[C4-ATOMIC-24] PASSED [ 62%]
-tests/test_outputs.py::test_c4_missing_columns_and_nonfinite_values_rejected[C4-SCHEMA-15] PASSED [ 66%]
-tests/test_outputs.py::test_c5_both_contact_normals_are_coupled[C5-NORMAL-PAIR-16] PASSED [ 70%]
-tests/test_outputs.py::test_c5_one_sided_contact_sets_other_impulse_to_zero[C5-ONE-SIDED-17] FAILED [ 75%]
-tests/test_outputs.py::test_c5_two_point_stick_uses_joint_tangent_matrix[C5-JOINT-STICK-18] FAILED [ 79%]
-tests/test_outputs.py::test_c5_two_slide_impulses_obey_individual_box_limits[C5-BOX-LIMIT-19] FAILED [ 83%]
-tests/test_outputs.py::test_c5_pair_energy_and_angular_state_match_reference[C5-ENERGY-PAIR-20] FAILED [ 87%]
-tests/test_outputs.py::test_c5_pair_rejects_no_approach_and_coincident_points[C5-ADMISSION-21] FAILED [ 91%]
-tests/test_outputs.py::test_e2e_pair_batch_report[E2E-PAIR-22] FAILED    [ 95%]
-tests/test_outputs.py::test_e2e_sample_batch_report[E2E-SINGLE-23] FAILED [100%]
+tests/test_outputs.py::test_c2_stick_cancels_contact_tangent_velocity[C2-STICK-06] FAILED [ 24%]
+tests/test_outputs.py::test_c2_slide_obeys_vector_friction_cone[C2-SLIDE-07] FAILED [ 28%]
+tests/test_outputs.py::test_c2_friction_changes_all_spatial_angular_components[C2-FRICTION-SPIN-08] FAILED [ 32%]
+tests/test_outputs.py::test_c2_tangent_matrix_retains_cross_coupling[C2-TANGENT-MATRIX-09] FAILED [ 36%]
+tests/test_outputs.py::test_c3_energy_uses_full_inertia_tensor[C3-ENERGY-10] FAILED [ 40%]
+tests/test_outputs.py::test_c3_summary_aggregates_modes_and_energy[C3-SUMMARY-11] FAILED [ 44%]
+tests/test_outputs.py::test_c4_nonunit_normal_rejected_without_output[C4-NORMAL-12] FAILED [ 48%]
+tests/test_outputs.py::test_c4_nonpositive_inertia_rejected[C4-INERTIA-13] FAILED [ 52%]
+tests/test_outputs.py::test_c4_separating_contact_preserves_existing_output[C4-APPROACH-14] FAILED [ 56%]
+tests/test_outputs.py::test_c4_atomic_success_replaces_stale_report[C4-ATOMIC-24] PASSED [ 60%]
+tests/test_outputs.py::test_c4_missing_columns_and_nonfinite_values_rejected[C4-SCHEMA-15] PASSED [ 64%]
+tests/test_outputs.py::test_c5_both_contact_normals_are_coupled[C5-NORMAL-PAIR-16] PASSED [ 68%]
+tests/test_outputs.py::test_c5_one_sided_contact_sets_other_impulse_to_zero[C5-ONE-SIDED-17] FAILED [ 72%]
+tests/test_outputs.py::test_c5_two_point_stick_uses_joint_tangent_matrix[C5-JOINT-STICK-18] FAILED [ 76%]
+tests/test_outputs.py::test_c5_two_slide_impulses_obey_individual_box_limits[C5-BOX-LIMIT-19] FAILED [ 80%]
+tests/test_outputs.py::test_c5_pair_energy_and_angular_state_match_reference[C5-ENERGY-PAIR-20] FAILED [ 84%]
+tests/test_outputs.py::test_c5_pair_rejects_no_approach_and_coincident_points[C5-ADMISSION-21] FAILED [ 88%]
+tests/test_outputs.py::test_e2e_pair_batch_report[E2E-PAIR-22] FAILED    [ 92%]
+tests/test_outputs.py::test_e2e_sample_batch_report[E2E-SINGLE-23] FAILED [ 96%]
+tests/test_outputs.py::test_f7_rejected_released_rejected_net_counts[F7-STATE-25] FAILED [100%]
 
 =================================== FAILURES ===================================
 ______________ test_c1_offset_matches_scalar_limit[C1-OFFSET-02] _______________
@@ -388,7 +389,7 @@ _case_label = 'C4-NORMAL-12'
         completed = _run_cli(input_path, output_path)
 >       assert completed.returncode != 0
 E       AssertionError: assert 0 != 0
-E        +  where 0 = CompletedProcess(args=['/Users/zhangchengcheng/Documents/Codex/2026-08-24/xh/work/bin/python3', '-m', 'impact_audit', '--input', '/var/folders/jz/2ksjlg25597g30hd7ltt3nd00000gn/T/parcel-impact-checks-vz8j1ooj/parcel-impact-3d-c4-a.csv', '--output', '/var/folders/jz/2ksjlg25597g30hd7ltt3nd00000gn/T/parcel-impact-checks-vz8j1ooj/parcel-impact-3d-c4-a.json'], returncode=0, stdout='', stderr='').returncode
+E        +  where 0 = CompletedProcess(args=['/Users/zhangchengcheng/Documents/Codex/2026-08-24/xh/work/bin/python3', '-m', 'impact_audit', '--input', '/var/folders/jz/2ksjlg25597g30hd7ltt3nd00000gn/T/parcel-impact-checks-1l9b83f2/parcel-impact-3d-c4-a.csv', '--output', '/var/folders/jz/2ksjlg25597g30hd7ltt3nd00000gn/T/parcel-impact-checks-1l9b83f2/parcel-impact-3d-c4-a.json'], returncode=0, stdout='', stderr='').returncode
 
 tests/test_outputs.py:1060: AssertionError
 _____________ test_c4_nonpositive_inertia_rejected[C4-INERTIA-13] ______________
@@ -407,7 +408,7 @@ _case_label = 'C4-INERTIA-13'
         completed = _run_cli(input_path, output_path)
 >       assert completed.returncode != 0
 E       AssertionError: assert 0 != 0
-E        +  where 0 = CompletedProcess(args=['/Users/zhangchengcheng/Documents/Codex/2026-08-24/xh/work/bin/python3', '-m', 'impact_audit', '--input', '/var/folders/jz/2ksjlg25597g30hd7ltt3nd00000gn/T/parcel-impact-checks-vz8j1ooj/parcel-impact-3d-c4-b.csv', '--output', '/var/folders/jz/2ksjlg25597g30hd7ltt3nd00000gn/T/parcel-impact-checks-vz8j1ooj/parcel-impact-3d-c4-b.json'], returncode=0, stdout='', stderr='').returncode
+E        +  where 0 = CompletedProcess(args=['/Users/zhangchengcheng/Documents/Codex/2026-08-24/xh/work/bin/python3', '-m', 'impact_audit', '--input', '/var/folders/jz/2ksjlg25597g30hd7ltt3nd00000gn/T/parcel-impact-checks-1l9b83f2/parcel-impact-3d-c4-b.csv', '--output', '/var/folders/jz/2ksjlg25597g30hd7ltt3nd00000gn/T/parcel-impact-checks-1l9b83f2/parcel-impact-3d-c4-b.json'], returncode=0, stdout='', stderr='').returncode
 
 tests/test_outputs.py:1074: AssertionError
 _____ test_c4_separating_contact_preserves_existing_output[C4-APPROACH-14] _____
@@ -426,7 +427,7 @@ _case_label = 'C4-APPROACH-14'
         completed = _run_cli(input_path, output_path)
 >       assert completed.returncode != 0
 E       AssertionError: assert 0 != 0
-E        +  where 0 = CompletedProcess(args=['/Users/zhangchengcheng/Documents/Codex/2026-08-24/xh/work/bin/python3', '-m', 'impact_audit', '--input', '/var/folders/jz/2ksjlg25597g30hd7ltt3nd00000gn/T/parcel-impact-checks-vz8j1ooj/parcel-impact-3d-c4-c.csv', '--output', '/var/folders/jz/2ksjlg25597g30hd7ltt3nd00000gn/T/parcel-impact-checks-vz8j1ooj/parcel-impact-3d-c4-c.json'], returncode=0, stdout='', stderr='').returncode
+E        +  where 0 = CompletedProcess(args=['/Users/zhangchengcheng/Documents/Codex/2026-08-24/xh/work/bin/python3', '-m', 'impact_audit', '--input', '/var/folders/jz/2ksjlg25597g30hd7ltt3nd00000gn/T/parcel-impact-checks-1l9b83f2/parcel-impact-3d-c4-c.csv', '--output', '/var/folders/jz/2ksjlg25597g30hd7ltt3nd00000gn/T/parcel-impact-checks-1l9b83f2/parcel-impact-3d-c4-c.json'], returncode=0, stdout='', stderr='').returncode
 
 tests/test_outputs.py:1088: AssertionError
 ____ test_c5_one_sided_contact_sets_other_impulse_to_zero[C5-ONE-SIDED-17] _____
@@ -591,7 +592,7 @@ _case_label = 'C5-ADMISSION-21'
         second_completed = _run_pair_cli(second_input, second_output)
 >       assert first_completed.returncode != 0
 E       AssertionError: assert 0 != 0
-E        +  where 0 = CompletedProcess(args=['/Users/zhangchengcheng/Documents/Codex/2026-08-24/xh/work/bin/python3', '-m', 'impact_audit', 'pair', '--input', '/var/folders/jz/2ksjlg25597g30hd7ltt3nd00000gn/T/parcel-impact-checks-vz8j1ooj/parcel-pair-c5-f1.csv', '--output', '/var/folders/jz/2ksjlg25597g30hd7ltt3nd00000gn/T/parcel-impact-checks-vz8j1ooj/parcel-pair-c5-f1.json'], returncode=0, stdout='', stderr='').returncode
+E        +  where 0 = CompletedProcess(args=['/Users/zhangchengcheng/Documents/Codex/2026-08-24/xh/work/bin/python3', '-m', 'impact_audit', 'pair', '--input', '/var/folders/jz/2ksjlg25597g30hd7ltt3nd00000gn/T/parcel-impact-checks-1l9b83f2/parcel-pair-c5-f1.csv', '--output', '/var/folders/jz/2ksjlg25597g30hd7ltt3nd00000gn/T/parcel-impact-checks-1l9b83f2/parcel-pair-c5-f1.json'], returncode=0, stdout='', stderr='').returncode
 
 tests/test_outputs.py:1266: AssertionError
 ___________________ test_e2e_pair_batch_report[E2E-PAIR-22] ____________________
@@ -653,6 +654,35 @@ _case_label = 'E2E-SINGLE-23'
 E       KeyError: 'stick_count'
 
 tests/test_outputs.py:1324: KeyError
+__________ test_f7_rejected_released_rejected_net_counts[F7-STATE-25] __________
+
+_case_label = 'F7-STATE-25'
+
+    @pytest.mark.parametrize("_case_label", ["F7-STATE-25"])
+    def test_f7_rejected_released_rejected_net_counts(_case_label):
+        """F7-STATE-25: 题面规定“同一批次在正式复核中可能经历拒收、修正后放行、再次发现问题而拒收。”；测试通过 audit() 和 surface() 检查净计数。"""
+        case_id = "F7-STATE-25"
+        sys.path.insert(0, str(WORKSPACE))
+        from impact_audit.review import audit, surface
+    
+        history_path = TEST_ROOT / "f7-review-history.json"
+        history_path.unlink(missing_ok=True)
+        transitions = ["rejected", "released", "rejected"]
+        for index, outcome in enumerate(transitions, start=1):
+>           audit(history_path, "batch-1", outcome, run_id=f"run-{index}")
+
+tests/test_outputs.py:1349: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+history_path = PosixPath('/var/folders/jz/2ksjlg25597g30hd7ltt3nd00000gn/T/parcel-impact-checks-1l9b83f2/f7-review-history.json')
+batch_id = 'batch-1', outcome = 'rejected', run_id = 'run-1'
+
+    def audit(history_path, batch_id: str, outcome: str, run_id: str | None = None):
+        """Append one review decision; the workspace version is not implemented."""
+>       raise NotImplementedError("review ledger is not implemented")
+E       NotImplementedError: review ledger is not implemented
+
+/var/folders/jz/2ksjlg25597g30hd7ltt3nd00000gn/T/impact-nop-evidence-9zq5xptv/workspace/impact_audit/review.py:8: NotImplementedError
 =========================== short test summary info ============================
 FAILED tests/test_outputs.py::test_c1_offset_matches_scalar_limit[C1-OFFSET-02] - assert 9.0 == 6.617647058823529 ± 6.6e-10
   
@@ -702,11 +732,11 @@ FAILED tests/test_outputs.py::test_c2_tangent_matrix_retains_cross_coupling[C2-T
 FAILED tests/test_outputs.py::test_c3_energy_uses_full_inertia_tensor[C3-ENERGY-10] - KeyError: 'kinetic_energy_before_j'
 FAILED tests/test_outputs.py::test_c3_summary_aggregates_modes_and_energy[C3-SUMMARY-11] - KeyError: 'stick_count'
 FAILED tests/test_outputs.py::test_c4_nonunit_normal_rejected_without_output[C4-NORMAL-12] - AssertionError: assert 0 != 0
- +  where 0 = CompletedProcess(args=['/Users/zhangchengcheng/Documents/Codex/2026-08-24/xh/work/bin/python3', '-m', 'impact_audit', '--input', '/var/folders/jz/2ksjlg25597g30hd7ltt3nd00000gn/T/parcel-impact-checks-vz8j1ooj/parcel-impact-3d-c4-a.csv', '--output', '/var/folders/jz/2ksjlg25597g30hd7ltt3nd00000gn/T/parcel-impact-checks-vz8j1ooj/parcel-impact-3d-c4-a.json'], returncode=0, stdout='', stderr='').returncode
+ +  where 0 = CompletedProcess(args=['/Users/zhangchengcheng/Documents/Codex/2026-08-24/xh/work/bin/python3', '-m', 'impact_audit', '--input', '/var/folders/jz/2ksjlg25597g30hd7ltt3nd00000gn/T/parcel-impact-checks-1l9b83f2/parcel-impact-3d-c4-a.csv', '--output', '/var/folders/jz/2ksjlg25597g30hd7ltt3nd00000gn/T/parcel-impact-checks-1l9b83f2/parcel-impact-3d-c4-a.json'], returncode=0, stdout='', stderr='').returncode
 FAILED tests/test_outputs.py::test_c4_nonpositive_inertia_rejected[C4-INERTIA-13] - AssertionError: assert 0 != 0
- +  where 0 = CompletedProcess(args=['/Users/zhangchengcheng/Documents/Codex/2026-08-24/xh/work/bin/python3', '-m', 'impact_audit', '--input', '/var/folders/jz/2ksjlg25597g30hd7ltt3nd00000gn/T/parcel-impact-checks-vz8j1ooj/parcel-impact-3d-c4-b.csv', '--output', '/var/folders/jz/2ksjlg25597g30hd7ltt3nd00000gn/T/parcel-impact-checks-vz8j1ooj/parcel-impact-3d-c4-b.json'], returncode=0, stdout='', stderr='').returncode
+ +  where 0 = CompletedProcess(args=['/Users/zhangchengcheng/Documents/Codex/2026-08-24/xh/work/bin/python3', '-m', 'impact_audit', '--input', '/var/folders/jz/2ksjlg25597g30hd7ltt3nd00000gn/T/parcel-impact-checks-1l9b83f2/parcel-impact-3d-c4-b.csv', '--output', '/var/folders/jz/2ksjlg25597g30hd7ltt3nd00000gn/T/parcel-impact-checks-1l9b83f2/parcel-impact-3d-c4-b.json'], returncode=0, stdout='', stderr='').returncode
 FAILED tests/test_outputs.py::test_c4_separating_contact_preserves_existing_output[C4-APPROACH-14] - AssertionError: assert 0 != 0
- +  where 0 = CompletedProcess(args=['/Users/zhangchengcheng/Documents/Codex/2026-08-24/xh/work/bin/python3', '-m', 'impact_audit', '--input', '/var/folders/jz/2ksjlg25597g30hd7ltt3nd00000gn/T/parcel-impact-checks-vz8j1ooj/parcel-impact-3d-c4-c.csv', '--output', '/var/folders/jz/2ksjlg25597g30hd7ltt3nd00000gn/T/parcel-impact-checks-vz8j1ooj/parcel-impact-3d-c4-c.json'], returncode=0, stdout='', stderr='').returncode
+ +  where 0 = CompletedProcess(args=['/Users/zhangchengcheng/Documents/Codex/2026-08-24/xh/work/bin/python3', '-m', 'impact_audit', '--input', '/var/folders/jz/2ksjlg25597g30hd7ltt3nd00000gn/T/parcel-impact-checks-1l9b83f2/parcel-impact-3d-c4-c.csv', '--output', '/var/folders/jz/2ksjlg25597g30hd7ltt3nd00000gn/T/parcel-impact-checks-1l9b83f2/parcel-impact-3d-c4-c.json'], returncode=0, stdout='', stderr='').returncode
 FAILED tests/test_outputs.py::test_c5_one_sided_contact_sets_other_impulse_to_zero[C5-ONE-SIDED-17] - assert [1.7999999999999998, 1.7999999999999998] == approx([8.526315789473683 ± 8.5e-10, 0.0 ± 1.0e-12])
   
   comparison failed. Mismatched elements: 2 / 2:
@@ -740,7 +770,8 @@ FAILED tests/test_outputs.py::test_c5_pair_energy_and_angular_state_match_refere
   Obtained: 0.6
   Expected: 0.09523527237973756 ± 9.5e-12
 FAILED tests/test_outputs.py::test_c5_pair_rejects_no_approach_and_coincident_points[C5-ADMISSION-21] - AssertionError: assert 0 != 0
- +  where 0 = CompletedProcess(args=['/Users/zhangchengcheng/Documents/Codex/2026-08-24/xh/work/bin/python3', '-m', 'impact_audit', 'pair', '--input', '/var/folders/jz/2ksjlg25597g30hd7ltt3nd00000gn/T/parcel-impact-checks-vz8j1ooj/parcel-pair-c5-f1.csv', '--output', '/var/folders/jz/2ksjlg25597g30hd7ltt3nd00000gn/T/parcel-impact-checks-vz8j1ooj/parcel-pair-c5-f1.json'], returncode=0, stdout='', stderr='').returncode
+ +  where 0 = CompletedProcess(args=['/Users/zhangchengcheng/Documents/Codex/2026-08-24/xh/work/bin/python3', '-m', 'impact_audit', 'pair', '--input', '/var/folders/jz/2ksjlg25597g30hd7ltt3nd00000gn/T/parcel-impact-checks-1l9b83f2/parcel-pair-c5-f1.csv', '--output', '/var/folders/jz/2ksjlg25597g30hd7ltt3nd00000gn/T/parcel-impact-checks-1l9b83f2/parcel-pair-c5-f1.json'], returncode=0, stdout='', stderr='').returncode
 FAILED tests/test_outputs.py::test_e2e_pair_batch_report[E2E-PAIR-22] - KeyError: 'stick_count'
 FAILED tests/test_outputs.py::test_e2e_sample_batch_report[E2E-SINGLE-23] - KeyError: 'stick_count'
-========================= 19 failed, 5 passed in 1.77s =========================
+FAILED tests/test_outputs.py::test_f7_rejected_released_rejected_net_counts[F7-STATE-25] - NotImplementedError: review ledger is not implemented
+========================= 20 failed, 5 passed in 1.66s =========================

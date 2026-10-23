@@ -53,7 +53,7 @@ tests/test_outputs.py:193: in _report_for
          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
 
-self = PosixPath('/var/folders/jz/2ksjlg25597g30hd7ltt3nd00000gn/T/parcel-impact-checks-ad24fh8r/parcel-impact-3d-c2-e/events.json')
+self = PosixPath('/var/folders/jz/2ksjlg25597g30hd7ltt3nd00000gn/T/parcel-impact-checks-sb950qhb/parcel-impact-3d-c2-e/events.json')
 mode = 'r', buffering = -1, encoding = 'utf-8', errors = None, newline = None
 
     def open(self, mode='r', buffering=-1, encoding=None,
@@ -66,9 +66,9 @@ mode = 'r', buffering = -1, encoding = 'utf-8', errors = None, newline = None
             encoding = io.text_encoding(encoding)
 >       return io.open(self, mode, buffering, encoding, errors, newline)
                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-E       FileNotFoundError: [Errno 2] No such file or directory: '/var/folders/jz/2ksjlg25597g30hd7ltt3nd00000gn/T/parcel-impact-checks-ad24fh8r/parcel-impact-3d-c2-e/events.json'
+E       FileNotFoundError: [Errno 2] No such file or directory: '/var/folders/jz/2ksjlg25597g30hd7ltt3nd00000gn/T/parcel-impact-checks-sb950qhb/parcel-impact-3d-c2-e/events.json'
 
 ../../Documents/Codex/2026-08-24/xh/work/tools/miniforge2/lib/python3.14/pathlib/__init__.py:771: FileNotFoundError
 =========================== short test summary info ============================
-FAILED tests/test_outputs.py::test_c2_tangent_matrix_retains_cross_coupling[C2-TANGENT-MATRIX-09] - FileNotFoundError: [Errno 2] No such file or directory: '/var/folders/jz/2ksjlg25597g30hd7ltt3nd00000gn/T/parcel-impact-checks-ad24fh8r/parcel-impact-3d-c2-e/events.json'
-============================== 1 failed in 0.31s ===============================
+FAILED tests/test_outputs.py::test_c2_tangent_matrix_retains_cross_coupling[C2-TANGENT-MATRIX-09] - FileNotFoundError: [Errno 2] No such file or directory: '/var/folders/jz/2ksjlg25597g30hd7ltt3nd00000gn/T/parcel-impact-checks-sb950qhb/parcel-impact-3d-c2-e/events.json'
+============================== 1 failed in 0.25s ===============================

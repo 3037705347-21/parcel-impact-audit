@@ -37,7 +37,7 @@ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
 
-self = <json.decoder.JSONDecoder object at 0x103f04830>, s = 'stale-report\n'
+self = <json.decoder.JSONDecoder object at 0x10535c830>, s = 'stale-report\n'
 idx = 0
 
     def raw_decode(self, s, idx=0):
@@ -58,4 +58,4 @@ E           json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char
 ../../Documents/Codex/2026-08-24/xh/work/tools/miniforge2/lib/python3.14/json/decoder.py:363: JSONDecodeError
 =========================== short test summary info ============================
 FAILED tests/test_outputs.py::test_c4_atomic_success_replaces_stale_report[C4-ATOMIC-24] - json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
-============================== 1 failed in 0.31s ===============================
+============================== 1 failed in 0.24s ===============================

@@ -165,3 +165,5 @@ subject to  -friction_coefficient*J_i <= q_i <= friction_coefficient*J_i
 ```
 
 `summary` 中的 `event_count` 统计事件数，`stick_count`、`slide_count`、`inactive_count` 统计所有事件的两个接触模式，能量字段定义与单点批次相同。双接触输入同样要求缺列、空批次、空编号、非有限数、非正质量或惯量、系数越界、非法法向、两个接触点重合或没有任何接近接触时非零退出，并且不能创建或覆盖目标 JSON。
+
+同一批次在正式复核中可能经历拒收、修正后放行、再次发现问题而拒收。`impact_audit.review.audit()` 应把每次决定追加到复核流水，决定值使用 `rejected` 和 `released`。`surface()` 按批次取最新决定，并同时给出放行和拒收批次数量。

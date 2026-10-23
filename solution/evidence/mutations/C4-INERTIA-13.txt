@@ -26,10 +26,10 @@ _case_label = 'C4-INERTIA-13'
         completed = _run_cli(input_path, output_path)
 >       assert completed.returncode != 0
 E       AssertionError: assert 0 != 0
-E        +  where 0 = CompletedProcess(args=['/Users/zhangchengcheng/Documents/Codex/2026-08-24/xh/work/bin/python3', '-m', 'impact_audit', '--input', '/var/folders/jz/2ksjlg25597g30hd7ltt3nd00000gn/T/parcel-impact-checks-f7074fag/parcel-impact-3d-c4-b.csv', '--output', '/var/folders/jz/2ksjlg25597g30hd7ltt3nd00000gn/T/parcel-impact-checks-f7074fag/parcel-impact-3d-c4-b.json'], returncode=0, stdout='{}\n', stderr='').returncode
+E        +  where 0 = CompletedProcess(args=['/Users/zhangchengcheng/Documents/Codex/2026-08-24/xh/work/bin/python3', '-m', 'impact_audit', '--input', '/var/folders/jz/2ksjlg25597g30hd7ltt3nd00000gn/T/parcel-impact-checks-g3r24si0/parcel-impact-3d-c4-b.csv', '--output', '/var/folders/jz/2ksjlg25597g30hd7ltt3nd00000gn/T/parcel-impact-checks-g3r24si0/parcel-impact-3d-c4-b.json'], returncode=0, stdout='{}\n', stderr='').returncode
 
 tests/test_outputs.py:1074: AssertionError
 =========================== short test summary info ============================
 FAILED tests/test_outputs.py::test_c4_nonpositive_inertia_rejected[C4-INERTIA-13] - AssertionError: assert 0 != 0
- +  where 0 = CompletedProcess(args=['/Users/zhangchengcheng/Documents/Codex/2026-08-24/xh/work/bin/python3', '-m', 'impact_audit', '--input', '/var/folders/jz/2ksjlg25597g30hd7ltt3nd00000gn/T/parcel-impact-checks-f7074fag/parcel-impact-3d-c4-b.csv', '--output', '/var/folders/jz/2ksjlg25597g30hd7ltt3nd00000gn/T/parcel-impact-checks-f7074fag/parcel-impact-3d-c4-b.json'], returncode=0, stdout='{}\n', stderr='').returncode
-============================== 1 failed in 0.29s ===============================
+ +  where 0 = CompletedProcess(args=['/Users/zhangchengcheng/Documents/Codex/2026-08-24/xh/work/bin/python3', '-m', 'impact_audit', '--input', '/var/folders/jz/2ksjlg25597g30hd7ltt3nd00000gn/T/parcel-impact-checks-g3r24si0/parcel-impact-3d-c4-b.csv', '--output', '/var/folders/jz/2ksjlg25597g30hd7ltt3nd00000gn/T/parcel-impact-checks-g3r24si0/parcel-impact-3d-c4-b.json'], returncode=0, stdout='{}\n', stderr='').returncode
+============================== 1 failed in 0.23s ===============================

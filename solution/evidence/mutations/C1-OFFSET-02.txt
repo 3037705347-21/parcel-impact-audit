@@ -51,7 +51,7 @@ tests/test_outputs.py:193: in _report_for
          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
 
-self = PosixPath('/var/folders/jz/2ksjlg25597g30hd7ltt3nd00000gn/T/parcel-impact-checks-qfsh3e3u/parcel-impact-3d-c1-b/events.json')
+self = PosixPath('/var/folders/jz/2ksjlg25597g30hd7ltt3nd00000gn/T/parcel-impact-checks-t8bz7t6o/parcel-impact-3d-c1-b/events.json')
 mode = 'r', buffering = -1, encoding = 'utf-8', errors = None, newline = None
 
     def open(self, mode='r', buffering=-1, encoding=None,
@@ -64,9 +64,9 @@ mode = 'r', buffering = -1, encoding = 'utf-8', errors = None, newline = None
             encoding = io.text_encoding(encoding)
 >       return io.open(self, mode, buffering, encoding, errors, newline)
                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-E       FileNotFoundError: [Errno 2] No such file or directory: '/var/folders/jz/2ksjlg25597g30hd7ltt3nd00000gn/T/parcel-impact-checks-qfsh3e3u/parcel-impact-3d-c1-b/events.json'
+E       FileNotFoundError: [Errno 2] No such file or directory: '/var/folders/jz/2ksjlg25597g30hd7ltt3nd00000gn/T/parcel-impact-checks-t8bz7t6o/parcel-impact-3d-c1-b/events.json'
 
 ../../Documents/Codex/2026-08-24/xh/work/tools/miniforge2/lib/python3.14/pathlib/__init__.py:771: FileNotFoundError
 =========================== short test summary info ============================
-FAILED tests/test_outputs.py::test_c1_offset_matches_scalar_limit[C1-OFFSET-02] - FileNotFoundError: [Errno 2] No such file or directory: '/var/folders/jz/2ksjlg25597g30hd7ltt3nd00000gn/T/parcel-impact-checks-qfsh3e3u/parcel-impact-3d-c1-b/events.json'
-============================== 1 failed in 0.34s ===============================
+FAILED tests/test_outputs.py::test_c1_offset_matches_scalar_limit[C1-OFFSET-02] - FileNotFoundError: [Errno 2] No such file or directory: '/var/folders/jz/2ksjlg25597g30hd7ltt3nd00000gn/T/parcel-impact-checks-t8bz7t6o/parcel-impact-3d-c1-b/events.json'
+============================== 1 failed in 0.28s ===============================

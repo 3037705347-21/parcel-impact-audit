@@ -33,10 +33,10 @@ _case_label = 'C4-SCHEMA-15'
     
 >       assert missing_completed.returncode != 0
 E       AssertionError: assert 0 != 0
-E        +  where 0 = CompletedProcess(args=['/Users/zhangchengcheng/Documents/Codex/2026-08-24/xh/work/bin/python3', '-m', 'impact_audit', '--input', '/var/folders/jz/2ksjlg25597g30hd7ltt3nd00000gn/T/parcel-impact-checks-_ed8v6b8/parcel-impact-3d-c4-d.csv', '--output', '/var/folders/jz/2ksjlg25597g30hd7ltt3nd00000gn/T/parcel-impact-checks-_ed8v6b8/parcel-impact-3d-c4-d.json'], returncode=0, stdout='{}\n', stderr='').returncode
+E        +  where 0 = CompletedProcess(args=['/Users/zhangchengcheng/Documents/Codex/2026-08-24/xh/work/bin/python3', '-m', 'impact_audit', '--input', '/var/folders/jz/2ksjlg25597g30hd7ltt3nd00000gn/T/parcel-impact-checks-sxlfbv9m/parcel-impact-3d-c4-d.csv', '--output', '/var/folders/jz/2ksjlg25597g30hd7ltt3nd00000gn/T/parcel-impact-checks-sxlfbv9m/parcel-impact-3d-c4-d.json'], returncode=0, stdout='{}\n', stderr='').returncode
 
 tests/test_outputs.py:1125: AssertionError
 =========================== short test summary info ============================
 FAILED tests/test_outputs.py::test_c4_missing_columns_and_nonfinite_values_rejected[C4-SCHEMA-15] - AssertionError: assert 0 != 0
- +  where 0 = CompletedProcess(args=['/Users/zhangchengcheng/Documents/Codex/2026-08-24/xh/work/bin/python3', '-m', 'impact_audit', '--input', '/var/folders/jz/2ksjlg25597g30hd7ltt3nd00000gn/T/parcel-impact-checks-_ed8v6b8/parcel-impact-3d-c4-d.csv', '--output', '/var/folders/jz/2ksjlg25597g30hd7ltt3nd00000gn/T/parcel-impact-checks-_ed8v6b8/parcel-impact-3d-c4-d.json'], returncode=0, stdout='{}\n', stderr='').returncode
-============================== 1 failed in 0.35s ===============================
+ +  where 0 = CompletedProcess(args=['/Users/zhangchengcheng/Documents/Codex/2026-08-24/xh/work/bin/python3', '-m', 'impact_audit', '--input', '/var/folders/jz/2ksjlg25597g30hd7ltt3nd00000gn/T/parcel-impact-checks-sxlfbv9m/parcel-impact-3d-c4-d.csv', '--output', '/var/folders/jz/2ksjlg25597g30hd7ltt3nd00000gn/T/parcel-impact-checks-sxlfbv9m/parcel-impact-3d-c4-d.json'], returncode=0, stdout='{}\n', stderr='').returncode
+============================== 1 failed in 0.28s ===============================

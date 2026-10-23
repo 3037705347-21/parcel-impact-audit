@@ -1333,3 +1333,22 @@ def test_e2e_sample_batch_report(_case_label):
     assert report["events"][0]["tangential_impulse_ns"] == pytest.approx(
         first_expected["tangential_impulse_ns"], rel=1e-10
     )
+
+
+@pytest.mark.parametrize("_case_label", ["F7-STATE-25"])
+def test_f7_rejected_released_rejected_net_counts(_case_label):
+    """F7-STATE-25: 题面规定“同一批次在正式复核中可能经历拒收、修正后放行、再次发现问题而拒收。”；测试通过 audit() 和 surface() 检查净计数。"""
+    case_id = "F7-STATE-25"
+    sys.path.insert(0, str(WORKSPACE))
+    from impact_audit.review import audit, surface
+
+    history_path = TEST_ROOT / "f7-review-history.json"
+    history_path.unlink(missing_ok=True)
+    transitions = ["rejected", "released", "rejected"]
+    for index, outcome in enumerate(transitions, start=1):
+        audit(history_path, "batch-1", outcome, run_id=f"run-{index}")
+    summary = surface(history_path)
+    assert summary["latest_state"] == "rejected"
+    assert summary["released_count"] == 0
+    assert summary["rejected_count"] == 1
+    assert summary["batch_count"] == 1

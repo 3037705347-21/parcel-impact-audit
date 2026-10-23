@@ -124,6 +124,7 @@ def main() -> None:
             [
                 "oracle/model.py",
                 "oracle/linalg.py",
+                "oracle/review.py",
                 "oracle/pair.py",
                 "oracle/cli.py",
                 "oracle/__init__.py",

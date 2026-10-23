@@ -26,10 +26,10 @@ _case_label = 'C4-NORMAL-12'
         completed = _run_cli(input_path, output_path)
 >       assert completed.returncode != 0
 E       AssertionError: assert 0 != 0
-E        +  where 0 = CompletedProcess(args=['/Users/zhangchengcheng/Documents/Codex/2026-08-24/xh/work/bin/python3', '-m', 'impact_audit', '--input', '/var/folders/jz/2ksjlg25597g30hd7ltt3nd00000gn/T/parcel-impact-checks-2sj4r3bh/parcel-impact-3d-c4-a.csv', '--output', '/var/folders/jz/2ksjlg25597g30hd7ltt3nd00000gn/T/parcel-impact-checks-2sj4r3bh/parcel-impact-3d-c4-a.json'], returncode=0, stdout='{}\n', stderr='').returncode
+E        +  where 0 = CompletedProcess(args=['/Users/zhangchengcheng/Documents/Codex/2026-08-24/xh/work/bin/python3', '-m', 'impact_audit', '--input', '/var/folders/jz/2ksjlg25597g30hd7ltt3nd00000gn/T/parcel-impact-checks-8mabrzn8/parcel-impact-3d-c4-a.csv', '--output', '/var/folders/jz/2ksjlg25597g30hd7ltt3nd00000gn/T/parcel-impact-checks-8mabrzn8/parcel-impact-3d-c4-a.json'], returncode=0, stdout='{}\n', stderr='').returncode
 
 tests/test_outputs.py:1060: AssertionError
 =========================== short test summary info ============================
 FAILED tests/test_outputs.py::test_c4_nonunit_normal_rejected_without_output[C4-NORMAL-12] - AssertionError: assert 0 != 0
- +  where 0 = CompletedProcess(args=['/Users/zhangchengcheng/Documents/Codex/2026-08-24/xh/work/bin/python3', '-m', 'impact_audit', '--input', '/var/folders/jz/2ksjlg25597g30hd7ltt3nd00000gn/T/parcel-impact-checks-2sj4r3bh/parcel-impact-3d-c4-a.csv', '--output', '/var/folders/jz/2ksjlg25597g30hd7ltt3nd00000gn/T/parcel-impact-checks-2sj4r3bh/parcel-impact-3d-c4-a.json'], returncode=0, stdout='{}\n', stderr='').returncode
-============================== 1 failed in 0.29s ===============================
+ +  where 0 = CompletedProcess(args=['/Users/zhangchengcheng/Documents/Codex/2026-08-24/xh/work/bin/python3', '-m', 'impact_audit', '--input', '/var/folders/jz/2ksjlg25597g30hd7ltt3nd00000gn/T/parcel-impact-checks-8mabrzn8/parcel-impact-3d-c4-a.csv', '--output', '/var/folders/jz/2ksjlg25597g30hd7ltt3nd00000gn/T/parcel-impact-checks-8mabrzn8/parcel-impact-3d-c4-a.json'], returncode=0, stdout='{}\n', stderr='').returncode
+============================== 1 failed in 0.24s ===============================

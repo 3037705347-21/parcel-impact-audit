@@ -128,8 +128,12 @@ def build_oracle_and_nop() -> tuple[str, str, dict[str, str]]:
         workspace = prepare_workspace(Path(temporary), oracle=True)
         completed = run_suite(workspace)
         oracle_output = (completed.stdout or "") + (completed.stderr or "")
-        if completed.returncode != 0 or len(parse_statuses(oracle_output)) != len(BEHAVIORS):
-            raise RuntimeError("oracle evidence did not produce one passing case per behavior")
+        oracle_statuses = parse_statuses(oracle_output)
+        if completed.returncode != 0 or any(
+            oracle_statuses.get(case_id) != "PASSED"
+            for _test_name, case_id, _source, _category, _summary in BEHAVIORS
+        ):
+            raise RuntimeError("oracle evidence did not pass every mapped behavior")
         (EVIDENCE / "oracle-vv.txt").write_text(oracle_output, encoding="utf-8")
     with tempfile.TemporaryDirectory(prefix="impact-nop-evidence-") as temporary:
         workspace = prepare_workspace(Path(temporary), oracle=False)

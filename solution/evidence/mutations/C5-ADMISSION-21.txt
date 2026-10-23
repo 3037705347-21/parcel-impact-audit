@@ -37,10 +37,10 @@ _case_label = 'C5-ADMISSION-21'
         second_completed = _run_pair_cli(second_input, second_output)
 >       assert first_completed.returncode != 0
 E       AssertionError: assert 0 != 0
-E        +  where 0 = CompletedProcess(args=['/Users/zhangchengcheng/Documents/Codex/2026-08-24/xh/work/bin/python3', '-m', 'impact_audit', 'pair', '--input', '/var/folders/jz/2ksjlg25597g30hd7ltt3nd00000gn/T/parcel-impact-checks-mciw0sut/parcel-pair-c5-f1.csv', '--output', '/var/folders/jz/2ksjlg25597g30hd7ltt3nd00000gn/T/parcel-impact-checks-mciw0sut/parcel-pair-c5-f1.json'], returncode=0, stdout='{}\n', stderr='').returncode
+E        +  where 0 = CompletedProcess(args=['/Users/zhangchengcheng/Documents/Codex/2026-08-24/xh/work/bin/python3', '-m', 'impact_audit', 'pair', '--input', '/var/folders/jz/2ksjlg25597g30hd7ltt3nd00000gn/T/parcel-impact-checks-9q3zsni_/parcel-pair-c5-f1.csv', '--output', '/var/folders/jz/2ksjlg25597g30hd7ltt3nd00000gn/T/parcel-impact-checks-9q3zsni_/parcel-pair-c5-f1.json'], returncode=0, stdout='{}\n', stderr='').returncode
 
 tests/test_outputs.py:1266: AssertionError
 =========================== short test summary info ============================
 FAILED tests/test_outputs.py::test_c5_pair_rejects_no_approach_and_coincident_points[C5-ADMISSION-21] - AssertionError: assert 0 != 0
- +  where 0 = CompletedProcess(args=['/Users/zhangchengcheng/Documents/Codex/2026-08-24/xh/work/bin/python3', '-m', 'impact_audit', 'pair', '--input', '/var/folders/jz/2ksjlg25597g30hd7ltt3nd00000gn/T/parcel-impact-checks-mciw0sut/parcel-pair-c5-f1.csv', '--output', '/var/folders/jz/2ksjlg25597g30hd7ltt3nd00000gn/T/parcel-impact-checks-mciw0sut/parcel-pair-c5-f1.json'], returncode=0, stdout='{}\n', stderr='').returncode
-============================== 1 failed in 0.35s ===============================
+ +  where 0 = CompletedProcess(args=['/Users/zhangchengcheng/Documents/Codex/2026-08-24/xh/work/bin/python3', '-m', 'impact_audit', 'pair', '--input', '/var/folders/jz/2ksjlg25597g30hd7ltt3nd00000gn/T/parcel-impact-checks-9q3zsni_/parcel-pair-c5-f1.csv', '--output', '/var/folders/jz/2ksjlg25597g30hd7ltt3nd00000gn/T/parcel-impact-checks-9q3zsni_/parcel-pair-c5-f1.json'], returncode=0, stdout='{}\n', stderr='').returncode
+============================== 1 failed in 0.28s ===============================
