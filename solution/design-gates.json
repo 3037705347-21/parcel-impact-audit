@@ -13,7 +13,7 @@
     "base_image": "python:3.12.8-slim-bookworm@sha256:2199a62885a12290dc9c5be3ca0681d367576ab7bf037da120e564723292a2f0",
     "dependencies_locked": true,
     "allow_internet": true,
-    "network_reason": "业务程序只使用Python标准库；测试依赖在验证阶段从本地哈希清单安装；镜像内运行的真实模型需通过本地代理访问模型服务，因此运行阶段保留联网开关",
+    "network_reason": "业务程序只使用Python标准库；镜像构建需要访问软件源获取固定版本运行工具，运行阶段保留联网开关，业务计算本身不依赖外网",
     "architectures": [
       "amd64",
       "arm64"
