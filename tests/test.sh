@@ -2,7 +2,7 @@
 set -u
 
 reward_file=/logs/verifier/reward.txt
-ctrf_file=/logs/verifier/ctrf.json
+JUNIT_FILE=/logs/verifier/junit.xml
 mkdir -p /logs/verifier
 
 write_reward_zero() {
@@ -23,14 +23,19 @@ if ! python -m pip install --user --no-cache-dir --disable-pip-version-check \
 fi
 
 cd /workspace
-timeout 240s python -m pytest --ctrf "$ctrf_file" /tests/test_outputs.py -q
+timeout 240s python -m pytest --junitxml "$JUNIT_FILE" /tests/test_outputs.py -q
 
-python3 - "$ctrf_file" "$reward_file" <<'PY'
-import json
+if ! test -s "$JUNIT_FILE"; then
+  write_reward_zero
+  exit 0
+fi
+
+python3 - "$JUNIT_FILE" "$reward_file" <<'PY'
 import os
 import sys
+import xml.etree.ElementTree as ET
 
-ctrf_path, reward_path = sys.argv[1:]
+report_path, reward_path = sys.argv[1:]
 groups = {
     "C1": (0.14, "test_c1_"),
     "C2": (0.18, "test_c2_"),
@@ -39,27 +44,35 @@ groups = {
     "C5": (0.30, "test_c5_"),
     "E2E": (0.18, "test_e2e_"),
 }
-try:
-    with open(ctrf_path, encoding="utf-8") as handle:
-        tests = json.load(handle)["results"]["tests"]
-except (OSError, KeyError, TypeError, json.JSONDecodeError):
-    tests = []
+if not os.path.isfile(report_path) or os.path.getsize(report_path) == 0:
+    statuses = {}
+else:
+    try:
+        tree = ET.parse(report_path)
+        statuses = {}
+        for case in tree.findall(".//testcase"):
+            name = case.attrib.get("name", "")
+            failed = case.find("failure") is not None or case.find("error") is not None
+            skipped = case.find("skipped") is not None
+            statuses[name] = not failed and not skipped
+    except (OSError, ET.ParseError):
+        statuses = {}
 
-statuses = {}
-for test in tests:
-    name = str(test.get("name", "")).split("::")[-1]
-    statuses[name] = test.get("status") == "passed"
-
-score = 0.0
+weighted_total = 0.0
+INCOMPLETE = not statuses
 for weight, prefix in groups.values():
     relevant = [passed for name, passed in statuses.items() if name.startswith(prefix)]
-    if relevant and all(relevant):
-        score += weight
+    if not relevant:
+        INCOMPLETE = True
+    elif all(relevant):
+        weighted_total += weight
 
-score = min(1.0, max(0.0, score))
+if INCOMPLETE:
+    weighted_total = 0.0
+weighted_total = min(1.0, max(0.0, weighted_total))
 os.chmod(reward_path, 0o644)
 with open(reward_path, "w", encoding="utf-8") as handle:
-    handle.write(f"{score:.6f}\n")
+    handle.write(f"{weighted_total:.6f}\n")
 os.chmod(reward_path, 0o444)
 PY
 
